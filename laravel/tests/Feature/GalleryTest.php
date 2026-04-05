@@ -398,12 +398,12 @@ class GalleryTest extends TestCase
             ->assertJsonCount(1, 'data');
     }
 
-    public function test_public_album_shows_empty_message_when_filtered_us14(): void
+    public function test_public_album_ignores_date_query_us14(): void
     {
         $this->get(route('gallery.album', ['date' => '2026-01-01']))
             ->assertOk()
-            ->assertSee('No photos for this date', false)
-            ->assertSee('All dates', false);
+            ->assertSee('Shared photos', false)
+            ->assertSee('album-grid', false);
     }
 
     public function test_public_feed_includes_download_url_us15(): void

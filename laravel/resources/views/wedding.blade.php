@@ -22,6 +22,8 @@
 
         @include('partials.site.wedding-monogram')
 
+        @include('partials.site.save-the-date')
+
         @php
             $eventTz = isset($event['timezone']) && $event['timezone'] !== '' && $event['timezone'] !== null
                 ? $event['timezone']

@@ -47,17 +47,15 @@ class GalleryController extends Controller
     }
 
     /** US-13 / US-14: public album (first page SSR + infinite scroll via {@see feed}). */
-    public function album(Request $request): View
+    public function album(): View
     {
-        $filterDate = $this->resolveGalleryDateFilter($request);
         $perPage = (int) config('gallery.public_feed.per_page');
 
-        $paginator = $this->publicPhotoQuery($filterDate)
+        $paginator = $this->publicPhotoQuery(null)
             ->latest('id')
             ->paginate($perPage);
 
         $paginator->setPath(route('gallery.feed'));
-        $this->appendDateToPaginator($paginator, $filterDate);
 
         $initialPhotos = $paginator->getCollection()
             ->map(fn (Photo $p) => $this->photoPublicArray($p))
@@ -66,7 +64,6 @@ class GalleryController extends Controller
         return view('gallery-album', [
             'initialPhotos' => $initialPhotos,
             'nextPageUrl' => $paginator->nextPageUrl(),
-            'filterDate' => $filterDate,
         ]);
     }
 

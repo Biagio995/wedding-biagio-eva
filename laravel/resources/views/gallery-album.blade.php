@@ -6,31 +6,6 @@
         <h1>{{ __('Shared photos') }}</h1>
         <p class="sub">{{ __('Moments from the day — scroll to load more.') }}</p>
 
-        <form class="album-filter" method="get" action="{{ route('gallery.album') }}">
-            <label for="filter-date">{{ __('Photos from') }}</label>
-            <input
-                type="date"
-                id="filter-date"
-                name="date"
-                value="{{ $filterDate ?? '' }}"
-                max="{{ now()->format('Y-m-d') }}"
-            >
-            <button type="submit">{{ __('Apply') }}</button>
-            @if (!empty($filterDate))
-                <a href="{{ route('gallery.album') }}">{{ __('All dates') }}</a>
-            @endif
-        </form>
-
-        @if (count($initialPhotos) === 0)
-            <p class="album-hint" id="album-empty">
-                @if (!empty($filterDate))
-                    {{ __('No photos for this date.') }}
-                @else
-                    {{ __('No photos yet. Upload from the gallery page.') }}
-                @endif
-            </p>
-        @endif
-
         <div
             id="album-root"
             data-next-url="{{ $nextPageUrl }}"

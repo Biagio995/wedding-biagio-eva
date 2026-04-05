@@ -4,7 +4,7 @@
 }
 
 h1 {
-    font-size: clamp(1.75rem, 4.5vw, 2.05rem);
+    font-size: clamp(2.5rem, 6vw, 3.35rem);
     margin: 0 0 0.65rem;
 }
 
@@ -16,12 +16,24 @@ h1 {
 .wrap--wedding > h1::before {
     content: "❦";
     display: block;
-    font-size: 1.1rem;
+    font-size: clamp(3.5rem, 14vmin, 6rem);
     line-height: 1;
     color: var(--accent);
-    margin-bottom: 0.75rem;
+    margin-bottom: clamp(0.85rem, 2.5vmin, 1.35rem);
     opacity: 0.88;
     filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.8));
+}
+
+/* Telefono: dimensioni generose; da tablet/desktop il clamp + vmin esplode — limitiamo */
+@media (min-width: 768px) {
+    h1 {
+        font-size: clamp(2rem, 2.75vw, 2.5rem);
+    }
+
+    .wrap--wedding > h1::before {
+        font-size: clamp(2.25rem, 3.5vw, 3rem);
+        margin-bottom: 0.85rem;
+    }
 }
 
 .sub {
@@ -180,4 +192,208 @@ h1 {
 
 .countdown-done .countdown-grid {
     display: none;
+}
+
+/* —— Save the date (calendario) —— */
+.save-the-date {
+    width: 100%;
+    max-width: 22rem;
+    margin: 0 auto 1.75rem;
+}
+
+.save-the-date__panel {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: clamp(1.35rem, 4vw, 1.75rem) clamp(1rem, 3vw, 1.35rem) clamp(1.5rem, 4vw, 1.85rem);
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.95) inset,
+        0 8px 28px rgba(58, 50, 42, 0.08);
+    border: 1px solid var(--stroke);
+}
+
+.save-the-date__month-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.85rem;
+    margin-bottom: 1.15rem;
+}
+
+.save-the-date__arrow {
+    flex: 1;
+    max-width: 3.25rem;
+    height: 1px;
+    background: #2c2c2c;
+    position: relative;
+    align-self: center;
+}
+
+.save-the-date__arrow--left::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    border-style: solid;
+    border-width: 5px 0 5px 8px;
+    border-color: transparent transparent transparent #2c2c2c;
+}
+
+.save-the-date__arrow--right::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    border-style: solid;
+    border-width: 5px 8px 5px 0;
+    border-color: transparent #2c2c2c transparent transparent;
+}
+
+.save-the-date__month {
+    font-family: "Great Vibes", cursive;
+    font-size: clamp(2.35rem, 8vw, 2.85rem);
+    font-weight: 400;
+    line-height: 1;
+    color: #1f1f1f;
+    flex-shrink: 0;
+}
+
+.save-the-date__weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.15rem;
+    text-align: center;
+    font-family: var(--font-body);
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #1a1a1a;
+    margin-bottom: 0.45rem;
+}
+
+.save-the-date__grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.2rem 0.15rem;
+    margin-bottom: 1.35rem;
+}
+
+.save-the-date__cell {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    min-height: 2rem;
+}
+
+.save-the-date__cell--pad {
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.save-the-date__day-num {
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    color: #3a3a3a;
+    position: relative;
+    z-index: 1;
+}
+
+.save-the-date__day-num--muted {
+    color: #b5b5b5;
+}
+
+.save-the-date__cell--heart {
+    z-index: 0;
+}
+
+.save-the-date__heart {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(245, 200, 198, 0.95);
+    z-index: 0;
+    pointer-events: none;
+}
+
+.save-the-date__heart svg {
+    width: clamp(2rem, 6.5vw, 2.45rem);
+    height: auto;
+    filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.6));
+}
+
+.save-the-date__cell--heart .save-the-date__day-num {
+    color: #2a2a2a;
+    font-weight: 600;
+}
+
+.save-the-date__line {
+    margin: 0;
+    text-align: center;
+}
+
+.save-the-date__line--caps {
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: #222;
+    line-height: 1.5;
+}
+
+.save-the-date__rule {
+    width: 2.5rem;
+    height: 1px;
+    margin: 1rem auto 0;
+    background: #3a3a3a;
+    opacity: 0.55;
+}
+
+/* —— Card nomi + data (serif, crema, blu, contorno oro) —— */
+.wedding-hero-serif {
+    --wedding-serif-navy: #1a2d4a;
+    --wedding-serif-gold: #b8956a;
+
+    width: 100%;
+    max-width: 22rem;
+    margin: 0 auto 1.75rem;
+    padding: clamp(1.25rem, 3.5vw, 1.6rem) clamp(1rem, 2.5vw, 1.35rem);
+    text-align: center;
+    background: #faf6ef;
+    border-radius: var(--radius);
+    border: 1px solid var(--gold-line);
+    box-shadow: 0 2px 12px rgba(58, 50, 42, 0.06);
+}
+
+.wedding-hero-serif__line {
+    margin: 0;
+    font-family: "EB Garamond", "Cormorant Garamond", Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(1.35rem, 4.2vw, 1.65rem);
+    line-height: 1.35;
+    letter-spacing: 0.02em;
+    text-transform: lowercase;
+    color: var(--wedding-serif-navy);
+    text-shadow:
+        0 0 1px rgba(184, 149, 106, 0.45),
+        0.5px 0 0 var(--wedding-serif-gold),
+        -0.5px 0 0 var(--wedding-serif-gold),
+        0 0.5px 0 var(--wedding-serif-gold),
+        0 -0.5px 0 var(--wedding-serif-gold),
+        1px 0 0 rgba(201, 168, 110, 0.35),
+        -1px 0 0 rgba(201, 168, 110, 0.35);
+}
+
+.wedding-hero-serif__line--date {
+    margin-top: 0.35rem;
+    font-size: clamp(1.2rem, 3.8vw, 1.45rem);
+    opacity: 0.98;
 }
