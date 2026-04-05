@@ -22,7 +22,7 @@
             z-index: 100;
             margin: calc(-1rem - var(--safe-top)) calc(-1rem - var(--safe-right)) 1.35rem calc(-1rem - var(--safe-left));
             padding: calc(1rem + var(--safe-top)) calc(1rem + var(--safe-right)) 0.85rem calc(1rem + var(--safe-left));
-            background: linear-gradient(180deg, rgba(22, 18, 32, 0.92) 0%, rgba(15, 15, 20, 0.78) 100%);
+            background: linear-gradient(180deg, rgba(33, 53, 85, 0.94) 0%, rgba(33, 53, 85, 0.82) 100%);
             backdrop-filter: blur(16px) saturate(1.25);
             -webkit-backdrop-filter: blur(16px) saturate(1.25);
             border-bottom: 1px solid rgba(255, 255, 255, 0.07);
@@ -35,7 +35,7 @@
             right: 0;
             bottom: 0;
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(201, 169, 98, 0.45), transparent);
+            background: linear-gradient(90deg, transparent, rgba(216, 196, 182, 0.45), transparent);
             pointer-events: none;
         }
         .site-header__bar {
@@ -67,8 +67,8 @@
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-            background: linear-gradient(145deg, rgba(201, 169, 98, 0.38), rgba(201, 169, 98, 0.1));
-            border: 1px solid rgba(201, 169, 98, 0.35);
+            background: linear-gradient(145deg, rgba(216, 196, 182, 0.38), rgba(216, 196, 182, 0.1));
+            border: 1px solid rgba(216, 196, 182, 0.35);
             font-size: 0.72rem;
             font-weight: 700;
             letter-spacing: 0.04em;
@@ -117,7 +117,7 @@
         .site-header__lang[aria-current="true"] {
             color: var(--accent);
             font-weight: 700;
-            background: rgba(201, 169, 98, 0.14);
+            background: rgba(216, 196, 182, 0.14);
         }
         .site-header__lang:focus-visible {
             outline: 2px solid var(--accent);
@@ -159,7 +159,7 @@
         }
         .site-header__pill:hover {
             color: var(--text);
-            border-color: rgba(201, 169, 98, 0.35);
+            border-color: rgba(216, 196, 182, 0.35);
             background: rgba(255, 255, 255, 0.06);
         }
         .site-header__pill:active {
@@ -169,11 +169,11 @@
             .site-header__pill:active { transform: none; }
         }
         .site-header__pill.is-active {
-            color: #1a1508;
-            background: linear-gradient(145deg, #e4c97a, #a8893e);
+            color: #213555;
+            background: linear-gradient(145deg, #F5EFE7, #D8C4B6);
             border-color: transparent;
             font-weight: 600;
-            box-shadow: 0 2px 14px rgba(201, 169, 98, 0.35);
+            box-shadow: 0 2px 14px rgba(33, 53, 85, 0.35);
         }
         .site-header__pill.is-active svg {
             opacity: 1;

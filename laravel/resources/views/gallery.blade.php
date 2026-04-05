@@ -4,16 +4,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="color-scheme" content="dark">
-    <meta name="theme-color" content="#1a1a2e">
+    <meta name="theme-color" content="#213555">
     <title>{{ __('Gallery') }} — {{ config('app.name', 'Wedding') }}</title>
     <style>
         :root {
-            --bg: #0f0f14;
-            --surface: #1a1a24;
-            --text: #f4f4f8;
-            --muted: #9898a8;
-            --accent: #c9a962;
-            --accent-dim: rgba(201, 169, 98, 0.15);
+            --bg: #213555;
+            --surface: #3E5879;
+            --text: #F5EFE7;
+            --muted: #b8aea4;
+            --accent: #D8C4B6;
+            --accent-dim: rgba(216, 196, 182, 0.18);
             --radius: 14px;
             --safe-bottom: env(safe-area-inset-bottom, 0px);
             --safe-top: env(safe-area-inset-top, 0px);
@@ -25,7 +25,7 @@
             margin: 0;
             min-height: 100dvh;
             font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-            background: radial-gradient(ellipse 120% 80% at 50% -20%, #2a2235 0%, var(--bg) 55%);
+            background: radial-gradient(ellipse 120% 80% at 50% -20%, #3E5879 0%, var(--bg) 55%);
             color: var(--text);
             line-height: 1.45;
             padding: calc(1rem + var(--safe-top)) calc(1rem + var(--safe-right)) calc(1.5rem + var(--safe-bottom)) calc(1rem + var(--safe-left));
@@ -65,7 +65,7 @@
             align-items: center;
             justify-content: center;
             min-height: clamp(9rem, 36vh, 14rem);
-            border: 2px dashed rgba(201, 169, 98, 0.35);
+            border: 2px dashed rgba(216, 196, 182, 0.4);
             border-radius: var(--radius);
             cursor: pointer;
             transition: border-color 0.2s, background 0.2s;
@@ -77,7 +77,7 @@
         }
         label.upload-zone:active, label.upload-zone:focus-within {
             border-color: var(--accent);
-            background: rgba(201, 169, 98, 0.06);
+            background: rgba(216, 196, 182, 0.08);
         }
         .upload-zone span { font-size: 0.95rem; color: var(--muted); text-align: center; padding: 0 0.5rem; }
         .upload-zone strong { color: var(--accent); display: block; margin-top: 0.35rem; }
@@ -97,8 +97,8 @@
             font-weight: 600;
             border: none;
             border-radius: var(--radius);
-            background: linear-gradient(145deg, #d4b56a, #a8893e);
-            color: #1a1508;
+            background: linear-gradient(145deg, #F5EFE7, #D8C4B6);
+            color: #213555;
             cursor: pointer;
             min-height: 48px;
             -webkit-tap-highlight-color: transparent;
@@ -136,7 +136,7 @@
             height: 100%;
             width: 0%;
             border-radius: 999px;
-            background: linear-gradient(90deg, #a8893e, #d4b56a);
+            background: linear-gradient(90deg, #3E5879, #D8C4B6);
             transition: width 0.1s ease-out;
         }
         .progress-label {

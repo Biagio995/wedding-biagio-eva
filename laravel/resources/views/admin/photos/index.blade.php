@@ -3,14 +3,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#1a1a2e">
+    <meta name="theme-color" content="#213555">
     <title>{{ __('Photo moderation') }} — {{ config('app.name', 'Wedding') }}</title>
     <style>
         :root {
-            --bg: #0f0f14;
-            --text: #f4f4f8;
-            --muted: #9898a8;
-            --accent: #c9a962;
+            --bg: #213555;
+            --text: #F5EFE7;
+            --muted: #b8aea4;
+            --accent: #D8C4B6;
             --radius: 12px;
             --ok: #7ecf9a;
         }
@@ -19,7 +19,7 @@
             margin: 0;
             min-height: 100dvh;
             font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-            background: radial-gradient(ellipse 120% 80% at 50% -20%, #2a2235 0%, var(--bg) 55%);
+            background: radial-gradient(ellipse 120% 80% at 50% -20%, #3E5879 0%, var(--bg) 55%);
             color: var(--text);
             line-height: 1.45;
             padding: 1rem;
@@ -125,8 +125,8 @@
             padding: 0.45rem;
             border: none;
             border-radius: 8px;
-            background: linear-gradient(145deg, #d4b56a, #a8893e);
-            color: #1a1508;
+            background: linear-gradient(145deg, #F5EFE7, #D8C4B6);
+            color: #213555;
             font-weight: 600;
             font-size: 0.85rem;
             cursor: pointer;

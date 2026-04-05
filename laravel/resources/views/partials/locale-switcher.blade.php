@@ -9,9 +9,9 @@
             font-size: 0.82rem;
             margin-bottom: 0.85rem;
         }
-        .locale-switcher span { color: var(--muted, #9898a8); }
+        .locale-switcher span { color: var(--muted, #b8aea4); }
         .locale-switcher a {
-            color: var(--accent, #c9a962);
+            color: var(--accent, #D8C4B6);
             text-decoration: none;
             padding: 0.35rem 0.45rem;
             border-radius: 6px;
@@ -25,7 +25,7 @@
             text-decoration: underline;
         }
         .locale-switcher a:focus-visible {
-            outline: 2px solid var(--accent, #c9a962);
+            outline: 2px solid var(--accent, #D8C4B6);
             outline-offset: 2px;
         }
     </style>
