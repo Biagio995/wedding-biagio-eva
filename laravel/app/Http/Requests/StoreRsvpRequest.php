@@ -16,9 +16,14 @@ class StoreRsvpRequest extends FormRequest
 
     protected function prepareForValidation(): void
     {
-        $notes = $this->input('notes');
-        if (is_string($notes)) {
-            $notes = trim($notes);
+        $merge = [];
+
+        if ($this->has('notes')) {
+            $notes = $this->input('notes');
+            if (is_string($notes)) {
+                $notes = trim($notes);
+            }
+            $merge['notes'] = ($notes === '' || $notes === null) ? null : $notes;
         }
 
         $name = $this->input('name');
@@ -31,11 +36,10 @@ class StoreRsvpRequest extends FormRequest
             $email = trim($email);
         }
 
-        $this->merge([
-            'notes' => ($notes === '' || $notes === null) ? null : $notes,
-            'name' => ($name === '' || $name === null) ? null : $name,
-            'email' => ($email === '' || $email === null) ? null : $email,
-        ]);
+        $merge['name'] = ($name === '' || $name === null) ? null : $name;
+        $merge['email'] = ($email === '' || $email === null) ? null : $email;
+
+        $this->merge($merge);
     }
 
     /**

@@ -18,7 +18,7 @@ class RsvpConfirmationMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: __('RSVP received — :event', ['event' => config('wedding.event.title')]),
+            subject: __('RSVP received — :event', ['event' => __(config('wedding.event.title'))]),
         );
     }
 

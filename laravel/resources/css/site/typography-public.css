@@ -1,0 +1,37 @@
+/* Tipografia invito: titoli serif, testo sans leggibile */
+body {
+    font-family: var(--font-body);
+    font-weight: 400;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+h1 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.75rem;
+    letter-spacing: 0.04em;
+    line-height: 1.22;
+    margin: 0 0 0.5rem;
+    color: var(--text);
+    text-wrap: balance;
+}
+
+.site-header__title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.1rem;
+    letter-spacing: 0.08em;
+}
+
+.site-header__mono {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+.sub {
+    font-size: 0.95rem;
+    line-height: 1.5;
+}

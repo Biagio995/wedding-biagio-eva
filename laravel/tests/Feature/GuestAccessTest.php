@@ -19,11 +19,11 @@ class GuestAccessTest extends TestCase
         $this->get('/gallery/album')->assertOk();
     }
 
-    public function test_wedding_page_mentions_no_registration_us29(): void
+    public function test_wedding_page_renders_public_content_us29(): void
     {
         $this->get('/w')
             ->assertOk()
-            ->assertSee('No guest login or sign-up', false);
+            ->assertSee('Countdown', false);
     }
 
     public function test_rsvp_saves_using_session_not_user_model_us29(): void

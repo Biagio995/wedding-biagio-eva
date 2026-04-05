@@ -18,7 +18,7 @@ class RsvpReminderMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: __('Reminder: RSVP for :event', ['event' => config('wedding.event.title')]),
+            subject: __('Reminder: RSVP for :event', ['event' => __(config('wedding.event.title'))]),
         );
     }
 

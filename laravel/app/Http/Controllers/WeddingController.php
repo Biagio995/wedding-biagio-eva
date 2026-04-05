@@ -70,11 +70,14 @@ class WeddingController extends Controller
             /** US-07: editing — any prior submitted RSVP (status was already chosen). */
             $hadPriorRsvp = $guest->rsvp_status !== null;
 
-            $guest->update([
+            $update = [
                 'rsvp_status' => $validated['rsvp_status'],
                 'guests_count' => $validated['rsvp_status'] === 'yes' ? (int) $validated['guests_count'] : null,
-                'notes' => $validated['notes'] ?? null,
-            ]);
+            ];
+            if (array_key_exists('notes', $validated)) {
+                $update['notes'] = $validated['notes'];
+            }
+            $guest->update($update);
         }
 
         $guest->refresh();

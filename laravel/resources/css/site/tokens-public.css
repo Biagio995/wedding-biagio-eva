@@ -1,0 +1,31 @@
+:root {
+    /* Champagne, blush e oro rosato — invito nuziale */
+    --bg: #f8f2eb;
+    --bg-veil: #fdf8f4;
+    --surface: #fffefb;
+    --navbar: rgba(253, 248, 244, 0.92);
+    --text: #3a322a;
+    --muted: #7a6f66;
+    --ink: #3a322a;
+    --accent: #c6a575;
+    --accent-light: #dcc29a;
+    --accent-deep: #a68452;
+    --on-accent: #2a2218;
+    --accent-dim: rgba(198, 165, 117, 0.2);
+    --blush: rgba(232, 200, 190, 0.45);
+    --champagne-mist: rgba(255, 245, 235, 0.9);
+    --gold-line: rgba(198, 165, 117, 0.35);
+    --stroke: rgba(90, 70, 58, 0.1);
+    --stroke-strong: rgba(90, 70, 58, 0.16);
+    --font-display: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+    --font-body: "Source Sans 3", system-ui, -apple-system, sans-serif;
+    --radius: 18px;
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-left: env(safe-area-inset-left, 0px);
+    --safe-right: env(safe-area-inset-right, 0px);
+    --danger-bg: rgba(198, 40, 40, 0.08);
+    --danger-text: #b71c1c;
+    --ok-bg: rgba(46, 125, 50, 0.1);
+    --ok-text: #2e7d32;
+}

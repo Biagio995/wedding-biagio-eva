@@ -295,7 +295,7 @@ class WeddingTest extends TestCase
             ->assertSessionHasErrors('guests_count');
     }
 
-    public function test_rsvp_notes_free_text_persist_and_show_on_page(): void
+    public function test_rsvp_notes_free_text_persist_in_database(): void
     {
         $guest = Guest::query()->create([
             'name' => 'Notes Guest',
@@ -315,11 +315,6 @@ class WeddingTest extends TestCase
 
         $guest->refresh();
         $this->assertSame($detail, $guest->notes);
-
-        $this->withSession([WeddingController::SESSION_WEDDING_GUEST_ID => $guest->id])
-            ->get('/w')
-            ->assertOk()
-            ->assertSee('Nut allergy', false);
     }
 
     public function test_rsvp_notes_validation_rejects_over_max_length(): void

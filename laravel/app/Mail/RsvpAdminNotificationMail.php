@@ -23,11 +23,11 @@ class RsvpAdminNotificationMail extends Mailable
         $subject = $this->isUpdate
             ? __('RSVP updated — :name (:event)', [
                 'name' => $this->guest->name,
-                'event' => config('wedding.event.title'),
+                'event' => __(config('wedding.event.title')),
             ])
             : __('New RSVP — :name (:event)', [
                 'name' => $this->guest->name,
-                'event' => config('wedding.event.title'),
+                'event' => __(config('wedding.event.title')),
             ]);
 
         return new Envelope(subject: $subject);

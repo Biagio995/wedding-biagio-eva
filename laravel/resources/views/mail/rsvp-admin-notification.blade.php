@@ -6,7 +6,7 @@
     <title>{{ __('RSVP notification') }}</title>
 </head>
 <body style="font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; line-height: 1.5; color: #1a1a1a; max-width: 32rem; margin: 0; padding: 1.25rem;">
-    <p><strong>{{ $isUpdate ? __('RSVP updated') : __('New RSVP') }}</strong> — {{ config('wedding.event.title') }}</p>
+    <p><strong>{{ $isUpdate ? __('RSVP updated') : __('New RSVP') }}</strong> — {{ __(config('wedding.event.title')) }}</p>
     <p><strong>{{ __('Guest') }}:</strong> {{ $guest->name }}</p>
     @if (filled($guest->email))
         <p><strong>{{ __('Email') }}:</strong> {{ $guest->email }}</p>
