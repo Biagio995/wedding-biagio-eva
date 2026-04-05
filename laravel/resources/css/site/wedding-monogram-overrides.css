@@ -1,0 +1,39 @@
+/*
+ * Monogramma PNG + responsive.
+ * Il .wrap del sito è max 28rem: senza “breakout” il monogramma resta ~448px max.
+ * Uscita a larghezza viewport + img grande (fondo trasparente: knockout-monogram-png.py).
+ */
+.wedding-monogram {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    background: transparent;
+    min-width: 0;
+    margin: 0.2rem auto 0.85rem;
+}
+
+/* Esci dalla colonna stretta: stessa larghezza utile del body (body ha overflow-x: hidden) */
+.wrap--wedding .wedding-monogram {
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    padding-left: var(--safe-left);
+    padding-right: var(--safe-right);
+}
+
+.wedding-monogram__img {
+    display: block;
+    width: min(820px, 92vw);
+    max-width: 100%;
+    height: auto;
+    margin-inline: auto;
+}
+
+/* Desktop: più contenuto (820px dominava troppo il viewport) */
+@media (min-width: 1024px) {
+    .wedding-monogram__img {
+        width: min(460px, 36vw);
+    }
+}
