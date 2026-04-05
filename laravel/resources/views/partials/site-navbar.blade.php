@@ -21,19 +21,7 @@
             <span class="site-header__mono" aria-hidden="true">{{ $monogram }}</span>
             <span class="site-header__title">{{ $brand }}</span>
         </a>
-        <div class="site-header__langs" aria-label="{{ __('Language') }}">
-            @foreach (config('wedding.locales', []) as $code => $label)
-                <a
-                    class="site-header__lang"
-                    href="{{ route('locale.switch', ['locale' => $code]) }}"
-                    hreflang="{{ $code }}"
-                    @if (app()->getLocale() === $code) aria-current="true" @endif
-                >{{ $label }}</a>
-                @if (! $loop->last)
-                    <span aria-hidden="true">·</span>
-                @endif
-            @endforeach
-        </div>
+        @include('partials.site.lang-links')
     </div>
     <nav class="site-header__nav" aria-label="{{ __('Site') }}">
         <ul>

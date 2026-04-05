@@ -3,6 +3,9 @@
     :brand-title="$event['title']"
     page="wedding"
 >
+    @if (request()->routeIs('home'))
+        @include('partials.site.envelope-intro', ['eventTitle' => __($event['title'])])
+    @endif
     <div class="wrap wrap--wedding">
 
         @if (session('wedding_error'))
