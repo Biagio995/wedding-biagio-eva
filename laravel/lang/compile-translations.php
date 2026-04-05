@@ -140,7 +140,7 @@ $rows = [
     ['Some rows were skipped', 'Alcune righe sono state saltate', 'Ορισμένες γραμμές παραλείφθηκαν', 'Einige Zeilen wurden übersprungen'],
     ['Thank you!', 'Grazie!', 'Ευχαριστούμε!', 'Vielen Dank!'],
     ['Thank you — your response has been saved.', 'Grazie — la tua risposta è stata salvata.', 'Ευχαριστούμε — η απάντησή σας αποθηκεύτηκε.', 'Vielen Dank — Ihre Antwort wurde gespeichert.'],
-    ['Tap or click the envelope, the seal, or the button below', 'Tocca o clicca la busta, il sigillo o il pulsante qui sotto', 'Πατήστε ή κάντε κλικ στον φάκελο, τη σφραγίδα ή το κουμπί παρακάτω', 'Zum Öffnen auf den Umschlag, das Siegel oder den Button unten tippen oder klicken'],
+    ['You have been invited to our wedding', 'Sei stato invitato al nostro matrimonio', 'Έχετε προσκληθεί στον γάμο μας', 'Du bist zu unserer Hochzeit eingeladen'],
     ['Tap to choose photos', 'Tocca per scegliere le foto', 'Πατήστε για επιλογή φωτογραφιών', 'Tippen, um Fotos zu wählen'],
     ['The celebration has started!', 'La festa è iniziata!', 'Η γιορτή ξεκίνησε!', 'Die Feier hat begonnen!'],
     ['The CSV must include a "name" column in the header row.', 'Il CSV deve includere una colonna "name" nella riga di intestazione.', 'Το CSV πρέπει να περιλαμβάνει στήλη "name" στην κεφαλίδα.', 'Die CSV muss eine Spalte „name“ in der Kopfzeile enthalten.'],

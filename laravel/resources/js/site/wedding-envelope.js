@@ -30,10 +30,9 @@ function initWeddingEnvelope() {
     document.body.classList.add('wedding-envelope-active');
 
     const scene = root.querySelector('[data-wedding-envelope-scene]');
-    const btn = root.querySelector('[data-wedding-envelope-open]');
 
     window.requestAnimationFrame(() => {
-        btn?.focus({ preventScroll: true });
+        scene?.focus({ preventScroll: true });
     });
 
     let opened = false;
@@ -57,14 +56,14 @@ function initWeddingEnvelope() {
             return;
         }
         opened = true;
-        if (btn) {
-            btn.setAttribute('disabled', '');
-        }
         if (scene) {
             scene.style.pointerEvents = 'none';
         }
         root.classList.add('is-open');
-        const delay = prefersReducedMotion() ? 280 : 1450;
+        scene?.removeAttribute('tabindex');
+        scene?.removeAttribute('role');
+        scene?.removeAttribute('aria-label');
+        const delay = prefersReducedMotion() ? 280 : 1900;
         window.setTimeout(finish, delay);
     };
 
@@ -72,9 +71,11 @@ function initWeddingEnvelope() {
         e.preventDefault();
         open();
     });
-    btn?.addEventListener('click', (e) => {
-        e.preventDefault();
-        open();
+    scene?.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            open();
+        }
     });
 }
 

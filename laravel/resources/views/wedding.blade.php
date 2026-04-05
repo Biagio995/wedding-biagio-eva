@@ -4,7 +4,7 @@
     page="wedding"
 >
     @if (request()->routeIs('home'))
-        @include('partials.site.envelope-intro', ['eventTitle' => __($event['title'])])
+        @include('partials.site.envelope-intro')
     @endif
     <div class="wrap wrap--wedding">
 

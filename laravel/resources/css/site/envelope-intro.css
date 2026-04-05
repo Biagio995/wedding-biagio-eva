@@ -1,4 +1,4 @@
-/* Full-viewport invitation envelope — uses tokens-public.css */
+/* Invito: animazione busta come CodePen WNpbvwB (doppio lembo rotateX), attivata da .is-open al click */
 
 body.wedding-envelope-active {
     overflow: hidden;
@@ -23,7 +23,6 @@ body.wedding-envelope-active {
     display: none;
 }
 
-/* Above envelope scene (z-index ≤ 5) and site header (100) — reachable before opening */
 .wedding-envelope__lang-bar {
     position: absolute;
     top: 0;
@@ -47,22 +46,31 @@ body.wedding-envelope-active {
     visibility: hidden;
 }
 
-/* Zero percorso 3D: rotateX sul lembo = bug GPU (poliedro / blob dietro il sigillo). */
+/* Proporzioni 300×200 del CodePen */
 .wedding-envelope__scene {
     position: relative;
     width: min(88vw, 20.5rem);
-    aspect-ratio: 1.35 / 1;
-    transform-style: flat;
+    aspect-ratio: 3 / 2;
     -webkit-tap-highlight-color: transparent;
     cursor: pointer;
 }
 
-/* Base + pocket */
-.wedding-envelope__back {
+.wedding-envelope__scene:focus-visible {
+    outline: 2px solid var(--accent-deep);
+    outline-offset: 4px;
+    border-radius: 8px;
+}
+
+.wedding-envelope__cp-wrap {
+    --cp-half-w: min(44vw, 10.25rem);
+    --cp-half-h: min(29.333vw, 6.833rem);
+
     position: absolute;
     inset: 0;
-    z-index: 0;
+    perspective: 1200px;
+    transform-style: preserve-3d;
     border-radius: 6px;
+    /* Stessi colori del vecchio .wedding-envelope__back */
     background: linear-gradient(160deg, #f2ebe4 0%, #e8ddd2 48%, #dfd2c4 100%);
     box-shadow:
         0 1px 0 rgba(255, 255, 255, 0.75) inset,
@@ -70,37 +78,62 @@ body.wedding-envelope-active {
     border: 1px solid var(--stroke-strong);
 }
 
-/* Cattura i click su tutta la superficie della busta (sopra il fondo, sotto carta/tasche). */
-.wedding-envelope__hit {
+.wedding-envelope__cp-lid {
     position: absolute;
-    inset: 0;
-    z-index: 1;
-    border-radius: 6px;
-    cursor: pointer;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-right: var(--cp-half-w) solid transparent;
+    border-bottom: var(--cp-half-h) solid transparent;
+    border-left: var(--cp-half-w) solid transparent;
+    transform-origin: top center;
+    transition: transform 0.25s linear;
+    pointer-events: none;
+    box-sizing: border-box;
 }
 
-.wedding-envelope__pocket {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 58%;
-    cursor: pointer;
-    background: linear-gradient(180deg, rgba(198, 165, 117, 0.12) 0%, rgba(166, 132, 82, 0.18) 100%);
-    clip-path: polygon(0 100%, 50% 0, 100% 100%);
+/* Chiuso / aperto: stessi stati e delay del CodePen (qui .is-open al posto di :hover) */
+.wedding-envelope__cp-lid--one {
+    /* Tono del vecchio .wedding-envelope__flap-face (parte alta) */
+    border-top: var(--cp-half-h) solid #efe6dc;
+    transform: rotateX(0deg);
     z-index: 3;
+    transition-delay: 0.75s;
+}
+
+.wedding-envelope__cp-lid--two {
+    /* Secondo lembo: stessa famiglia del flap, più verso #e5d8cb */
+    border-top: var(--cp-half-h) solid #e5d8cb;
+    transform: rotateX(90deg);
+    z-index: 1;
+    transition-delay: 0.5s;
+}
+
+.wedding-envelope__cp-pocket {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-top: var(--cp-half-h) solid transparent;
+    /* Solidi vicini al vecchio .wedding-envelope__pocket (gradiente + velatura oro) */
+    border-right: var(--cp-half-w) solid #ece4d8;
+    border-bottom: var(--cp-half-h) solid #e5dccf;
+    border-left: var(--cp-half-w) solid #e2d6c8;
+    z-index: 3;
+    pointer-events: none;
+    box-sizing: border-box;
     box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.35) inset;
 }
 
-/* Letter (one page) */
 .wedding-envelope__letter {
     position: absolute;
-    left: 7%;
-    right: 7%;
-    bottom: 10%;
-    height: 52%;
+    top: 0;
+    left: 10%;
+    width: 80%;
+    height: 80%;
     z-index: 2;
-    cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -109,26 +142,31 @@ body.wedding-envelope-active {
     padding: 1rem 0.85rem 1.1rem;
     background: linear-gradient(180deg, var(--surface) 0%, #fffdf8 100%);
     border: 1px solid var(--gold-line);
-    border-radius: 8px;
+    border-radius: 15px;
     box-shadow:
         0 1px 0 rgba(255, 255, 255, 0.95) inset,
         0 6px 18px rgba(58, 50, 42, 0.07);
-    transform-origin: 50% 100%;
-    transition: transform 1s cubic-bezier(0.33, 0.72, 0.28, 1);
+    transform: translateY(46%);
+    pointer-events: none;
+    box-sizing: border-box;
+    transition: transform 0.7s cubic-bezier(0.33, 0.85, 0.28, 1);
+    transition-delay: 0s;
+}
+
+.wedding-envelope.is-open .wedding-envelope__cp-lid--one {
+    transform: rotateX(90deg);
+    transition-delay: 0s;
+}
+
+.wedding-envelope.is-open .wedding-envelope__cp-lid--two {
+    transform: rotateX(180deg);
+    transition-delay: 0.25s;
 }
 
 .wedding-envelope.is-open .wedding-envelope__letter {
-    transform: translateY(-78%);
-}
-
-.wedding-envelope__flourish {
-    font-family: var(--font-display);
-    font-size: clamp(2rem, 8vmin, 2.75rem);
-    line-height: 1;
-    color: var(--accent);
-    margin-bottom: 0.5rem;
-    opacity: 0.92;
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
+    transform: translateY(-14%);
+    transition-delay: 0.42s;
+    z-index: 4;
 }
 
 .wedding-envelope__title {
@@ -141,62 +179,36 @@ body.wedding-envelope-active {
     letter-spacing: 0.02em;
 }
 
-.wedding-envelope__hint {
-    margin: 0.65rem 0 0;
-    font-family: var(--font-body);
-    font-size: 0.78rem;
-    color: var(--muted);
-    font-weight: 500;
-    letter-spacing: 0.03em;
-}
-
-/* Lembo: il clip-path sta solo su .flap-face — altrimenti taglia il sigillo (resta solo la “B” al centro). */
-.wedding-envelope__flap {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    height: 54%;
-    z-index: 4;
-    transform-origin: 50% 0;
-    transform-style: flat;
-    overflow: visible;
-    pointer-events: none;
-    opacity: 1;
-    transition:
-        transform 1s cubic-bezier(0.4, 0, 0.2, 1),
-        opacity 0.45s ease;
-}
-
-.wedding-envelope__flap-face {
+.wedding-envelope__hit {
     position: absolute;
     inset: 0;
-    clip-path: polygon(0 0, 100% 0, 50% 100%);
-    background: linear-gradient(175deg, #efe6dc 0%, #e5d8cb 40%, rgba(198, 165, 117, 0.28) 100%);
-    box-shadow: 0 3px 10px rgba(58, 50, 42, 0.07);
-    pointer-events: none;
-}
-
-/* Solo translateY: nessuna rotazione sul lembo (rotate/rotateX = blob GPU col sigillo). */
-.wedding-envelope.is-open .wedding-envelope__flap {
-    transform: translateY(calc(-100% - 1.25rem));
-    opacity: 0;
     z-index: 1;
-    transition-delay: 0s, 0.28s;
+    border-radius: 6px;
+    cursor: pointer;
 }
 
-/* Sigillo centrato sulla busta (.scene); fuori dal lembo così il centro = 50%/50% della scena */
 .wedding-envelope__wax {
     position: absolute;
     left: 50%;
     top: 50%;
+    z-index: 5;
     transform: translate(-50%, -50%);
     line-height: 0;
     pointer-events: auto;
     cursor: pointer;
-    z-index: 5;
     transform-style: flat;
     max-width: none;
+    opacity: 1;
+    transition:
+        top 1.55s cubic-bezier(0.28, 0.82, 0.22, 1),
+        opacity 0.8s cubic-bezier(0.33, 0.5, 0.2, 1);
+}
+
+.wedding-envelope.is-open .wedding-envelope__wax {
+    top: calc(50% - 54% - 1.25rem);
+    opacity: 0;
+    z-index: 1;
+    transition-delay: 0s, 0.42s;
 }
 
 .wedding-envelope__wax-body {
@@ -213,57 +225,36 @@ body.wedding-envelope-active {
     outline: none;
 }
 
-/* Visible CTA under scene */
-.wedding-envelope__open-btn {
-    margin-top: 1.35rem;
-    padding: 0.65rem 1.35rem;
-    min-height: 44px;
-    font-family: var(--font-body);
-    font-size: 0.92rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--on-accent);
-    background: linear-gradient(165deg, var(--accent-light) 0%, var(--accent) 55%, var(--accent-deep) 100%);
-    border: 1px solid rgba(166, 132, 82, 0.55);
-    border-radius: 999px;
-    box-shadow:
-        0 1px 0 rgba(255, 255, 255, 0.45) inset,
-        0 6px 16px rgba(58, 50, 42, 0.12);
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-}
-
-.wedding-envelope__open-btn:hover {
-    filter: brightness(1.03);
-}
-
-.wedding-envelope__open-btn:active {
-    transform: scale(0.98);
-}
-
-.wedding-envelope__open-btn:focus-visible {
-    outline: 2px solid var(--accent-deep);
-    outline-offset: 3px;
-}
-
-.wedding-envelope__open-btn:disabled {
-    opacity: 0.65;
-    cursor: wait;
-}
-
 @media (prefers-reduced-motion: reduce) {
+    .wedding-envelope__cp-lid,
     .wedding-envelope__letter,
-    .wedding-envelope__flap {
+    .wedding-envelope__wax {
         transition-duration: 0.01ms;
     }
 
-    .wedding-envelope.is-open .wedding-envelope__letter {
-        transform: translateY(-40%);
+    .wedding-envelope__cp-lid--one {
+        transition-delay: 0s;
     }
 
-    .wedding-envelope.is-open .wedding-envelope__flap {
-        transform: translateY(calc(-100% - 1.25rem));
+    .wedding-envelope__cp-lid--two {
+        transition-delay: 0s;
+    }
+
+    .wedding-envelope.is-open .wedding-envelope__cp-lid--one {
+        transform: rotateX(90deg);
+    }
+
+    .wedding-envelope.is-open .wedding-envelope__cp-lid--two {
+        transform: rotateX(180deg);
+    }
+
+    .wedding-envelope.is-open .wedding-envelope__letter {
+        transform: translateY(-10%);
+        transition-delay: 0s;
+    }
+
+    .wedding-envelope.is-open .wedding-envelope__wax {
+        top: calc(50% - 54% - 1.25rem);
         opacity: 0;
     }
 
