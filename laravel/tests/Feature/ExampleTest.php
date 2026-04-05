@@ -2,18 +2,17 @@
 
 namespace Tests\Feature;
 
-// use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Config;
 use Tests\TestCase;
 
 class ExampleTest extends TestCase
 {
-    /**
-     * A basic test example.
-     */
-    public function test_the_application_returns_a_successful_response(): void
+    public function test_home_is_wedding_landing(): void
     {
-        $response = $this->get('/');
+        Config::set('wedding.event.title', 'Test Wedding Title');
 
-        $response->assertStatus(200);
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('Test Wedding Title', false);
     }
 }

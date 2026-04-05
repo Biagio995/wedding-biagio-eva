@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Guest;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -21,5 +22,13 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        Guest::query()->firstOrCreate(
+            ['token' => 'demo-gallery-token'],
+            [
+                'name' => 'Demo Guest',
+                'email' => 'guest@example.com',
+            ],
+        );
     }
 }
