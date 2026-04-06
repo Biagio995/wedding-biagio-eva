@@ -1,3 +1,5 @@
+import './wedding-music-player.js';
+
 /**
  * Lista nozze: invio moduli tramite checkbox (prenota / annulla) senza pulsanti submit.
  */
