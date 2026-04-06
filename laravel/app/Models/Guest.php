@@ -51,4 +51,9 @@ class Guest extends Model
     {
         return $this->hasMany(Photo::class);
     }
+
+    public function claimedRegistryItems(): HasMany
+    {
+        return $this->hasMany(RegistryItem::class, 'claimed_by_guest_id');
+    }
 }

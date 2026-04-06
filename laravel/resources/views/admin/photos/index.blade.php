@@ -10,6 +10,8 @@
         ·
         <a href="{{ route('admin.guests.create') }}">{{ __('Add guest') }}</a>
         ·
+        <a href="{{ route('admin.registry.index') }}">{{ __('Gift list') }}</a>
+        ·
         <a href="{{ route('gallery.album') }}" target="_blank" rel="noopener">{{ __('Public album') }}</a>
         ·
         <form method="post" action="{{ route('admin.logout') }}" style="display:inline;">

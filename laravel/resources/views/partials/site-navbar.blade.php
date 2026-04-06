@@ -14,6 +14,7 @@
     $isHome = request()->routeIs('home', 'wedding.show', 'wedding.enter');
     $isGallery = request()->routeIs('gallery.show');
     $isAlbum = request()->routeIs('gallery.album');
+    $isRegistry = request()->routeIs('registry.show');
 @endphp
 <header class="site-header" role="banner">
     <div class="site-header__bar">
@@ -53,6 +54,16 @@
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
                     {{ __('Album') }}
+                </a>
+            </li>
+            <li class="site-header__nav-li site-header__nav-li--registry">
+                <a
+                    class="site-header__pill site-header__pill--registry {{ $isRegistry ? 'is-active' : '' }}"
+                    href="{{ route('registry.show') }}"
+                    @if ($isRegistry) aria-current="page" @endif
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12v10H4V12"/><path d="M22 7H2v5h20z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+                    {{ __('Gift list') }}
                 </a>
             </li>
         </ul>

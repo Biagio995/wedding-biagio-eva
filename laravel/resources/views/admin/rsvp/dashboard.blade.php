@@ -6,6 +6,8 @@
     <p class="toolbar">
         <a href="{{ route('admin.guests.index') }}">{{ __('Guest list') }}</a>
         ·
+        <a href="{{ route('admin.registry.index') }}">{{ __('Gift list') }}</a>
+        ·
         <a href="{{ route('admin.photos.index') }}">{{ __('Photo moderation') }}</a>
         ·
         <a href="{{ route('admin.guests.create') }}">{{ __('Add guest') }}</a>

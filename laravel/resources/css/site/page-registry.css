@@ -1,0 +1,241 @@
+.registry-main {
+    max-width: 36rem;
+    margin: 0 auto;
+    padding: 0 1rem 3rem;
+}
+
+.registry-title {
+    font-size: clamp(1.35rem, 4vw, 1.75rem);
+    font-weight: 600;
+    margin: 0 0 0.5rem;
+    letter-spacing: 0.02em;
+}
+
+.registry-lead {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin: 0 0 1.25rem;
+    line-height: 1.5;
+}
+
+.registry-flash {
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius);
+    font-size: 0.92rem;
+    margin-bottom: 1rem;
+}
+
+.registry-flash--ok {
+    background: rgba(80, 160, 120, 0.18);
+    border: 1px solid rgba(120, 200, 160, 0.35);
+}
+
+.registry-flash--err {
+    background: rgba(200, 100, 100, 0.12);
+    border: 1px solid rgba(200, 120, 120, 0.3);
+}
+
+.registry-empty {
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.registry-empty--muted {
+    margin-top: 0.5rem;
+}
+
+.registry-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.registry-item {
+    border-radius: var(--radius);
+    border: 1px solid rgba(58, 50, 42, 0.12);
+    background: rgba(255, 252, 249, 0.85);
+    overflow: hidden;
+}
+
+.registry-item__body {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.85rem 1rem;
+    align-items: flex-start;
+    padding: 1rem 1.1rem;
+}
+
+.registry-item__text--full {
+    min-width: 0;
+}
+
+.registry-claim {
+    margin: 0.65rem 0 0.5rem;
+}
+
+.registry-claim__label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.35rem;
+}
+
+.registry-claim__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem 0.75rem;
+    align-items: flex-start;
+}
+
+.registry-claim__input {
+    flex: 1 1 12rem;
+    min-width: 0;
+    padding: 0.55rem 0.65rem;
+    border-radius: 10px;
+    border: 1px solid rgba(58, 50, 42, 0.18);
+    background: #fffefb;
+    color: var(--text);
+    font-size: 0.95rem;
+    font-family: inherit;
+}
+
+.registry-claim__input:focus {
+    outline: none;
+    border-color: rgba(198, 165, 117, 0.55);
+    box-shadow: 0 0 0 3px rgba(198, 165, 117, 0.16);
+}
+
+.registry-checkbox-label--claim {
+    position: relative;
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    cursor: pointer;
+    flex: 1 1 10rem;
+    min-width: min(100%, 11rem);
+    padding-left: calc(2.75rem + 0.6rem);
+    min-height: 2.75rem;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.registry-checkbox-label--claim .registry-checkbox {
+    position: absolute;
+    left: 0;
+    top: 0.05rem;
+    width: 2.75rem;
+    height: 2.75rem;
+    margin: 0;
+    opacity: 0;
+    z-index: 2;
+    cursor: pointer;
+}
+
+.registry-checkbox-face {
+    position: absolute;
+    left: 0;
+    top: 0.05rem;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 10px;
+    border: 2px solid rgba(58, 50, 42, 0.2);
+    background: #fff;
+    pointer-events: none;
+    box-sizing: border-box;
+}
+
+.registry-checkbox-label--claim .registry-checkbox:focus-visible + .registry-checkbox-face {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.registry-checkbox-label--claim .registry-checkbox:checked + .registry-checkbox-face {
+    background: rgba(80, 160, 120, 0.22);
+    border-color: var(--accent);
+}
+
+.registry-checkbox-label--claim .registry-checkbox:checked + .registry-checkbox-face::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    width: 0.35rem;
+    height: 0.65rem;
+    border: solid rgb(40, 100, 70);
+    border-width: 0 2.5px 2.5px 0;
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.registry-checkbox-text {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.35;
+    padding-top: 0.2rem;
+}
+
+.registry-item__title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin: 0 0 0.35rem;
+    line-height: 1.35;
+}
+
+.registry-item__title a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+}
+
+.registry-item__desc {
+    margin: 0 0 0.5rem;
+    color: var(--muted);
+    font-size: 0.92rem;
+    line-height: 1.45;
+    white-space: pre-wrap;
+}
+
+.registry-item__meta {
+    margin: 0;
+    font-size: 0.82rem;
+}
+
+.tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    font-weight: 600;
+}
+
+.tag-free {
+    background: rgba(80, 160, 120, 0.18);
+    color: var(--text);
+}
+
+.tag-taken {
+    background: rgba(58, 50, 42, 0.08);
+    color: var(--muted);
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .registry-checkbox-label--claim .registry-checkbox-face {
+        transition: none;
+    }
+}

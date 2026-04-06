@@ -10,6 +10,8 @@
         ·
         <a href="{{ route('admin.guests.import') }}">{{ __('Import from CSV') }}</a>
         ·
+        <a href="{{ route('admin.registry.index') }}">{{ __('Gift list') }}</a>
+        ·
         <a href="{{ route('admin.photos.index') }}">{{ __('Photo moderation') }}</a>
         ·
         <form method="post" action="{{ route('admin.logout') }}" style="display:inline;">

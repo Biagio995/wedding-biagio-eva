@@ -3,8 +3,10 @@
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\GuestController as AdminGuestController;
 use App\Http\Controllers\Admin\PhotoController as AdminPhotoController;
+use App\Http\Controllers\Admin\RegistryItemController as AdminRegistryItemController;
 use App\Http\Controllers\Admin\RsvpDashboardController as AdminRsvpDashboardController;
 use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\RegistryController;
 use App\Http\Controllers\WeddingController;
 use Illuminate\Support\Facades\Route;
 
@@ -43,6 +45,11 @@ Route::post('/gallery', [GalleryController::class, 'store'])
     ->middleware('throttle:gallery-uploads')
     ->name('gallery.store');
 
+Route::get('/registry', [RegistryController::class, 'show'])->name('registry.show');
+Route::post('/registry/items/{registryItem}/claim', [RegistryController::class, 'claim'])
+    ->middleware('throttle:60,1')
+    ->name('registry.claim');
+
 Route::prefix('admin')->name('admin.')->group(function (): void {
     Route::get('login', [AdminAuthController::class, 'showLoginForm'])->name('login');
     Route::post('login', [AdminAuthController::class, 'login'])
@@ -76,5 +83,17 @@ Route::prefix('admin')->name('admin.')->group(function (): void {
             ->middleware('throttle:120,1')
             ->whereNumber('guest')
             ->name('guests.qr');
+
+        Route::get('registry', [AdminRegistryItemController::class, 'index'])->name('registry.index');
+        Route::post('registry', [AdminRegistryItemController::class, 'store'])
+            ->middleware('throttle:60,1')
+            ->name('registry.store');
+        Route::get('registry/{registryItem}/edit', [AdminRegistryItemController::class, 'edit'])->name('registry.edit');
+        Route::put('registry/{registryItem}', [AdminRegistryItemController::class, 'update'])
+            ->middleware('throttle:60,1')
+            ->name('registry.update');
+        Route::delete('registry/{registryItem}', [AdminRegistryItemController::class, 'destroy'])
+            ->middleware('throttle:60,1')
+            ->name('registry.destroy');
     });
 });

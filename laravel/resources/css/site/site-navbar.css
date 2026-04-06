@@ -124,6 +124,11 @@
     padding: 0;
 }
 
+/* Lista nozze: più distacco dal blocco Inizio / Galleria / Album */
+.site-header__nav-li--registry {
+    margin-left: clamp(1.5rem, 6vw, 3rem);
+}
+
 .site-header__pill {
     display: inline-flex;
     align-items: center;
@@ -163,7 +168,7 @@
     }
 }
 
-.site-header__pill.is-active {
+.site-header__pill.is-active:not(.site-header__pill--registry) {
     color: var(--on-accent);
     background: var(--accent);
     border-color: transparent;
@@ -171,8 +176,34 @@
     box-shadow: 0 3px 12px rgba(58, 50, 42, 0.15);
 }
 
-.site-header__pill.is-active svg {
+.site-header__pill.is-active:not(.site-header__pill--registry) svg {
     opacity: 1;
+}
+
+/* Lista nozze: aspetto predefinito oro sabbia (stesso tono dell’accent del tema) */
+.site-header__pill--registry {
+    color: var(--on-accent);
+    background: var(--accent);
+    border-color: rgba(58, 50, 42, 0.12);
+    font-weight: 600;
+    box-shadow: 0 2px 10px rgba(74, 52, 42, 0.1);
+}
+
+.site-header__pill--registry svg {
+    opacity: 1;
+}
+
+.site-header__pill--registry:hover {
+    color: var(--on-accent);
+    background: var(--accent-deep);
+    border-color: rgba(58, 50, 42, 0.16);
+}
+
+.site-header__pill--registry.is-active {
+    color: var(--on-accent);
+    background: var(--accent-deep);
+    border-color: rgba(42, 34, 24, 0.2);
+    box-shadow: 0 3px 14px rgba(58, 50, 42, 0.18);
 }
 
 .site-header__pill:focus-visible {

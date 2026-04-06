@@ -8,6 +8,7 @@
         'wedding' => ['resources/css/site/wedding.css', 'resources/js/site/wedding.js'],
         'gallery' => ['resources/css/site/gallery.css', 'resources/js/site/gallery.js'],
         'gallery-album' => ['resources/css/site/gallery-album.css', 'resources/js/site/gallery-album.js'],
+        'registry' => ['resources/css/site/registry.css', 'resources/js/site/registry.js'],
         default => ['resources/css/site/wedding.css', 'resources/js/site/wedding.js'],
     };
     $viteAssets = array_merge(['resources/js/site/turbo-public.js'], $pageAssets);

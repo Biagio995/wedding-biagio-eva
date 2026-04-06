@@ -1,0 +1,131 @@
+@import './tokens.css';
+@import './locale-switcher.css';
+@import './body-admin.css';
+@import './page-guest-list.css';
+
+.h2 {
+    font-size: 1.05rem;
+    margin: 0 0 0.75rem;
+    font-weight: 600;
+}
+
+.section-title {
+    margin-top: 2rem;
+}
+
+.card {
+    padding: 1.25rem;
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid rgba(58, 50, 42, 0.08);
+    box-shadow: 0 2px 10px rgba(58, 50, 42, 0.05);
+    margin-bottom: 1.5rem;
+}
+
+.stack label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 0.35rem;
+}
+
+.stack input[type='text'],
+.stack input[type='url'],
+.stack input[type='number'],
+.stack textarea {
+    width: 100%;
+    padding: 0.5rem 0.65rem;
+    border-radius: 8px;
+    border: 1px solid rgba(58, 50, 42, 0.12);
+    background: #fffcf9;
+    color: var(--text);
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    font-family: inherit;
+}
+
+.stack textarea {
+    resize: vertical;
+    min-height: 4.5rem;
+}
+
+.row-check {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.row-check input[type='checkbox'] {
+    margin-top: 0.2rem;
+}
+
+.row-check label {
+    margin-bottom: 0;
+    color: var(--text);
+    font-size: 0.9rem;
+}
+
+.stack .actions {
+    margin-bottom: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.stack .actions a {
+    color: var(--accent);
+    font-size: 0.9rem;
+}
+
+.stack button[type='submit'] {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 8px;
+    background: var(--accent);
+    color: var(--on-accent);
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.ok {
+    padding: 0.75rem;
+    border-radius: 8px;
+    background: rgba(80, 160, 120, 0.2);
+    border: 1px solid rgba(120, 200, 160, 0.35);
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.err {
+    padding: 0.75rem;
+    border-radius: 8px;
+    background: rgba(200, 100, 100, 0.15);
+    border: 1px solid rgba(200, 120, 120, 0.35);
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+td.actions {
+    white-space: nowrap;
+    text-align: right;
+}
+
+td.actions form {
+    display: inline;
+}
+
+.empty {
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.registry-admin-help {
+    color: var(--muted);
+    font-size: 0.88rem;
+    margin: -0.35rem 0 1.15rem;
+    line-height: 1.45;
+    max-width: 42rem;
+}
