@@ -1,0 +1,116 @@
+/* Player musica: disco violino fisso in basso a destra (tutte le pagine pubbliche) */
+.wedding-music-player {
+    position: fixed;
+    z-index: 90;
+    right: max(0.75rem, var(--safe-right));
+    bottom: max(0.75rem, var(--safe-bottom));
+    pointer-events: none;
+}
+
+.wedding-music-player__toggle {
+    pointer-events: auto;
+    display: block;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 50%;
+    -webkit-tap-highlight-color: transparent;
+    filter: drop-shadow(0 4px 14px rgba(58, 50, 42, 0.2));
+}
+
+.wedding-music-player__toggle:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+}
+
+.wedding-music-player__art {
+    position: relative;
+    display: block;
+    width: 4.5rem;
+    height: 4.5rem;
+}
+
+.wedding-music-player__disc {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.06) 0%, transparent 45%),
+        repeating-radial-gradient(
+            circle at 50% 50%,
+            #252018 0 1px,
+            #1a1612 1px 3px
+        );
+    box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+        inset 0 2px 8px rgba(0, 0, 0, 0.35);
+    animation: wedding-disc-spin 14s linear infinite;
+    animation-play-state: paused;
+    will-change: transform;
+}
+
+.wedding-music-player.is-playing .wedding-music-player__disc {
+    animation-play-state: running;
+}
+
+@keyframes wedding-disc-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.wedding-music-player__label {
+    position: absolute;
+    inset: 26%;
+    border-radius: 50%;
+    background: linear-gradient(150deg, var(--accent-light) 0%, var(--accent-deep) 100%);
+    box-shadow:
+        inset 0 1px 2px rgba(255, 255, 255, 0.45),
+        inset 0 -2px 4px rgba(58, 50, 42, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wedding-music-player__violin {
+    color: var(--on-accent);
+    opacity: 0.92;
+}
+
+.wedding-music-player__overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.wedding-music-player__icon {
+    position: absolute;
+    transition: opacity 0.2s ease;
+}
+
+.wedding-music-player__icon--play {
+    opacity: 1;
+}
+
+.wedding-music-player__icon--pause {
+    opacity: 0;
+}
+
+.wedding-music-player.is-playing .wedding-music-player__icon--play {
+    opacity: 0;
+}
+
+.wedding-music-player.is-playing .wedding-music-player__icon--pause {
+    opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .wedding-music-player__disc {
+        animation: none;
+    }
+}

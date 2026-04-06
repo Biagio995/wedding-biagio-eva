@@ -63,7 +63,8 @@ function initWeddingEnvelope() {
         scene?.removeAttribute('tabindex');
         scene?.removeAttribute('role');
         scene?.removeAttribute('aria-label');
-        const delay = prefersReducedMotion() ? 280 : 1900;
+        /* Dopo apertura: estrazione foglio + fade testo; lasciare tempo alla lettura */
+        const delay = prefersReducedMotion() ? 320 : 2800;
         window.setTimeout(finish, delay);
     };
 

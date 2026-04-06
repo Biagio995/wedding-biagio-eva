@@ -1,0 +1,181 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "Our wedding" [ref=e4] [cursor=pointer]:
+        - /url: http://laravel.test
+        - generic [ref=e5]: OW
+        - generic [ref=e6]: Our wedding
+      - generic "Language" [ref=e7]:
+        - link "Italiano" [ref=e8] [cursor=pointer]:
+          - /url: http://laravel.test/locale/it
+        - generic [ref=e9]: ·
+        - link "Ελληνικά" [ref=e10] [cursor=pointer]:
+          - /url: http://laravel.test/locale/el
+        - generic [ref=e11]: ·
+        - link "Deutsch" [ref=e12] [cursor=pointer]:
+          - /url: http://laravel.test/locale/de
+    - navigation "Site" [ref=e13]:
+      - list [ref=e14]:
+        - listitem [ref=e15]:
+          - link "Home" [ref=e16] [cursor=pointer]:
+            - /url: http://laravel.test
+            - img [ref=e17]
+            - text: Home
+        - listitem [ref=e20]:
+          - link "Gallery" [ref=e21] [cursor=pointer]:
+            - /url: http://laravel.test/gallery
+            - img [ref=e22]
+            - text: Gallery
+        - listitem [ref=e26]:
+          - link "Album" [ref=e27] [cursor=pointer]:
+            - /url: http://laravel.test/gallery/album
+            - img [ref=e28]
+            - text: Album
+  - dialog "You have been invited to our wedding" [ref=e31]:
+    - generic "Language" [ref=e32]:
+      - link "Italiano" [ref=e33] [cursor=pointer]:
+        - /url: http://laravel.test/locale/it
+      - generic [ref=e34]: ·
+      - link "Ελληνικά" [ref=e35] [cursor=pointer]:
+        - /url: http://laravel.test/locale/el
+      - generic [ref=e36]: ·
+      - link "Deutsch" [ref=e37] [cursor=pointer]:
+        - /url: http://laravel.test/locale/de
+    - generic:
+      - generic:
+        - generic:
+          - paragraph: You have been invited to our wedding
+  - generic [ref=e42]:
+    - generic [ref=e43]:
+      - heading "Our wedding" [level=1] [ref=e44]
+      - paragraph [ref=e45]: It will be a great joy for us and for our parents to have you with us at the beginning of our new life.
+    - region "Save the date" [ref=e47]:
+      - generic [ref=e48]:
+        - generic [ref=e51]: June
+        - generic [ref=e53]:
+          - generic [ref=e54]: MON
+          - generic [ref=e55]: TUE
+          - generic [ref=e56]: WED
+          - generic [ref=e57]: THU
+          - generic [ref=e58]: FRI
+          - generic [ref=e59]: SAT
+          - generic [ref=e60]: SUN
+        - grid "June 2027" [ref=e61]:
+          - gridcell "1" [ref=e62]:
+            - generic [ref=e63]: "1"
+          - gridcell "2" [ref=e64]:
+            - generic [ref=e65]: "2"
+          - gridcell "3" [ref=e66]:
+            - generic [ref=e67]: "3"
+          - gridcell "4" [ref=e68]:
+            - generic [ref=e69]: "4"
+          - gridcell "5" [ref=e70]:
+            - generic [ref=e71]: "5"
+          - gridcell "6" [ref=e72]:
+            - generic [ref=e73]: "6"
+          - gridcell "7" [ref=e74]:
+            - generic [ref=e75]: "7"
+          - gridcell "8" [ref=e76]:
+            - generic [ref=e77]: "8"
+          - gridcell "9" [ref=e78]:
+            - generic [ref=e79]: "9"
+          - gridcell "10" [ref=e80]:
+            - generic [ref=e81]: "10"
+          - gridcell "11" [ref=e82]:
+            - generic [ref=e83]: "11"
+          - gridcell "12" [ref=e84]:
+            - generic [ref=e85]: "12"
+          - gridcell "13" [ref=e86]:
+            - generic [ref=e87]: "13"
+          - gridcell "14" [ref=e88]:
+            - generic [ref=e89]: "14"
+          - gridcell "15" [ref=e90]:
+            - generic [ref=e91]: "15"
+          - gridcell "16" [ref=e92]:
+            - generic [ref=e93]: "16"
+          - gridcell "17" [ref=e94]:
+            - generic [ref=e95]: "17"
+          - gridcell "18" [ref=e96]:
+            - generic [ref=e97]: "18"
+          - gridcell "19" [ref=e98]:
+            - generic [ref=e99]: "19"
+          - gridcell "20" [ref=e100]:
+            - generic [ref=e101]: "20"
+          - gridcell "21" [ref=e102]:
+            - generic [ref=e103]: "21"
+          - gridcell "22" [ref=e104]:
+            - generic [ref=e105]: "22"
+          - gridcell "23" [ref=e106]:
+            - generic [ref=e107]: "23"
+          - gridcell "24" [ref=e108]:
+            - generic [ref=e109]: "24"
+          - gridcell "25" [ref=e110]:
+            - generic [ref=e111]: "25"
+          - gridcell "26" [ref=e112]:
+            - generic:
+              - img
+            - generic [ref=e113]: "26"
+          - gridcell "27" [ref=e114]:
+            - generic [ref=e115]: "27"
+          - gridcell "28" [ref=e116]:
+            - generic [ref=e117]: "28"
+          - gridcell "29" [ref=e118]:
+            - generic [ref=e119]: "29"
+          - gridcell "30" [ref=e120]:
+            - generic [ref=e121]: "30"
+        - paragraph [ref=e122]: 26 JUNE 2027
+        - paragraph [ref=e123]: BIAGIO & EVA
+    - generic [ref=e125]:
+      - heading "Countdown" [level=2] [ref=e126]
+      - timer "Time until the event" [ref=e127]:
+        - generic [ref=e128]:
+          - generic [ref=e129]: "446"
+          - generic [ref=e130]: Days
+        - generic [ref=e131]:
+          - generic [ref=e132]: "5"
+          - generic [ref=e133]: Hours
+        - generic [ref=e134]:
+          - generic [ref=e135]: "40"
+          - generic [ref=e136]: Minutes
+        - generic [ref=e137]:
+          - generic [ref=e138]: "25"
+          - generic [ref=e139]: Seconds
+    - region "When & where — Saturday 26 June 2027 at 19:00. Church of Saint Anna in Katerini. After the ceremony, the reception will be held in the \"Aria\" reception hall." [ref=e140]:
+      - paragraph [ref=e141]: When & where
+      - paragraph [ref=e142]:
+        - generic [ref=e143]:
+          - img [ref=e144]
+          - img [ref=e147]
+        - generic [ref=e150]: Saturday 26 June 2027 at 19:00
+      - generic [ref=e151]:
+        - img [ref=e152]
+        - paragraph [ref=e155]: Church of Saint Anna in Katerini.
+      - generic [ref=e156]:
+        - img [ref=e157]
+        - paragraph [ref=e162]: After the ceremony, the reception will be held in the "Aria" reception hall.
+    - generic [ref=e163]:
+      - heading "RSVP" [level=2] [ref=e164]
+      - generic [ref=e165]:
+        - generic [ref=e166]: Your name
+        - textbox "Your name" [ref=e167]
+        - generic [ref=e168]: Email (optional)
+        - textbox "Email (optional)" [ref=e169]
+        - group "Will you attend?" [ref=e170]:
+          - generic [ref=e171]: Will you attend?
+          - group [ref=e172]:
+            - generic [ref=e173] [cursor=pointer]:
+              - radio "Yes" [ref=e174]
+              - text: "Yes"
+            - generic [ref=e175] [cursor=pointer]:
+              - radio "No" [ref=e176]
+              - text: "No"
+        - generic [ref=e177]: Number of guests (including you)
+        - spinbutton "Number of guests (including you)" [ref=e178]
+        - paragraph [ref=e179]: Required if you answer Yes.
+        - button "Send response" [ref=e180] [cursor=pointer]
+  - button "Play wedding music" [ref=e181] [cursor=pointer]:
+    - generic [ref=e182]:
+      - img [ref=e185]
+      - generic:
+        - img
+        - img

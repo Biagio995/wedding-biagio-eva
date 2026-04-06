@@ -8,7 +8,7 @@
     $daysInMonth = $firstOfMonth->daysInMonth;
     $weekdayKeys = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
 @endphp
-<section class="save-the-date" aria-label="{{ __('Save the date') }}">
+<section class="save-the-date reveal-on-scroll" aria-label="{{ __('Save the date') }}">
     <div class="save-the-date__panel">
         <div class="save-the-date__month-row">
             <span class="save-the-date__arrow save-the-date__arrow--left" aria-hidden="true"></span>
@@ -45,9 +45,4 @@
         <p class="save-the-date__line save-the-date__line--caps">BIAGIO &amp; EVA</p>
         <div class="save-the-date__rule" aria-hidden="true"></div>
     </div>
-</section>
-
-<section class="wedding-hero-serif" aria-label="{{ __('Biagio & Eva — 26 june 2027') }}">
-    <p class="wedding-hero-serif__line wedding-hero-serif__line--names">biagio &amp; eva</p>
-    <p class="wedding-hero-serif__line wedding-hero-serif__line--date">{{ __('26 june 2027') }}</p>
 </section>

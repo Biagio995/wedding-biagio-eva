@@ -4,12 +4,13 @@
     'page' => 'wedding',
 ])
 @php
-    $viteAssets = match ($page) {
+    $pageAssets = match ($page) {
         'wedding' => ['resources/css/site/wedding.css', 'resources/js/site/wedding.js'],
         'gallery' => ['resources/css/site/gallery.css', 'resources/js/site/gallery.js'],
         'gallery-album' => ['resources/css/site/gallery-album.css', 'resources/js/site/gallery-album.js'],
         default => ['resources/css/site/wedding.css', 'resources/js/site/wedding.js'],
     };
+    $viteAssets = array_merge(['resources/js/site/turbo-public.js'], $pageAssets);
 @endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -22,5 +23,6 @@
 <body>
     @include('partials.site-navbar', ['brandTitle' => $brandTitle])
     {{ $slot }}
+    @include('partials.site.wedding-music-player')
 </body>
 </html>

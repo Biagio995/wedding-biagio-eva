@@ -364,7 +364,9 @@ h1 {
 
     width: 100%;
     max-width: 22rem;
-    margin: 0 auto 1.75rem;
+    /* Spazio sotto il countdown: il margin-bottom della .card può collassare in modo strano con
+       .reveal-on-scroll (transform); inoltre l’ombra della card è più alta del solo 1rem di .card */
+    margin: clamp(1.25rem, 4vw, 1.75rem) auto 1.75rem;
     padding: clamp(1.25rem, 3.5vw, 1.6rem) clamp(1rem, 2.5vw, 1.35rem);
     text-align: center;
     background: #faf6ef;
@@ -392,8 +394,108 @@ h1 {
         -1px 0 0 rgba(201, 168, 110, 0.35);
 }
 
+.wedding-hero-serif__line--label {
+    font-size: clamp(0.72rem, 2vw, 0.85rem);
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    opacity: 0.92;
+}
+
 .wedding-hero-serif__line--date {
-    margin-top: 0.35rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem 0.65rem;
+    margin-top: 0.4rem;
     font-size: clamp(1.2rem, 3.8vw, 1.45rem);
+    text-transform: none;
     opacity: 0.98;
+}
+
+.wedding-hero-serif__icons {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex-shrink: 0;
+}
+
+.wedding-hero-serif__icon {
+    display: block;
+    width: 1.1em;
+    height: 1.1em;
+    color: inherit;
+}
+
+.wedding-hero-serif__church {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0.55rem 0 0;
+    color: var(--wedding-serif-navy);
+}
+
+.wedding-hero-serif__icon--church {
+    width: 1.35em;
+    height: 1.35em;
+    flex-shrink: 0;
+}
+
+.wedding-hero-serif__church-caption {
+    margin: 0.45rem 0 0;
+    max-width: 20rem;
+    font-family: "EB Garamond", "Cormorant Garamond", Georgia, serif;
+    font-size: clamp(0.92rem, 2.75vw, 1.08rem);
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: 0.02em;
+    text-align: center;
+    color: var(--wedding-serif-navy);
+    /* Stesso trattamento della riga data (.wedding-hero-serif__line) */
+    text-shadow:
+        0 0 1px rgba(184, 149, 106, 0.45),
+        0.5px 0 0 var(--wedding-serif-gold),
+        -0.5px 0 0 var(--wedding-serif-gold),
+        0 0.5px 0 var(--wedding-serif-gold),
+        0 -0.5px 0 var(--wedding-serif-gold),
+        1px 0 0 rgba(201, 168, 110, 0.35),
+        -1px 0 0 rgba(201, 168, 110, 0.35);
+    opacity: 0.98;
+}
+
+.wedding-hero-serif__reception {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 0.65rem;
+    color: var(--wedding-serif-navy);
+}
+
+.wedding-hero-serif__icon--reception {
+    width: 1.35em;
+    height: 1.35em;
+    flex-shrink: 0;
+}
+
+/* Fade-in on scroll (JS adds .is-visible) */
+.reveal-on-scroll {
+    opacity: 0;
+    transform: translateY(1rem);
+    transition:
+        opacity 0.65s ease,
+        transform 0.65s ease;
+}
+
+.reveal-on-scroll.is-visible {
+    opacity: 1;
+    transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .reveal-on-scroll {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
 }

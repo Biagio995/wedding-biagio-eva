@@ -70,12 +70,18 @@ body.wedding-envelope-active {
     perspective: 1200px;
     transform-style: preserve-3d;
     border-radius: 6px;
+    /* Ritaglia il biglietto che altrimenti sporge sotto la busta (stato chiuso) */
+    overflow: hidden;
     /* Stessi colori del vecchio .wedding-envelope__back */
     background: linear-gradient(160deg, #f2ebe4 0%, #e8ddd2 48%, #dfd2c4 100%);
     box-shadow:
         0 1px 0 rgba(255, 255, 255, 0.75) inset,
         0 12px 36px rgba(58, 50, 42, 0.12);
     border: 1px solid var(--stroke-strong);
+}
+
+.wedding-envelope.is-open .wedding-envelope__cp-wrap {
+    overflow: visible;
 }
 
 .wedding-envelope__cp-lid {
@@ -128,6 +134,10 @@ body.wedding-envelope-active {
 }
 
 .wedding-envelope__letter {
+    --letter-extract-duration: 1.4s;
+    /* Opacità piena subito: carta “solid” che esce, non dissolvenza lungo tutto lo slide */
+    --letter-reveal-duration: 0.45s;
+
     position: absolute;
     top: 0;
     left: 10%;
@@ -147,9 +157,13 @@ body.wedding-envelope-active {
         0 1px 0 rgba(255, 255, 255, 0.95) inset,
         0 6px 18px rgba(58, 50, 42, 0.07);
     transform: translateY(46%);
+    /* Nascosto fino all'estrazione: niente rettangolo bianco al click */
+    opacity: 0;
     pointer-events: none;
     box-sizing: border-box;
-    transition: transform 0.7s cubic-bezier(0.33, 0.85, 0.28, 1);
+    transition:
+        transform var(--letter-extract-duration) cubic-bezier(0.33, 0.85, 0.28, 1),
+        opacity var(--letter-reveal-duration) cubic-bezier(0.33, 0.85, 0.28, 1);
     transition-delay: 0s;
 }
 
@@ -164,7 +178,9 @@ body.wedding-envelope-active {
 }
 
 .wedding-envelope.is-open .wedding-envelope__letter {
-    transform: translateY(-14%);
+    opacity: 1;
+    transform: translateY(-92%);
+    /* Stesso istante per movimento e comparsa (effetto estrazione unico) */
     transition-delay: 0.42s;
     z-index: 4;
 }
@@ -249,7 +265,8 @@ body.wedding-envelope-active {
     }
 
     .wedding-envelope.is-open .wedding-envelope__letter {
-        transform: translateY(-10%);
+        opacity: 1;
+        transform: translateY(-92%);
         transition-delay: 0s;
     }
 

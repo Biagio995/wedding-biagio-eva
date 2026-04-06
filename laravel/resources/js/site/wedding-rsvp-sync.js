@@ -1,6 +1,10 @@
 (function () {
-    var form = document.getElementById('wedding-rsvp-form');
-    if (form) {
+    function initWeddingRsvpSync() {
+        var form = document.getElementById('wedding-rsvp-form');
+        if (!form || form.dataset.rsvpSyncBound === '1') {
+            return;
+        }
+        form.dataset.rsvpSyncBound = '1';
         var count = document.getElementById('guests_count');
         function syncRsvpGuestsField() {
             var checked = form.querySelector('input[name="rsvp_status"]:checked');
@@ -16,4 +20,11 @@
         });
         syncRsvpGuestsField();
     }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initWeddingRsvpSync);
+    } else {
+        initWeddingRsvpSync();
+    }
+    document.addEventListener('turbo:load', initWeddingRsvpSync);
 })();

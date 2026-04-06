@@ -11,6 +11,7 @@ export default defineConfig({
                 'resources/css/site/wedding.css',
                 'resources/css/site/gallery.css',
                 'resources/css/site/gallery-album.css',
+                'resources/js/site/turbo-public.js',
                 'resources/js/site/wedding.js',
                 'resources/js/site/gallery.js',
                 'resources/js/site/gallery-album.js',

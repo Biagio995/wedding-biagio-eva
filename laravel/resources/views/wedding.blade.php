@@ -7,6 +7,30 @@
         @include('partials.site.envelope-intro')
     @endif
     <div class="wrap wrap--wedding">
+        @php
+            $eventTz = isset($event['timezone']) && $event['timezone'] !== '' && $event['timezone'] !== null
+                ? $event['timezone']
+                : null;
+            $startsAt = $eventTz !== null
+                ? \Illuminate\Support\Carbon::parse($event['date'], $eventTz)
+                : \Illuminate\Support\Carbon::parse($event['date']);
+            $countdownTargetIso = $startsAt->toIso8601String();
+
+            $locale = app()->getLocale();
+            $c = $startsAt->copy()->locale($locale);
+            $weekday = \Illuminate\Support\Str::ucfirst($c->dayName);
+            $month = \Illuminate\Support\Str::ucfirst($c->translatedFormat('F'));
+            $day = $locale === 'de' ? $c->format('j.') : (string) $c->day;
+            $year = (string) $c->year;
+            $time = $c->format('H:i');
+            $eventDateTimeLine = __('Wedding event datetime', [
+                'weekday' => $weekday,
+                'day' => $day,
+                'month' => $month,
+                'year' => $year,
+                'time' => $time,
+            ]);
+        @endphp
 
         @if (session('wedding_error'))
             <div class="flash err" role="alert">{{ session('wedding_error') }}</div>
@@ -20,25 +44,17 @@
             </div>
         @endif
 
-        <h1>{{ __($event['title']) }}</h1>
-        <p class="sub">{{ __('It will be a great joy for us and for our parents to have you with us at the beginning of our new life.') }}</p>
+        <div class="reveal-on-scroll">
+            <h1>{{ __($event['title']) }}</h1>
+            <p class="sub">{{ __('It will be a great joy for us and for our parents to have you with us at the beginning of our new life.') }}</p>
+        </div>
 
         @include('partials.site.wedding-monogram')
 
         @include('partials.site.save-the-date')
 
-        @php
-            $eventTz = isset($event['timezone']) && $event['timezone'] !== '' && $event['timezone'] !== null
-                ? $event['timezone']
-                : null;
-            $startsAt = $eventTz !== null
-                ? \Illuminate\Support\Carbon::parse($event['date'], $eventTz)
-                : \Illuminate\Support\Carbon::parse($event['date']);
-            $countdownTargetIso = $startsAt->toIso8601String();
-        @endphp
-
         <div
-            class="card"
+            class="card reveal-on-scroll"
             id="wedding-countdown"
             data-countdown-target="{{ $countdownTargetIso }}"
             aria-live="polite"
@@ -65,23 +81,46 @@
             <p class="countdown-done-msg" id="wedding-countdown-done" hidden>{{ __('The celebration has started!') }}</p>
         </div>
 
-        <div class="card">
-            <h2>{{ __('When & where') }}</h2>
-            <p class="when">{{ $startsAt->translatedFormat('l j F Y, H:i') }}</p>
-            <p class="where">
-                <strong style="color:var(--text);font-weight:600;">{{ $event['location_name'] }}</strong>
-                @if (!empty($event['location_address']))
-                    <br>{{ $event['location_address'] }}
-                @endif
-                @if (!empty($event['maps_url']))
-                    <br>
-                    <a class="maps-link" href="{{ $event['maps_url'] }}" target="_blank" rel="noopener noreferrer">{{ __('Open in Google Maps') }}</a>
-                @endif
+        <section
+            class="wedding-hero-serif reveal-on-scroll"
+            aria-label="{{ __('When & where') }} — {{ $eventDateTimeLine }}. {{ __('Wedding church venue line') }} {{ __('Wedding reception venue line') }}"
+        >
+            <p class="wedding-hero-serif__line wedding-hero-serif__line--label">{{ __('When & where') }}</p>
+            <p class="wedding-hero-serif__line wedding-hero-serif__line--date">
+                <span class="wedding-hero-serif__icons" aria-hidden="true">
+                    <svg class="wedding-hero-serif__icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false">
+                        <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.75" />
+                        <path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
+                    </svg>
+                    <svg class="wedding-hero-serif__icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false">
+                        <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.75" />
+                        <path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </span>
+                <span>{{ $eventDateTimeLine }}</span>
             </p>
-        </div>
+            <div class="wedding-hero-serif__church">
+                <svg class="wedding-hero-serif__icon wedding-hero-serif__icon--church" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true">
+                    <path d="M12 2v2M10 3h4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
+                    <path d="M6 21h12V10l-6-5-6 5v11z" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round" />
+                    <path d="M12 12v5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
+                </svg>
+                <p class="wedding-hero-serif__church-caption">{{ __('Wedding church venue line') }}</p>
+            </div>
+            <div class="wedding-hero-serif__reception">
+                <svg class="wedding-hero-serif__icon wedding-hero-serif__icon--reception" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true">
+                    <path d="M2 21h20" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
+                    <path d="M4 21V11h16v10" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round" />
+                    <path d="M4 11V7l8-4 8 4v4" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round" />
+                    <path d="M8 15v3M12 15v3M16 15v3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
+                    <path d="M10 21v-5h4v5" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round" />
+                </svg>
+                <p class="wedding-hero-serif__church-caption">{{ __('Wedding reception venue line') }}</p>
+            </div>
+        </section>
 
         @if (!empty(trim($event['additional_notes'] ?? '')))
-            <div class="card">
+            <div class="card reveal-on-scroll">
                 <h2>{{ __('Additional details') }}</h2>
                 <div class="notes-body">{{ $event['additional_notes'] }}</div>
             </div>
@@ -95,7 +134,7 @@
                     $countDefault = 1;
                 }
             @endphp
-            <div class="card">
+            <div class="card reveal-on-scroll">
                 <h2>{{ __('RSVP') }}</h2>
                 <p class="sub" style="margin-top:0;">{{ __('Hello, :name', ['name' => $guest->name]) }}</p>
                 @if ($guest->email)
@@ -134,7 +173,7 @@
                     $countDefault = 1;
                 }
             @endphp
-            <div class="card">
+            <div class="card reveal-on-scroll">
                 <h2>{{ __('RSVP') }}</h2>
                 <form method="post" action="{{ route('wedding.rsvp.store') }}" id="wedding-rsvp-form">
                     @csrf
