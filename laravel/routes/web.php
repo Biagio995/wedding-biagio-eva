@@ -79,6 +79,17 @@ Route::prefix('admin')->name('admin.')->group(function (): void {
         Route::post('guests', [AdminGuestController::class, 'store'])
             ->middleware('throttle:30,1')
             ->name('guests.store');
+        Route::get('guests/{guest}/edit', [AdminGuestController::class, 'edit'])
+            ->whereNumber('guest')
+            ->name('guests.edit');
+        Route::put('guests/{guest}', [AdminGuestController::class, 'update'])
+            ->middleware('throttle:60,1')
+            ->whereNumber('guest')
+            ->name('guests.update');
+        Route::delete('guests/{guest}', [AdminGuestController::class, 'destroy'])
+            ->middleware('throttle:60,1')
+            ->whereNumber('guest')
+            ->name('guests.destroy');
         Route::get('guests/{guest}/qr', [AdminGuestController::class, 'qr'])
             ->middleware('throttle:120,1')
             ->whereNumber('guest')

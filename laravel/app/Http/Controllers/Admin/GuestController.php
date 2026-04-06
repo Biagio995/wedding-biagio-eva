@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreAdminGuestCsvImportRequest;
 use App\Http\Requests\StoreAdminGuestRequest;
+use App\Http\Requests\UpdateAdminGuestRequest;
 use App\Models\Guest;
 use App\Services\GuestCsvImporter;
 use App\Services\WeddingInviteQrGenerator;
@@ -85,6 +86,51 @@ class GuestController extends Controller
                 'name' => $guest->name,
                 'invite_url' => route('wedding.enter', ['token' => $guest->token]),
             ]);
+    }
+
+    public function edit(Request $request, Guest $guest): View
+    {
+        $filter = $request->query('rsvp', 'all');
+        if (! is_string($filter) || ! in_array($filter, ['all', 'yes', 'no', 'pending'], true)) {
+            $filter = 'all';
+        }
+
+        return view('admin.guests.edit', [
+            'guest' => $guest,
+            'filter' => $filter,
+        ]);
+    }
+
+    public function update(UpdateAdminGuestRequest $request, Guest $guest): RedirectResponse
+    {
+        $data = $request->validated();
+        if (($data['rsvp_status'] ?? null) === null) {
+            $data['rsvp_reminder_sent_at'] = null;
+        }
+        $guest->update($data);
+
+        $filter = $request->input('return_rsvp', 'all');
+        if (! is_string($filter) || ! in_array($filter, ['all', 'yes', 'no', 'pending'], true)) {
+            $filter = 'all';
+        }
+
+        return redirect()
+            ->route('admin.guests.index', ['rsvp' => $filter])
+            ->with('status', __('Guest updated.'));
+    }
+
+    public function destroy(Request $request, Guest $guest): RedirectResponse
+    {
+        $guest->delete();
+
+        $filter = $request->query('rsvp', 'all');
+        if (! is_string($filter) || ! in_array($filter, ['all', 'yes', 'no', 'pending'], true)) {
+            $filter = 'all';
+        }
+
+        return redirect()
+            ->route('admin.guests.index', ['rsvp' => $filter])
+            ->with('status', __('Guest deleted.'));
     }
 
     /** US-17: PNG QR encoding the guest’s absolute wedding invitation URL. */

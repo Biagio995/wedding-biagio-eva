@@ -74,4 +74,88 @@ class AdminGuestListTest extends TestCase
             ->assertSee('Only Pending', false)
             ->assertDontSee('Only Yes', false);
     }
+
+    public function test_guest_list_has_edit_link_per_row(): void
+    {
+        $this->configureAdminPassword();
+
+        $guest = Guest::query()->create([
+            'name' => 'Row Actions',
+            'rsvp_status' => null,
+        ]);
+
+        $this->post(route('admin.login'), ['password' => 'secret']);
+
+        $this->get(route('admin.guests.index'))
+            ->assertOk()
+            ->assertSee(route('admin.guests.edit', ['guest' => $guest, 'rsvp' => 'all']), false);
+    }
+
+    public function test_admin_can_update_guest(): void
+    {
+        $this->configureAdminPassword();
+
+        $guest = Guest::query()->create([
+            'name' => 'Bob RSVP',
+            'email' => 'bob@example.com',
+            'rsvp_status' => 'yes',
+            'guests_count' => 3,
+            'notes' => 'Vegetarian',
+            'rsvp_reminder_sent_at' => now(),
+        ]);
+
+        $this->post(route('admin.login'), ['password' => 'secret']);
+
+        $this->put(route('admin.guests.update', $guest), [
+            'name' => 'Bob RSVP',
+            'email' => 'bob@example.com',
+            'token' => $guest->token,
+            'rsvp_status' => '',
+            'guests_count' => null,
+            'notes' => null,
+            'return_rsvp' => 'yes',
+        ])
+            ->assertRedirect(route('admin.guests.index', ['rsvp' => 'yes']))
+            ->assertSessionHas('status');
+
+        $guest->refresh();
+        $this->assertNull($guest->rsvp_status);
+        $this->assertNull($guest->guests_count);
+        $this->assertNull($guest->notes);
+        $this->assertNull($guest->rsvp_reminder_sent_at);
+    }
+
+    public function test_admin_can_delete_guest(): void
+    {
+        $this->configureAdminPassword();
+
+        $guest = Guest::query()->create([
+            'name' => 'To Delete',
+            'rsvp_status' => 'no',
+        ]);
+
+        $this->post(route('admin.login'), ['password' => 'secret']);
+
+        $this->from(route('admin.guests.index'))
+            ->delete(route('admin.guests.destroy', ['guest' => $guest, 'rsvp' => 'all']))
+            ->assertRedirect(route('admin.guests.index', ['rsvp' => 'all']))
+            ->assertSessionHas('status');
+
+        $this->assertDatabaseMissing('guests', ['id' => $guest->id]);
+    }
+
+    public function test_destroy_guest_requires_authentication(): void
+    {
+        $this->configureAdminPassword();
+
+        $guest = Guest::query()->create([
+            'name' => 'Secret',
+            'rsvp_status' => 'no',
+        ]);
+
+        $this->delete(route('admin.guests.destroy', $guest))
+            ->assertRedirect(route('admin.login'));
+
+        $this->assertDatabaseHas('guests', ['id' => $guest->id]);
+    }
 }

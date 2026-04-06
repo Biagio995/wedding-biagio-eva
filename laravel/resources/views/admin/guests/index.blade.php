@@ -22,6 +22,10 @@
     <h1>{{ __('Guest list') }}</h1>
     <p class="sub">{{ __('Who has responded and RSVP status per invitation.') }}</p>
 
+    @if (session('status'))
+        <p class="ok" role="status">{{ session('status') }}</p>
+    @endif
+
     <nav class="filters" aria-label="{{ __('Filter by RSVP') }}">
         <a href="{{ route('admin.guests.index', ['rsvp' => 'all']) }}" class="{{ $filter === 'all' ? 'active' : '' }}">{{ __('All') }}</a>
         <a href="{{ route('admin.guests.index', ['rsvp' => 'yes']) }}" class="{{ $filter === 'yes' ? 'active' : '' }}">{{ __('Attending') }}</a>
@@ -38,6 +42,7 @@
                     <th>{{ __('RSVP') }}</th>
                     <th class="num">{{ __('Guests') }}</th>
                     <th>{{ __('Notes') }}</th>
+                    <th class="actions-col">{{ __('Actions') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -62,10 +67,39 @@
                             @endif
                         </td>
                         <td class="notes" title="{{ $guest->notes }}">{{ $guest->notes ? Str::limit($guest->notes, 48) : '—' }}</td>
+                        <td class="actions-col">
+                            <div class="guest-actions" role="group" aria-label="{{ __('Actions') }}">
+                                <a
+                                    href="{{ route('admin.guests.edit', ['guest' => $guest, 'rsvp' => $filter]) }}"
+                                    class="icon-btn"
+                                    title="{{ __('Edit guest') }}"
+                                    aria-label="{{ __('Edit guest') }}"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+                                </a>
+                                <form
+                                    method="post"
+                                    action="{{ route('admin.guests.destroy', ['guest' => $guest, 'rsvp' => $filter]) }}"
+                                    class="inline-form"
+                                    onsubmit="return confirm(@json(__('Delete this guest? This cannot be undone.')));"
+                                >
+                                    @csrf
+                                    @method('DELETE')
+                                    <button
+                                        type="submit"
+                                        class="icon-btn icon-btn--danger"
+                                        title="{{ __('Delete') }}"
+                                        aria-label="{{ __('Delete') }}"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5">{{ __('No guests match this filter.') }}</td>
+                        <td colspan="6">{{ __('No guests match this filter.') }}</td>
                     </tr>
                 @endforelse
             </tbody>
