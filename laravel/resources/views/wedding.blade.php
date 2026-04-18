@@ -138,7 +138,7 @@
             $receptionOpenUrl = trim((string) ($event['maps_url'] ?? ''));
         @endphp
         @if ($churchValid || $receptionValid)
-            <div class="card reveal-on-scroll">
+            <div class="card reveal-on-scroll card--wide">
                 <h2>{{ __('How to get there') }}</h2>
                 <div class="map-embed-grid" @class(['map-embed-grid--single' => ! ($churchValid && $receptionValid)])>
                     @if ($churchValid)

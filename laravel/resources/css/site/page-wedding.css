@@ -261,7 +261,7 @@ h1 {
 
 @media (min-width: 768px) {
     .map-embed {
-        aspect-ratio: 16 / 9;
+        aspect-ratio: 4 / 3;
     }
 }
 
@@ -274,9 +274,24 @@ h1 {
 @media (min-width: 768px) {
     .map-embed-grid {
         grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
     }
     .map-embed-grid--single {
         grid-template-columns: 1fr;
+    }
+}
+
+/* Card modifier: this card is allowed to break out of the narrow `.wrap`
+   (max-width 28rem) on wider viewports, so the map iframes have real estate. */
+.card--wide {
+    width: 100%;
+}
+
+@media (min-width: 900px) {
+    .card--wide {
+        width: min(62rem, calc(100vw - 2rem));
+        margin-left: calc((100% - min(62rem, calc(100vw - 2rem))) / 2);
+        margin-right: calc((100% - min(62rem, calc(100vw - 2rem))) / 2);
     }
 }
 
