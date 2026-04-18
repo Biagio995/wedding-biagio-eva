@@ -265,6 +265,41 @@ h1 {
     }
 }
 
+.map-embed-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+}
+
+@media (min-width: 768px) {
+    .map-embed-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    .map-embed-grid--single {
+        grid-template-columns: 1fr;
+    }
+}
+
+.map-embed-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.map-embed-item__title {
+    font-family: var(--serif, inherit);
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: 0.02em;
+    color: var(--text, inherit);
+}
+
+.map-embed__link {
+    margin: 0;
+    font-size: 0.95rem;
+}
+
 .faqs h2 {
     margin-bottom: 0.35rem;
 }

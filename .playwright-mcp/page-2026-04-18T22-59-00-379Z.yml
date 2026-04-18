@@ -140,10 +140,10 @@
           - generic [ref=e139]: "17"
           - generic [ref=e140]: Hours
         - generic [ref=e141]:
-          - generic [ref=e142]: "11"
+          - generic [ref=e142]: "0"
           - generic [ref=e143]: Minutes
         - generic [ref=e144]:
-          - generic [ref=e145]: "7"
+          - generic [ref=e145]: "59"
           - generic [ref=e146]: Seconds
       - paragraph [ref=e147]:
         - link "Add to calendar" [ref=e148] [cursor=pointer]:
@@ -164,28 +164,35 @@
         - img [ref=e171]
         - paragraph [ref=e176]: After the ceremony, the reception will be held in the "Aria" reception hall.
     - generic [ref=e177]:
-      - heading "RSVP" [level=2] [ref=e178]
-      - generic [ref=e179]:
-        - generic [ref=e180]: Your name
-        - textbox "Your name" [ref=e181]
-        - generic [ref=e182]: Email (optional)
-        - textbox "Email (optional)" [ref=e183]
-        - group "Will you attend?" [ref=e184]:
-          - generic [ref=e185]: Will you attend?
-          - group [ref=e186]:
-            - generic [ref=e187] [cursor=pointer]:
-              - radio "Yes" [ref=e188]
+      - heading "How to get there" [level=2] [ref=e178]
+      - iframe [ref=e180]:
+        - link "Apri in Maps (si apre in una nuova scheda)" [ref=f1e4] [cursor=pointer]:
+          - /url: about:invalid#zClosurez
+          - text: Apri in Maps
+          - img [ref=f1e6]
+    - generic [ref=e181]:
+      - heading "RSVP" [level=2] [ref=e182]
+      - generic [ref=e183]:
+        - generic [ref=e184]: Your name
+        - textbox "Your name" [ref=e185]
+        - generic [ref=e186]: Email (optional)
+        - textbox "Email (optional)" [ref=e187]
+        - group "Will you attend?" [ref=e188]:
+          - generic [ref=e189]: Will you attend?
+          - group [ref=e190]:
+            - generic [ref=e191] [cursor=pointer]:
+              - radio "Yes" [ref=e192]
               - text: "Yes"
-            - generic [ref=e189] [cursor=pointer]:
-              - radio "No" [ref=e190]
+            - generic [ref=e193] [cursor=pointer]:
+              - radio "No" [ref=e194]
               - text: "No"
-        - generic [ref=e191]: Number of guests (including you)
-        - spinbutton "Number of guests (including you)" [ref=e192]
-        - paragraph [ref=e193]: Required if you answer Yes.
-        - button "Send response" [ref=e194] [cursor=pointer]
-  - button "Play wedding music" [ref=e195] [cursor=pointer]:
-    - generic [ref=e196]:
-      - img [ref=e199]
+        - generic [ref=e195]: Number of guests (including you)
+        - spinbutton "Number of guests (including you)" [ref=e196]
+        - paragraph [ref=e197]: Required if you answer Yes.
+        - button "Send response" [ref=e198] [cursor=pointer]
+  - button "Play wedding music" [ref=e199] [cursor=pointer]:
+    - generic [ref=e200]:
+      - img [ref=e203]
       - generic:
         - img
         - img

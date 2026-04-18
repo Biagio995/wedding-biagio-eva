@@ -23,19 +23,30 @@ return [
     */
     'event' => [
         'title' => env('WEDDING_EVENT_TITLE', 'Our wedding'),
+        /**
+         * Optional separate title used only for the downloadable .ics calendar event (SUMMARY
+         * and filename). Useful when the site H1 is generic ("Our wedding") but you want the
+         * calendar entry to carry the couple's names (e.g. "Biagio & Eva Wedding").
+         * Falls back to `title` when empty.
+         */
+        'calendar_title' => env('WEDDING_CALENDAR_TITLE', ''),
         /** Local wall-clock start: interpreted in `timezone` (or app timezone). */
         'date' => env('WEDDING_EVENT_DATE', '2027-06-26 19:00'),
         'timezone' => env('WEDDING_EVENT_TIMEZONE', 'Europe/Athens'),
         'location_name' => env('WEDDING_LOCATION_NAME', 'Venue TBD'),
         'location_address' => env('WEDDING_LOCATION_ADDRESS', ''),
-        /** Full Google Maps URL (place or directions). Shown only if non-empty. */
+        /** Full Google Maps URL (place or directions) for the reception venue. Shown only if non-empty. */
         'maps_url' => env('WEDDING_MAPS_URL', ''),
         /**
-         * Optional embeddable map URL (e.g. Google Maps share → Embed a map → copy the `src` URL,
-         * or OpenStreetMap → Share → HTML → copy the `src`). Only URLs starting with https:// are
-         * rendered inside an <iframe>. Leave empty to fall back to the plain "Open in Maps" link.
+         * Optional embeddable map URL for the reception venue (Google Maps → Share → Embed a map
+         * → copy the `src` URL, or equivalent). Only URLs starting with https:// are rendered
+         * inside an <iframe>. Leave empty to fall back to the plain "Open in Maps" link.
          */
         'maps_embed_url' => env('WEDDING_MAPS_EMBED_URL', ''),
+        /** Optional full Google Maps URL for the church (ceremony) location. */
+        'maps_church_url' => env('WEDDING_MAPS_CHURCH_URL', ''),
+        /** Optional embeddable map URL for the church (ceremony) location. Same rules as above. */
+        'maps_church_embed_url' => env('WEDDING_MAPS_CHURCH_EMBED_URL', ''),
         'description' => env('WEDDING_DESCRIPTION', 'We would love to celebrate with you.'),
         /**
          * Extra info for guests (dress code, schedule, parking, gifts, etc.).

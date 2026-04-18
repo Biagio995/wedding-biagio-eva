@@ -16,7 +16,9 @@ class CalendarController extends Controller
 
         $ics = $generator->build(is_array($event) ? $event : [], $appUrl);
 
-        $filename = $this->buildFilename((string) ($event['title'] ?? 'wedding'));
+        $calendarTitle = trim((string) ($event['calendar_title'] ?? ''));
+        $filenameSource = $calendarTitle !== '' ? $calendarTitle : (string) ($event['title'] ?? 'wedding');
+        $filename = $this->buildFilename($filenameSource);
 
         return response($ics, 200, [
             'Content-Type' => 'text/calendar; charset=utf-8',

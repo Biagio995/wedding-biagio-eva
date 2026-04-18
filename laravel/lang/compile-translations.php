@@ -22,6 +22,7 @@ $rows = [
     ['Awaiting reply', 'In attesa di risposta', 'Αναμονή απάντησης', 'Antwort ausstehend'],
     ['Camera or gallery — multi-select', 'Fotocamera o galleria — selezione multipla', 'Κάμερα ή συλλογή — πολλαπλή επιλογή', 'Kamera oder Galerie — Mehrfachauswahl'],
     ['Choose a file.', 'Scegli un file.', 'Επιλέξτε αρχείο.', 'Wählen Sie eine Datei.'],
+    ['Church', 'Chiesa', 'Εκκλησία', 'Kirche'],
     ['Countdown', 'Conto alla rovescia', 'Αντίστροφη μέτρηση', 'Countdown'],
     ['Create an invitation record. A personal link is generated automatically.', 'Crea un invito. Viene generato automaticamente un link personale.', 'Δημιουργήστε πρόσκληση. Ένας προσωπικός σύνδεσμος δημιουργείται αυτόματα.', 'Legen Sie eine Einladung an. Ein persönlicher Link wird automatisch erstellt.'],
     ['Create guest', 'Crea ospite', 'Δημιουργία καλεσμένου', 'Gast anlegen'],
@@ -65,6 +66,8 @@ $rows = [
     ['It will be a great joy for us and for our parents to have you with us at the beginning of our new life.', 'Sarà una grande gioia per noi e per i nostri genitori avervi con noi all\'inizio della nostra nuova vita.', 'Θα είναι μεγάλη χαρά για εμάς και τους γονείς μας να σας έχουμε κοντά μας στο ξεκίνημα της νέας μας ζωής.', 'Für uns und unsere Eltern wird es eine große Freude sein, euch am Anfang unseres neuen Lebens bei uns zu haben.'],
     ['Language', 'Lingua', 'Γλώσσα', 'Sprache'],
     ['Main navigation', 'Navigazione principale', 'Κύρια πλοήγηση', 'Hauptnavigation'],
+    ['Map of the church', 'Mappa della chiesa', 'Χάρτης της εκκλησίας', 'Karte der Kirche'],
+    ['Map of the reception', 'Mappa del ricevimento', 'Χάρτης του χώρου δεξίωσης', 'Karte des Empfangs'],
     ['Line :line: :message', 'Riga :line: :message', 'Γραμμή :line: :message', 'Zeile :line: :message'],
     ['Loading more…', 'Caricamento altre…', 'Φόρτωση περισσότερων…', 'Weitere werden geladen…'],
     ['Minutes', 'Minuti', 'Λεπτά', 'Minuten'],
@@ -180,6 +183,7 @@ $rows = [
     ['When & where', 'Quando e dove', 'Πότε και πού', 'Wann und wo'],
     ['Wedding event datetime', ':weekday :day :month :year alle ore :time', ':weekday :day :month :year, ώρα :time', ':weekday, :day :month :year um :time Uhr'],
     ['Wedding church venue line', 'Chiesa di Sant\'Anna a Katerini.', 'Ιερό Ναό Αγίας Άννας στη Κατερίνη', 'Sankt-Anna-Kirche in Katerini.'],
+    ['Reception', 'Ricevimento', 'Δεξίωση', 'Empfang'],
     ['Reception venue', 'Sala ricevimenti', 'Αίθουσα δεξιώσεων', 'Empfangssaal'],
     ['Wedding reception venue line', 'Dopo la cerimonia, seguirà il ricevimento nella Sala Ricevimenti "Aria".', 'Μετά το μυστήριο θα ακολουθήσει δεξίωση στην Αίθουσα Δεξιώσεων "Aria".', 'Nach der Zeremonie folgt der Empfang in der Empfangshalle „Aria“.'],
     ['Who has responded and RSVP status per invitation.', 'Chi ha risposto e stato RSVP per invito.', 'Ποιοι απάντησαν και κατάσταση RSVP ανά πρόσκληση.', 'Wer geantwortet hat und RSVP-Status pro Einladung.'],
@@ -234,6 +238,63 @@ $rows = [
 
 // Unicode apostrophe in "You've" (must match __('…') source key)
 $rows[] = ['You’ve reached the end.', 'Hai raggiunto la fine.', 'Φτάσατε στο τέλος.', 'Sie sind am Ende angekommen.'];
+
+// Feature strings added later (keep here to survive regeneration).
+$rows[] = ['Add to calendar', 'Aggiungi al calendario', 'Προσθήκη στο ημερολόγιο', 'Zum Kalender hinzufügen'];
+$rows[] = ['How to get there', 'Come arrivare', 'Πώς θα φτάσετε', 'So kommen Sie hin'];
+$rows[] = ['Frequently asked questions', 'Domande frequenti', 'Συχνές ερωτήσεις', 'Häufige Fragen'];
+
+// RSVP companion names
+$rows[] = ['Names of people coming with you', 'Nomi delle persone che vengono con te', 'Ονόματα των ατόμων που έρχονται μαζί σας', 'Namen der Personen, die mitkommen'];
+$rows[] = ['One name per line', 'Un nome per riga', 'Ένα όνομα ανά γραμμή', 'Ein Name pro Zeile'];
+$rows[] = ['Optional — helps us prepare place cards and seating.', 'Opzionale — ci aiuta a preparare i segnaposto e la disposizione dei tavoli.', 'Προαιρετικό — μας βοηθά να προετοιμάσουμε τις καρτέλες θέσεων και τη διάταξη.', 'Optional — hilft uns bei Platzkarten und Sitzordnung.'];
+$rows[] = ['Each companion name cannot exceed :max characters.', 'Ogni nome di accompagnatore non può superare :max caratteri.', 'Κάθε όνομα συνοδού δεν μπορεί να υπερβαίνει τους :max χαρακτήρες.', 'Jeder Begleitername darf höchstens :max Zeichen lang sein.'];
+$rows[] = ['Companion names are only used when attending.', 'I nomi degli accompagnatori servono solo se parteciperai.', 'Τα ονόματα συνοδών χρησιμοποιούνται μόνο αν θα παρευρεθείτε.', 'Begleiternamen werden nur bei Zusage berücksichtigt.'];
+$rows[] = ['You can list at most :max companion name(s) for :count attendees.', 'Puoi indicare al massimo :max nomi di accompagnatori per :count partecipanti.', 'Μπορείτε να δηλώσετε το πολύ :max ονόματα συνοδών για :count άτομα.', 'Sie können höchstens :max Begleiternamen für :count Personen angeben.'];
+$rows[] = ['Companion names', 'Nomi degli accompagnatori', 'Ονόματα συνοδών', 'Begleiternamen'];
+$rows[] = ['One name per line. Used for place cards and seating.', 'Un nome per riga. Usati per i segnaposto e la disposizione dei tavoli.', 'Ένα όνομα ανά γραμμή. Χρησιμοποιούνται για καρτέλες θέσεων και διάταξη.', 'Ein Name pro Zeile. Wird für Platzkarten und Sitzordnung verwendet.'];
+
+// Admin: CSV export
+$rows[] = ['Export RSVP as CSV', 'Esporta RSVP in CSV', 'Εξαγωγή RSVP σε CSV', 'RSVP als CSV exportieren'];
+
+// Admin: Seating chart
+$rows[] = ['Seating chart', 'Disposizione tavoli', 'Διάταξη τραπεζιών', 'Sitzordnung'];
+$rows[] = ['Create tables and assign guests. Capacity counts main guest + their companions.', 'Crea i tavoli e assegna gli ospiti. La capacità conta l’invitato principale e i suoi accompagnatori.', 'Δημιουργήστε τραπέζια και αναθέστε καλεσμένους. Η χωρητικότητα μετρά τον κύριο καλεσμένο και τους συνοδούς του.', 'Tische anlegen und Gäste zuweisen. Die Kapazität zählt Hauptgast und Begleiter.'];
+$rows[] = ['Add table', 'Aggiungi tavolo', 'Προσθήκη τραπεζιού', 'Tisch hinzufügen'];
+$rows[] = ['Label', 'Etichetta', 'Ετικέτα', 'Bezeichnung'];
+$rows[] = ['Capacity', 'Capacità', 'Χωρητικότητα', 'Kapazität'];
+$rows[] = ['Table created.', 'Tavolo creato.', 'Το τραπέζι δημιουργήθηκε.', 'Tisch angelegt.'];
+$rows[] = ['Table updated.', 'Tavolo aggiornato.', 'Το τραπέζι ενημερώθηκε.', 'Tisch aktualisiert.'];
+$rows[] = ['Table deleted.', 'Tavolo eliminato.', 'Το τραπέζι διαγράφηκε.', 'Tisch gelöscht.'];
+$rows[] = ['Guest assigned to table.', 'Ospite assegnato al tavolo.', 'Ο καλεσμένος ανατέθηκε στο τραπέζι.', 'Gast dem Tisch zugewiesen.'];
+$rows[] = ['Guest removed from table.', 'Ospite rimosso dal tavolo.', 'Ο καλεσμένος αφαιρέθηκε από το τραπέζι.', 'Gast vom Tisch entfernt.'];
+$rows[] = [':occupied / :cap seats', ':occupied / :cap posti', ':occupied / :cap θέσεις', ':occupied / :cap Plätze'];
+$rows[] = [':occupied seats', ':occupied posti', ':occupied θέσεις', ':occupied Plätze'];
+$rows[] = [':count seats', ':count posti', ':count θέσεις', ':count Plätze'];
+$rows[] = ['No tables yet. Add the first one above.', 'Ancora nessun tavolo. Aggiungi il primo qui sopra.', 'Δεν υπάρχουν ακόμη τραπέζια. Προσθέστε το πρώτο παραπάνω.', 'Noch keine Tische. Fügen Sie oben den ersten hinzu.'];
+$rows[] = ['No guests assigned yet.', 'Nessun ospite assegnato.', 'Δεν έχουν ανατεθεί ακόμη καλεσμένοι.', 'Noch keine Gäste zugewiesen.'];
+$rows[] = ['— pick a guest —', '— scegli un ospite —', '— επιλέξτε καλεσμένο —', '— Gast auswählen —'];
+$rows[] = ['Assign', 'Assegna', 'Ανάθεση', 'Zuweisen'];
+$rows[] = ['Assign guest', 'Assegna ospite', 'Ανάθεση καλεσμένου', 'Gast zuweisen'];
+$rows[] = ['Remove from table', 'Rimuovi dal tavolo', 'Αφαίρεση από το τραπέζι', 'Vom Tisch entfernen'];
+$rows[] = ['Delete this table? Guests will become unassigned.', 'Eliminare questo tavolo? Gli ospiti torneranno non assegnati.', 'Διαγραφή αυτού του τραπεζιού; Οι καλεσμένοι θα γίνουν μη ανατεθειμένοι.', 'Diesen Tisch löschen? Gäste werden wieder nicht zugewiesen.'];
+$rows[] = ['Unassigned guests', 'Ospiti non assegnati', 'Μη ανατεθειμένοι καλεσμένοι', 'Nicht zugewiesene Gäste'];
+$rows[] = ['Everyone has a table.', 'Tutti hanno un tavolo.', 'Όλοι έχουν τραπέζι.', 'Alle haben einen Tisch.'];
+$rows[] = ['Edit table', 'Modifica tavolo', 'Επεξεργασία τραπεζιού', 'Tisch bearbeiten'];
+$rows[] = ['Back to seating chart', 'Torna alla disposizione tavoli', 'Πίσω στη διάταξη τραπεζιών', 'Zurück zur Sitzordnung'];
+
+// Admin: Audit log
+$rows[] = ['Audit log', 'Registro attività', 'Ιστορικό ενεργειών', 'Aktionsprotokoll'];
+$rows[] = ['Recent administrative actions on this site.', 'Azioni recenti eseguite dagli amministratori.', 'Πρόσφατες ενέργειες διαχειριστή στον ιστότοπο.', 'Letzte Administrator-Aktionen auf dieser Seite.'];
+$rows[] = ['Filter by action', 'Filtra per azione', 'Φιλτράρισμα κατά ενέργεια', 'Nach Aktion filtern'];
+$rows[] = ['All actions', 'Tutte le azioni', 'Όλες οι ενέργειες', 'Alle Aktionen'];
+$rows[] = ['Clear filter', 'Rimuovi filtro', 'Καθαρισμός φίλτρου', 'Filter entfernen'];
+$rows[] = ['No audit entries recorded yet.', 'Nessuna voce ancora registrata.', 'Δεν έχουν καταγραφεί ακόμη καταχωρήσεις.', 'Noch keine Einträge erfasst.'];
+$rows[] = ['When', 'Quando', 'Πότε', 'Wann'];
+$rows[] = ['Action', 'Azione', 'Ενέργεια', 'Aktion'];
+$rows[] = ['Subject', 'Oggetto', 'Αντικείμενο', 'Objekt'];
+$rows[] = ['IP', 'IP', 'IP', 'IP'];
+$rows[] = ['Details', 'Dettagli', 'Λεπτομέρειες', 'Details'];
 
 $it = [];
 $el = [];

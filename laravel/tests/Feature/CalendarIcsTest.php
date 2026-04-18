@@ -13,6 +13,7 @@ class CalendarIcsTest extends TestCase
     public function test_ics_endpoint_returns_calendar_payload(): void
     {
         Config::set('wedding.event.title', 'Anna & Marco wedding');
+        Config::set('wedding.event.calendar_title', '');
         Config::set('wedding.event.date', '2027-06-26 19:00');
         Config::set('wedding.event.timezone', 'Europe/Athens');
         Config::set('wedding.event.location_name', 'Villa Rosa');
@@ -42,9 +43,29 @@ class CalendarIcsTest extends TestCase
         $this->assertMatchesRegularExpression('/DTEND:\d{8}T\d{6}Z/', $body);
     }
 
+    public function test_calendar_title_overrides_summary_and_filename(): void
+    {
+        Config::set('wedding.event.title', 'Our wedding');
+        Config::set('wedding.event.calendar_title', 'Biagio&Eva Wedding');
+        Config::set('wedding.event.date', '2027-06-26 19:00');
+        Config::set('wedding.event.timezone', 'Europe/Athens');
+
+        $response = $this->get('/w/calendar.ics');
+        $response->assertOk();
+
+        $body = (string) $response->getContent();
+        $this->assertStringContainsString('SUMMARY:Biagio&Eva Wedding', $body);
+        $this->assertStringNotContainsString('SUMMARY:Our wedding', $body);
+
+        $disposition = (string) $response->headers->get('Content-Disposition');
+        // Str::slug() drops the ampersand, collapsing "Biagio&Eva" into "biagioeva".
+        $this->assertStringContainsString('biagioeva-wedding.ics', $disposition);
+    }
+
     public function test_ics_endpoint_tolerates_missing_optional_fields(): void
     {
         Config::set('wedding.event.title', 'Simple wedding');
+        Config::set('wedding.event.calendar_title', '');
         Config::set('wedding.event.date', '2030-09-12 17:00');
         Config::set('wedding.event.timezone', 'Europe/Rome');
         Config::set('wedding.event.location_name', '');

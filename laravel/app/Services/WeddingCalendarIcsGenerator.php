@@ -21,7 +21,10 @@ class WeddingCalendarIcsGenerator
     {
         [$start, $end] = $this->resolveStartAndEnd($event);
 
-        $title = (string) ($event['title'] ?? 'Our wedding');
+        $calendarTitle = trim((string) ($event['calendar_title'] ?? ''));
+        $title = $calendarTitle !== ''
+            ? $calendarTitle
+            : (string) ($event['title'] ?? 'Our wedding');
         $description = (string) ($event['description'] ?? '');
         $locationParts = array_filter([
             (string) ($event['location_name'] ?? ''),

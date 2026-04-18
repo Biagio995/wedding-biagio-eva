@@ -130,29 +130,60 @@
         </section>
 
         @php
-            $mapsEmbedUrl = trim((string) ($event['maps_embed_url'] ?? ''));
-            $isValidMapsEmbed = $mapsEmbedUrl !== '' && str_starts_with($mapsEmbedUrl, 'https://');
-            $mapsOpenUrl = trim((string) ($event['maps_url'] ?? ''));
+            $churchEmbed = trim((string) ($event['maps_church_embed_url'] ?? ''));
+            $receptionEmbed = trim((string) ($event['maps_embed_url'] ?? ''));
+            $churchValid = $churchEmbed !== '' && str_starts_with($churchEmbed, 'https://');
+            $receptionValid = $receptionEmbed !== '' && str_starts_with($receptionEmbed, 'https://');
+            $churchOpenUrl = trim((string) ($event['maps_church_url'] ?? ''));
+            $receptionOpenUrl = trim((string) ($event['maps_url'] ?? ''));
         @endphp
-        @if ($isValidMapsEmbed)
+        @if ($churchValid || $receptionValid)
             <div class="card reveal-on-scroll">
                 <h2>{{ __('How to get there') }}</h2>
-                <div class="map-embed">
-                    <iframe
-                        src="{{ $mapsEmbedUrl }}"
-                        title="{{ __('Map of the venue') }}"
-                        loading="lazy"
-                        referrerpolicy="no-referrer-when-downgrade"
-                        allowfullscreen
-                    ></iframe>
+                <div class="map-embed-grid" @class(['map-embed-grid--single' => ! ($churchValid && $receptionValid)])>
+                    @if ($churchValid)
+                        <div class="map-embed-item">
+                            <h3 class="map-embed-item__title">{{ __('Church') }}</h3>
+                            <div class="map-embed">
+                                <iframe
+                                    src="{{ $churchEmbed }}"
+                                    title="{{ __('Map of the church') }}"
+                                    loading="lazy"
+                                    referrerpolicy="no-referrer-when-downgrade"
+                                    allowfullscreen
+                                ></iframe>
+                            </div>
+                            @if ($churchOpenUrl !== '')
+                                <p class="map-embed__link">
+                                    <a href="{{ $churchOpenUrl }}" target="_blank" rel="noopener noreferrer">
+                                        {{ __('Open in Google Maps') }}
+                                    </a>
+                                </p>
+                            @endif
+                        </div>
+                    @endif
+                    @if ($receptionValid)
+                        <div class="map-embed-item">
+                            <h3 class="map-embed-item__title">{{ __('Reception') }}</h3>
+                            <div class="map-embed">
+                                <iframe
+                                    src="{{ $receptionEmbed }}"
+                                    title="{{ __('Map of the reception') }}"
+                                    loading="lazy"
+                                    referrerpolicy="no-referrer-when-downgrade"
+                                    allowfullscreen
+                                ></iframe>
+                            </div>
+                            @if ($receptionOpenUrl !== '')
+                                <p class="map-embed__link">
+                                    <a href="{{ $receptionOpenUrl }}" target="_blank" rel="noopener noreferrer">
+                                        {{ __('Open in Google Maps') }}
+                                    </a>
+                                </p>
+                            @endif
+                        </div>
+                    @endif
                 </div>
-                @if ($mapsOpenUrl !== '')
-                    <p class="map-embed__link" style="margin-top:0.75rem;">
-                        <a href="{{ $mapsOpenUrl }}" target="_blank" rel="noopener noreferrer">
-                            {{ __('Open in Google Maps') }}
-                        </a>
-                    </p>
-                @endif
             </div>
         @endif
 
