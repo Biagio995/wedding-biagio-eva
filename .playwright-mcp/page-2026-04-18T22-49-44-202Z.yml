@@ -1,0 +1,15 @@
+- generic [ref=e2]:
+  - navigation "Language" [ref=e3]:
+    - link "Italiano" [ref=e4] [cursor=pointer]:
+      - /url: http://laravel.test/locale/it
+    - generic [ref=e5]: ·
+    - link "Ελληνικά" [ref=e6] [cursor=pointer]:
+      - /url: http://laravel.test/locale/el
+    - generic [ref=e7]: ·
+    - link "Deutsch" [ref=e8] [cursor=pointer]:
+      - /url: http://laravel.test/locale/de
+  - heading "Admin login" [level=1] [ref=e9]
+  - generic [ref=e10]:
+    - generic [ref=e11]: Password
+    - textbox "Password" [active] [ref=e12]
+    - button "Sign in" [ref=e13] [cursor=pointer]

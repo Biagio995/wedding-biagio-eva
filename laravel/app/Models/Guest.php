@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
@@ -14,6 +15,8 @@ class Guest extends Model
         'token',
         'rsvp_status',
         'guests_count',
+        'companion_names',
+        'seating_table_id',
         'notes',
         'rsvp_reminder_sent_at',
     ];
@@ -22,6 +25,7 @@ class Guest extends Model
     {
         return [
             'guests_count' => 'integer',
+            'companion_names' => 'array',
             'rsvp_reminder_sent_at' => 'datetime',
         ];
     }
@@ -50,6 +54,11 @@ class Guest extends Model
     public function photos(): HasMany
     {
         return $this->hasMany(Photo::class);
+    }
+
+    public function seatingTable(): BelongsTo
+    {
+        return $this->belongsTo(SeatingTable::class, 'seating_table_id');
     }
 
     public function claimedRegistryItems(): HasMany

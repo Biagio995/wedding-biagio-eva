@@ -6,6 +6,8 @@
     <p class="toolbar">
         <a href="{{ route('admin.guests.index') }}">{{ __('Guest list') }}</a>
         ·
+        <a href="{{ route('admin.seating.index') }}">{{ __('Seating chart') }}</a>
+        ·
         <a href="{{ route('admin.registry.index') }}">{{ __('Gift list') }}</a>
         ·
         <a href="{{ route('admin.photos.index') }}">{{ __('Photo moderation') }}</a>
@@ -13,6 +15,8 @@
         <a href="{{ route('admin.guests.create') }}">{{ __('Add guest') }}</a>
         ·
         <a href="{{ route('admin.guests.import') }}">{{ __('Import from CSV') }}</a>
+        ·
+        <a href="{{ route('admin.audit.index') }}">{{ __('Audit log') }}</a>
         ·
         <form method="post" action="{{ route('admin.logout') }}" style="display:inline;">
             @csrf
@@ -51,5 +55,7 @@
 
     <p class="cta">
         <a href="{{ route('admin.guests.index') }}">{{ __('View guest list with RSVP status') }}</a>
+        ·
+        <a href="{{ route('admin.guests.export') }}">{{ __('Export RSVP as CSV') }}</a>
     </p>
 </x-layouts.admin>

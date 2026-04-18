@@ -10,9 +10,15 @@
         ·
         <a href="{{ route('admin.guests.import') }}">{{ __('Import from CSV') }}</a>
         ·
+        <a href="{{ route('admin.guests.export', ['rsvp' => $filter]) }}">{{ __('Export RSVP as CSV') }}</a>
+        ·
+        <a href="{{ route('admin.seating.index') }}">{{ __('Seating chart') }}</a>
+        ·
         <a href="{{ route('admin.registry.index') }}">{{ __('Gift list') }}</a>
         ·
         <a href="{{ route('admin.photos.index') }}">{{ __('Photo moderation') }}</a>
+        ·
+        <a href="{{ route('admin.audit.index') }}">{{ __('Audit log') }}</a>
         ·
         <form method="post" action="{{ route('admin.logout') }}" style="display:inline;">
             @csrf
@@ -61,7 +67,20 @@
                         </td>
                         <td class="num">
                             @if ($guest->rsvp_status === 'yes')
-                                {{ $guest->guests_count ?? '—' }}
+                                @php
+                                    $companions = is_array($guest->companion_names)
+                                        ? array_values(array_filter(array_map(
+                                            static fn ($n) => is_string($n) ? trim($n) : '',
+                                            $guest->companion_names,
+                                        ), static fn (string $n): bool => $n !== ''))
+                                        : [];
+                                @endphp
+                                <span @if ($companions !== []) title="{{ implode(', ', $companions) }}" @endif>
+                                    {{ $guest->guests_count ?? '—' }}
+                                    @if ($companions !== [])
+                                        <span class="hint" style="display:block;font-size:0.8rem;">{{ \Illuminate\Support\Str::limit(implode(', ', $companions), 36) }}</span>
+                                    @endif
+                                </span>
                             @else
                                 —
                             @endif

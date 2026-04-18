@@ -13,6 +13,8 @@
         'page-create' => 'resources/css/admin/create.css',
         'page-login' => 'resources/css/admin/login.css',
         'page-registry' => 'resources/css/admin/registry.css',
+        'page-seating' => 'resources/css/admin/seating.css',
+        'page-audit' => 'resources/css/admin/audit.css',
         default => 'resources/css/admin/dashboard.css',
     };
 @endphp

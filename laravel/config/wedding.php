@@ -30,12 +30,35 @@ return [
         'location_address' => env('WEDDING_LOCATION_ADDRESS', ''),
         /** Full Google Maps URL (place or directions). Shown only if non-empty. */
         'maps_url' => env('WEDDING_MAPS_URL', ''),
+        /**
+         * Optional embeddable map URL (e.g. Google Maps share → Embed a map → copy the `src` URL,
+         * or OpenStreetMap → Share → HTML → copy the `src`). Only URLs starting with https:// are
+         * rendered inside an <iframe>. Leave empty to fall back to the plain "Open in Maps" link.
+         */
+        'maps_embed_url' => env('WEDDING_MAPS_EMBED_URL', ''),
         'description' => env('WEDDING_DESCRIPTION', 'We would love to celebrate with you.'),
         /**
          * Extra info for guests (dress code, schedule, parking, gifts, etc.).
          * Use newlines in .env with quoted strings, or set this key in this file as a heredoc.
          */
         'additional_notes' => env('WEDDING_ADDITIONAL_NOTES', ''),
+    ],
+
+    /*
+    | Frequently Asked Questions shown on the public wedding page.
+    | Each item: ['question' => '...', 'answer' => '...'].
+    | Strings are rendered with __(), so you can either put the final text here in your
+    | preferred language, or use translation keys and add them to lang/{locale}.json.
+    */
+    'faqs' => [
+        // [
+        //     'question' => 'Are children welcome?',
+        //     'answer' => 'Yes, little ones are welcome. Please tell us their names and ages in the notes.',
+        // ],
+        // [
+        //     'question' => 'Is there parking at the venue?',
+        //     'answer' => 'Free parking is available on-site, and there is overflow parking 3 minutes on foot.',
+        // ],
     ],
 
     /*

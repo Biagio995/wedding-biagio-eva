@@ -69,6 +69,35 @@
                 <p class="err">{{ $message }}</p>
             @enderror
 
+            @php
+                $companionsOld = old('companion_names');
+                if (is_array($companionsOld)) {
+                    $companionsValue = implode("\n", array_map(static fn ($n) => is_string($n) ? $n : '', $companionsOld));
+                } elseif (is_string($companionsOld)) {
+                    $companionsValue = $companionsOld;
+                } else {
+                    $storedCompanions = is_array($guest->companion_names) ? $guest->companion_names : [];
+                    $companionsValue = implode("\n", array_filter(array_map(
+                        static fn ($n) => is_string($n) ? trim($n) : '',
+                        $storedCompanions,
+                    ), static fn (string $n): bool => $n !== ''));
+                }
+            @endphp
+            <label for="companion_names">{{ __('Companion names') }}</label>
+            <textarea
+                id="companion_names"
+                name="companion_names"
+                rows="3"
+                placeholder="{{ __('One name per line') }}"
+            >{{ $companionsValue }}</textarea>
+            <p class="hint" style="margin-top:-0.5rem;">{{ __('One name per line. Used for place cards and seating.') }}</p>
+            @error('companion_names')
+                <p class="err">{{ $message }}</p>
+            @enderror
+            @error('companion_names.*')
+                <p class="err">{{ $message }}</p>
+            @enderror
+
             <label for="notes">{{ __('Your notes') }}</label>
             <textarea id="notes" name="notes" rows="3" maxlength="5000">{{ old('notes', $guest->notes) }}</textarea>
             @error('notes')
@@ -96,6 +125,7 @@
         (function () {
             var sel = document.getElementById('rsvp_status');
             var count = document.getElementById('guests_count');
+            var companions = document.getElementById('companion_names');
             if (!sel || !count) return;
             function sync() {
                 var y = sel.value === 'yes';
@@ -105,6 +135,12 @@
                 }
                 if (!y) {
                     count.value = '';
+                    if (companions) {
+                        companions.value = '';
+                        companions.disabled = true;
+                    }
+                } else if (companions) {
+                    companions.disabled = false;
                 }
             }
             sel.addEventListener('change', sync);

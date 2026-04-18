@@ -1,0 +1,68 @@
+@import './tokens.css';
+@import './locale-switcher.css';
+@import './body-admin.css';
+@import './page-guest-list.css';
+
+.audit-filter {
+    margin: 1rem 0 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.audit-filter label {
+    font-size: 0.85rem;
+    color: var(--muted);
+}
+
+.audit-filter select,
+.audit-filter button {
+    padding: 0.4rem 0.7rem;
+    font-family: inherit;
+    font-size: 0.9rem;
+    border-radius: 6px;
+    border: 1px solid rgba(58, 50, 42, 0.15);
+    background: #fffcf9;
+}
+
+.audit-filter button {
+    background: var(--accent);
+    color: var(--on-accent);
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.audit-table code {
+    font-size: 0.85rem;
+    background: rgba(58, 50, 42, 0.05);
+    padding: 0.1rem 0.35rem;
+    border-radius: 4px;
+}
+
+.audit-meta {
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    white-space: pre-wrap;
+    word-break: break-word;
+    max-width: 32rem;
+}
+
+.audit-subject {
+    font-size: 0.85rem;
+    color: var(--muted);
+}
+
+.audit-ip {
+    font-variant-numeric: tabular-nums;
+    font-size: 0.85rem;
+    color: var(--muted);
+}
+
+.audit-empty {
+    color: var(--muted);
+    padding: 2rem;
+    text-align: center;
+}

@@ -1,10 +1,13 @@
 <?php
 
+use App\Http\Controllers\Admin\AuditLogController as AdminAuditLogController;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\GuestController as AdminGuestController;
 use App\Http\Controllers\Admin\PhotoController as AdminPhotoController;
 use App\Http\Controllers\Admin\RegistryItemController as AdminRegistryItemController;
 use App\Http\Controllers\Admin\RsvpDashboardController as AdminRsvpDashboardController;
+use App\Http\Controllers\Admin\SeatingTableController as AdminSeatingTableController;
+use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\RegistryController;
 use App\Http\Controllers\WeddingController;
@@ -30,6 +33,10 @@ Route::get('/w/{token}', [WeddingController::class, 'enterByToken'])
 Route::post('/w/rsvp', [WeddingController::class, 'storeRsvp'])
     ->middleware('throttle:30,1')
     ->name('wedding.rsvp.store');
+
+Route::get('/w/calendar.ics', [CalendarController::class, 'ics'])
+    ->middleware('throttle:60,1')
+    ->name('wedding.calendar.ics');
 
 Route::get('/gallery', [GalleryController::class, 'show'])->name('gallery.show');
 Route::get('/gallery/album', [GalleryController::class, 'album'])->name('gallery.album');
@@ -72,6 +79,9 @@ Route::prefix('admin')->name('admin.')->group(function (): void {
             ->name('photos.destroy');
         Route::get('guests', [AdminGuestController::class, 'index'])->name('guests.index');
         Route::get('guests/create', [AdminGuestController::class, 'create'])->name('guests.create');
+        Route::get('guests/export.csv', [AdminGuestController::class, 'export'])
+            ->middleware('throttle:6,1')
+            ->name('guests.export');
         Route::get('guests/import', [AdminGuestController::class, 'importForm'])->name('guests.import');
         Route::post('guests/import', [AdminGuestController::class, 'importStore'])
             ->middleware('throttle:10,1')
@@ -95,6 +105,30 @@ Route::prefix('admin')->name('admin.')->group(function (): void {
             ->whereNumber('guest')
             ->name('guests.qr');
 
+        Route::get('seating', [AdminSeatingTableController::class, 'index'])->name('seating.index');
+        Route::post('seating', [AdminSeatingTableController::class, 'store'])
+            ->middleware('throttle:60,1')
+            ->name('seating.store');
+        Route::get('seating/{seatingTable}/edit', [AdminSeatingTableController::class, 'edit'])
+            ->whereNumber('seatingTable')
+            ->name('seating.edit');
+        Route::put('seating/{seatingTable}', [AdminSeatingTableController::class, 'update'])
+            ->middleware('throttle:60,1')
+            ->whereNumber('seatingTable')
+            ->name('seating.update');
+        Route::delete('seating/{seatingTable}', [AdminSeatingTableController::class, 'destroy'])
+            ->middleware('throttle:60,1')
+            ->whereNumber('seatingTable')
+            ->name('seating.destroy');
+        Route::post('seating/{seatingTable}/assign', [AdminSeatingTableController::class, 'assign'])
+            ->middleware('throttle:120,1')
+            ->whereNumber('seatingTable')
+            ->name('seating.assign');
+        Route::post('seating/guests/{guest}/unassign', [AdminSeatingTableController::class, 'unassign'])
+            ->middleware('throttle:120,1')
+            ->whereNumber('guest')
+            ->name('seating.unassign');
+
         Route::get('registry', [AdminRegistryItemController::class, 'index'])->name('registry.index');
         Route::post('registry', [AdminRegistryItemController::class, 'store'])
             ->middleware('throttle:60,1')
@@ -106,5 +140,7 @@ Route::prefix('admin')->name('admin.')->group(function (): void {
         Route::delete('registry/{registryItem}', [AdminRegistryItemController::class, 'destroy'])
             ->middleware('throttle:60,1')
             ->name('registry.destroy');
+
+        Route::get('audit', [AdminAuditLogController::class, 'index'])->name('audit.index');
     });
 });

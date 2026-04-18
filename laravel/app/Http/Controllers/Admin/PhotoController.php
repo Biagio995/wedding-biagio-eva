@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Photo;
+use App\Services\AuditLogger;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -14,6 +15,8 @@ use ZipArchive;
 
 class PhotoController extends Controller
 {
+    public function __construct(private readonly AuditLogger $audit) {}
+
     /** US-21: review pending uploads; optional filter status=pending|approved|all. */
     public function index(Request $request): View
     {
@@ -44,6 +47,7 @@ class PhotoController extends Controller
     public function approve(Photo $photo): RedirectResponse
     {
         $photo->update(['approved' => true]);
+        $this->audit->log('photo.approved', $photo);
 
         return redirect()
             ->back()
@@ -54,6 +58,7 @@ class PhotoController extends Controller
     public function destroy(Photo $photo): RedirectResponse
     {
         $path = $photo->file_path;
+        $this->audit->log('photo.deleted', $photo, ['file_path' => $path]);
         $photo->delete();
 
         if (is_string($path) && $path !== '') {

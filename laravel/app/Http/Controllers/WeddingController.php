@@ -31,7 +31,34 @@ class WeddingController extends Controller
         return view('wedding', [
             'guest' => $guest,
             'event' => config('wedding.event'),
+            'faqs' => $this->normalizedFaqs(),
         ]);
+    }
+
+    /**
+     * @return array<int, array{question: string, answer: string}>
+     */
+    private function normalizedFaqs(): array
+    {
+        $raw = config('wedding.faqs', []);
+        if (! is_array($raw)) {
+            return [];
+        }
+
+        $clean = [];
+        foreach ($raw as $item) {
+            if (! is_array($item)) {
+                continue;
+            }
+            $q = isset($item['question']) && is_string($item['question']) ? trim($item['question']) : '';
+            $a = isset($item['answer']) && is_string($item['answer']) ? trim($item['answer']) : '';
+            if ($q === '' || $a === '') {
+                continue;
+            }
+            $clean[] = ['question' => $q, 'answer' => $a];
+        }
+
+        return $clean;
     }
 
     public function enterByToken(Request $request, string $token): RedirectResponse
@@ -56,12 +83,16 @@ class WeddingController extends Controller
         $guestId = $request->session()->get(self::SESSION_WEDDING_GUEST_ID);
         $guest = $guestId ? Guest::query()->find($guestId) : null;
 
+        $attending = $validated['rsvp_status'] === 'yes';
+        $companionNames = $attending ? ($validated['companion_names'] ?? []) : [];
+
         if (! $guest) {
             $guest = Guest::query()->create([
                 'name' => $validated['name'],
                 'email' => $validated['email'] ?? null,
                 'rsvp_status' => $validated['rsvp_status'],
-                'guests_count' => $validated['rsvp_status'] === 'yes' ? (int) $validated['guests_count'] : null,
+                'guests_count' => $attending ? (int) $validated['guests_count'] : null,
+                'companion_names' => $companionNames !== [] ? $companionNames : null,
                 'notes' => $validated['notes'] ?? null,
             ]);
             $request->session()->put(self::SESSION_WEDDING_GUEST_ID, $guest->id);
@@ -72,7 +103,8 @@ class WeddingController extends Controller
 
             $update = [
                 'rsvp_status' => $validated['rsvp_status'],
-                'guests_count' => $validated['rsvp_status'] === 'yes' ? (int) $validated['guests_count'] : null,
+                'guests_count' => $attending ? (int) $validated['guests_count'] : null,
+                'companion_names' => $companionNames !== [] ? $companionNames : null,
             ];
             if (array_key_exists('notes', $validated)) {
                 $update['notes'] = $validated['notes'];

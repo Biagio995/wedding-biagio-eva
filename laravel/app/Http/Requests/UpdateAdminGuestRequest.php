@@ -26,8 +26,30 @@ class UpdateAdminGuestRequest extends FormRequest
         }
 
         if ($this->input('rsvp_status') !== 'yes') {
-            $this->merge(['guests_count' => null]);
+            $this->merge(['guests_count' => null, 'companion_names' => null]);
+
+            return;
         }
+
+        $raw = $this->input('companion_names');
+        $names = [];
+        if (is_string($raw)) {
+            foreach (preg_split('/[\r\n,;]+/', $raw) ?: [] as $item) {
+                $trimmed = is_string($item) ? trim($item) : '';
+                if ($trimmed !== '' && ! in_array($trimmed, $names, true)) {
+                    $names[] = $trimmed;
+                }
+            }
+        } elseif (is_array($raw)) {
+            foreach ($raw as $item) {
+                $trimmed = is_string($item) ? trim($item) : '';
+                if ($trimmed !== '' && ! in_array($trimmed, $names, true)) {
+                    $names[] = $trimmed;
+                }
+            }
+        }
+
+        $this->merge(['companion_names' => $names === [] ? null : $names]);
     }
 
     /**
@@ -56,6 +78,8 @@ class UpdateAdminGuestRequest extends FormRequest
                 'max:500',
                 Rule::requiredIf(fn (): bool => $this->input('rsvp_status') === 'yes'),
             ],
+            'companion_names' => ['nullable', 'array', 'max:499'],
+            'companion_names.*' => ['string', 'max:120'],
             'notes' => ['nullable', 'string', 'max:5000'],
         ];
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Services\AuditLogger;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -11,6 +12,8 @@ use Illuminate\View\View;
 
 class AuthController extends Controller
 {
+    public function __construct(private readonly AuditLogger $audit) {}
+
     public function showLoginForm(Request $request): View|RedirectResponse
     {
         if (! $this->passwordConfigured()) {
@@ -36,18 +39,23 @@ class AuthController extends Controller
 
         $hash = config('wedding.admin.password_hash');
         if (! is_string($hash) || ! Hash::check($request->input('password'), $hash)) {
+            $this->audit->log('admin.login.failed');
             throw ValidationException::withMessages([
                 'password' => [__('Invalid password.')],
             ]);
         }
 
         $request->session()->put('wedding_admin', true);
+        $this->audit->log('admin.login.success');
 
         return redirect()->intended(route('admin.guests.create'));
     }
 
     public function logout(Request $request): RedirectResponse
     {
+        if ($request->session()->get('wedding_admin') === true) {
+            $this->audit->log('admin.logout');
+        }
         $request->session()->forget('wedding_admin');
 
         return redirect()->route('admin.login');

@@ -79,6 +79,16 @@
                 </div>
             </div>
             <p class="countdown-done-msg" id="wedding-countdown-done" hidden>{{ __('The celebration has started!') }}</p>
+            <p class="countdown-actions">
+                <a class="btn btn--ghost" href="{{ route('wedding.calendar.ics') }}" download rel="nofollow">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                        <rect x="3" y="4" width="18" height="18" rx="2"/>
+                        <path d="M16 2v4M8 2v4M3 10h18"/>
+                        <path d="M12 14v5M9.5 16.5h5"/>
+                    </svg>
+                    <span>{{ __('Add to calendar') }}</span>
+                </a>
+            </p>
         </div>
 
         <section
@@ -119,6 +129,33 @@
             </div>
         </section>
 
+        @php
+            $mapsEmbedUrl = trim((string) ($event['maps_embed_url'] ?? ''));
+            $isValidMapsEmbed = $mapsEmbedUrl !== '' && str_starts_with($mapsEmbedUrl, 'https://');
+            $mapsOpenUrl = trim((string) ($event['maps_url'] ?? ''));
+        @endphp
+        @if ($isValidMapsEmbed)
+            <div class="card reveal-on-scroll">
+                <h2>{{ __('How to get there') }}</h2>
+                <div class="map-embed">
+                    <iframe
+                        src="{{ $mapsEmbedUrl }}"
+                        title="{{ __('Map of the venue') }}"
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                        allowfullscreen
+                    ></iframe>
+                </div>
+                @if ($mapsOpenUrl !== '')
+                    <p class="map-embed__link" style="margin-top:0.75rem;">
+                        <a href="{{ $mapsOpenUrl }}" target="_blank" rel="noopener noreferrer">
+                            {{ __('Open in Google Maps') }}
+                        </a>
+                    </p>
+                @endif
+            </div>
+        @endif
+
         @if (!empty(trim($event['additional_notes'] ?? '')))
             <div class="card reveal-on-scroll">
                 <h2>{{ __('Additional details') }}</h2>
@@ -126,12 +163,51 @@
             </div>
         @endif
 
+        @if (!empty($faqs))
+            <div class="card reveal-on-scroll faqs">
+                <h2>{{ __('Frequently asked questions') }}</h2>
+                @foreach ($faqs as $faq)
+                    <details class="faq">
+                        <summary>
+                            <span>{{ __($faq['question']) }}</span>
+                            <svg class="faq__chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </summary>
+                        <div class="faq__body">{!! nl2br(e(__($faq['answer']))) !!}</div>
+                    </details>
+                @endforeach
+            </div>
+        @endif
+
+        @php
+            $companionsToText = static function ($names): string {
+                if (! is_array($names)) {
+                    return '';
+                }
+                return implode("\n", array_filter(array_map(
+                    static fn ($n): string => is_string($n) ? trim($n) : '',
+                    $names,
+                ), static fn (string $n): bool => $n !== ''));
+            };
+        @endphp
         @if ($guest)
             @php
                 $rsvpDefault = old('rsvp_status', $guest->rsvp_status);
                 $countDefault = old('guests_count', $guest->guests_count);
                 if ($countDefault === null && $rsvpDefault === 'yes') {
                     $countDefault = 1;
+                }
+                $companionsOld = old('companion_names');
+                if (is_array($companionsOld)) {
+                    $companionsDefault = implode("\n", array_map(
+                        static fn ($n): string => is_string($n) ? $n : '',
+                        $companionsOld,
+                    ));
+                } elseif (is_string($companionsOld)) {
+                    $companionsDefault = $companionsOld;
+                } else {
+                    $companionsDefault = $companionsToText($guest->companion_names);
                 }
             @endphp
             <div class="card reveal-on-scroll">
@@ -162,6 +238,12 @@
                     <p id="guests_count-help" class="hint" style="margin-top:-0.5rem;">{{ __('Required if you answer Yes.') }}</p>
                     @error('guests_count')<p class="error">{{ $message }}</p>@enderror
 
+                    @include('partials.site.rsvp-companions', [
+                        'companionsDefault' => $companionsDefault,
+                        'rsvpDefault' => $rsvpDefault,
+                        'countDefault' => $countDefault,
+                    ])
+
                     <button type="submit" class="btn">{{ filled($guest->rsvp_status) ? __('Update response') : __('Send response') }}</button>
                 </form>
             </div>
@@ -171,6 +253,17 @@
                 $countDefault = old('guests_count');
                 if ($countDefault === null && $rsvpDefault === 'yes') {
                     $countDefault = 1;
+                }
+                $companionsOld = old('companion_names');
+                if (is_array($companionsOld)) {
+                    $companionsDefault = implode("\n", array_map(
+                        static fn ($n): string => is_string($n) ? $n : '',
+                        $companionsOld,
+                    ));
+                } elseif (is_string($companionsOld)) {
+                    $companionsDefault = $companionsOld;
+                } else {
+                    $companionsDefault = '';
                 }
             @endphp
             <div class="card reveal-on-scroll">
@@ -216,6 +309,12 @@
                         aria-describedby="guests_count-help">
                     <p id="guests_count-help" class="hint" style="margin-top:-0.5rem;">{{ __('Required if you answer Yes.') }}</p>
                     @error('guests_count')<p class="error">{{ $message }}</p>@enderror
+
+                    @include('partials.site.rsvp-companions', [
+                        'companionsDefault' => $companionsDefault,
+                        'rsvpDefault' => $rsvpDefault,
+                        'countDefault' => $countDefault,
+                    ])
 
                     <button type="submit" class="btn">{{ __('Send response') }}</button>
                 </form>

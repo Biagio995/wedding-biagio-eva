@@ -6,11 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRegistryItemRequest;
 use App\Http\Requests\UpdateRegistryItemRequest;
 use App\Models\RegistryItem;
+use App\Services\AuditLogger;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 class RegistryItemController extends Controller
 {
+    public function __construct(private readonly AuditLogger $audit) {}
+
     public function index(): View
     {
         $items = RegistryItem::query()
@@ -29,7 +32,8 @@ class RegistryItemController extends Controller
         $data = $request->validated();
         $data['sort_order'] = $data['sort_order'] ?? 0;
 
-        RegistryItem::query()->create($data);
+        $item = RegistryItem::query()->create($data);
+        $this->audit->log('registry.created', $item, ['title' => $item->title]);
 
         return redirect()
             ->route('admin.registry.index')
@@ -58,6 +62,10 @@ class RegistryItemController extends Controller
         }
 
         $registryItem->update($data);
+        $this->audit->log('registry.updated', $registryItem, [
+            'title' => $registryItem->title,
+            'clear_claim' => $clearClaim,
+        ]);
 
         return redirect()
             ->route('admin.registry.index')
@@ -66,6 +74,7 @@ class RegistryItemController extends Controller
 
     public function destroy(RegistryItem $registryItem): RedirectResponse
     {
+        $this->audit->log('registry.deleted', $registryItem, ['title' => $registryItem->title]);
         $registryItem->delete();
 
         return redirect()
