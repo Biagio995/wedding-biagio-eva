@@ -30,6 +30,7 @@
                 'year' => $year,
                 'time' => $time,
             ]);
+
         @endphp
 
         @if (session('wedding_error'))
@@ -79,16 +80,9 @@
                 </div>
             </div>
             <p class="countdown-done-msg" id="wedding-countdown-done" hidden>{{ __('The celebration has started!') }}</p>
-            <p class="countdown-actions">
-                <a class="btn btn--ghost" href="{{ route('wedding.calendar.ics') }}" download rel="nofollow">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-                        <rect x="3" y="4" width="18" height="18" rx="2"/>
-                        <path d="M16 2v4M8 2v4M3 10h18"/>
-                        <path d="M12 14v5M9.5 16.5h5"/>
-                    </svg>
-                    <span>{{ __('Add to calendar') }}</span>
-                </a>
-            </p>
+            <div class="countdown-actions">
+                @include('partials.site.calendar-picker', ['event' => $event])
+            </div>
         </div>
 
         <section
@@ -165,6 +159,7 @@
             @include('partials.site.song-recommendations', [
                 'guest' => $guest,
                 'ownSongRecommendations' => $ownSongRecommendations,
+                'publicSongRecommendations' => $publicSongRecommendations ?? collect(),
             ])
         @endif
     </div>

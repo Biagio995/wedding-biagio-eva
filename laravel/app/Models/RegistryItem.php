@@ -16,6 +16,7 @@ class RegistryItem extends Model
         'claimed_by_guest_id',
         'claimed_at',
         'claimed_by_name',
+        'claim_message',
     ];
 
     protected function casts(): array

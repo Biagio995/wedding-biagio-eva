@@ -53,6 +53,7 @@ class RegistryController extends Controller
 
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
+            'claim_message' => ['nullable', 'string', 'max:1000'],
         ]);
         $reserverName = trim($validated['name']);
         if ($reserverName === '') {
@@ -61,13 +62,17 @@ class RegistryController extends Controller
                 ->withErrors(['name' => __('Please enter your name.')])
                 ->withInput();
         }
+        $claimMessage = isset($validated['claim_message']) && is_string($validated['claim_message'])
+            ? trim($validated['claim_message'])
+            : '';
+        $claimMessage = $claimMessage !== '' ? $claimMessage : null;
 
         $guestId = $request->session()->get(WeddingController::SESSION_WEDDING_GUEST_ID);
         $guest = $guestId ? Guest::query()->find($guestId) : null;
 
         $anonIds = $this->normalizedAnonymousClaimIds($request);
 
-        $result = DB::transaction(function () use ($registryItem, $guest, $request, $anonIds, $reserverName) {
+        $result = DB::transaction(function () use ($registryItem, $guest, $request, $anonIds, $reserverName, $claimMessage) {
             /** @var RegistryItem|null $locked */
             $locked = RegistryItem::query()
                 ->whereKey($registryItem->id)
@@ -79,10 +84,10 @@ class RegistryController extends Controller
             }
 
             if ($guest) {
-                return $this->claimAsGuest($locked, $guest, $reserverName);
+                return $this->claimAsGuest($locked, $guest, $reserverName, $claimMessage);
             }
 
-            return $this->claimAsAnonymous($locked, $request, $anonIds, $reserverName);
+            return $this->claimAsAnonymous($locked, $request, $anonIds, $reserverName, $claimMessage);
         });
 
         if ($result === 'taken') {
@@ -99,7 +104,7 @@ class RegistryController extends Controller
     /**
      * @return 'ok'|'taken'
      */
-    private function claimAsGuest(RegistryItem $locked, Guest $guest, string $reserverName): string
+    private function claimAsGuest(RegistryItem $locked, Guest $guest, string $reserverName, ?string $claimMessage): string
     {
         if ($locked->isClaimedByGuest($guest)) {
             return 'ok';
@@ -113,6 +118,7 @@ class RegistryController extends Controller
             'claimed_by_guest_id' => $guest->id,
             'claimed_at' => now(),
             'claimed_by_name' => $reserverName,
+            'claim_message' => $claimMessage,
         ]);
 
         return 'ok';
@@ -122,7 +128,7 @@ class RegistryController extends Controller
      * @param  array<int, int>  $anonIds
      * @return 'ok'|'taken'
      */
-    private function claimAsAnonymous(RegistryItem $locked, Request $request, array $anonIds, string $reserverName): string
+    private function claimAsAnonymous(RegistryItem $locked, Request $request, array $anonIds, string $reserverName, ?string $claimMessage): string
     {
         if ($locked->claimed_by_guest_id !== null) {
             return 'taken';
@@ -136,6 +142,7 @@ class RegistryController extends Controller
             'claimed_by_guest_id' => null,
             'claimed_at' => now(),
             'claimed_by_name' => $reserverName,
+            'claim_message' => $claimMessage,
         ]);
 
         $anonIds[] = $locked->id;

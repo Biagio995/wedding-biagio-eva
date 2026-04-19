@@ -46,6 +46,12 @@
                 <label for="is_active">{{ __('Visible on public page') }}</label>
             </div>
             @if ($item->isClaimed())
+                @if (filled($item->claim_message))
+                    <div class="registry-admin-msg registry-admin-msg--box">
+                        <span class="registry-admin-msg__label">{{ __('Message from the guest') }}</span>
+                        <p class="registry-admin-msg__text">{{ $item->claim_message }}</p>
+                    </div>
+                @endif
                 <div class="row-check">
                     <input type="hidden" name="clear_claim" value="0">
                     <input id="clear_claim" type="checkbox" name="clear_claim" value="1" @checked(old('clear_claim'))>

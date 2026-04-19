@@ -315,6 +315,44 @@ $rows[] = ['Export as CSV', 'Esporta in CSV', 'Εξαγωγή σε CSV', 'Als CS
 $rows[] = ['Delete this song suggestion?', 'Eliminare questa proposta?', 'Διαγραφή αυτής της πρότασης;', 'Diesen Vorschlag löschen?'];
 $rows[] = ['{1} suggestion|[2,*] suggestions', '{1} proposta|[2,*] proposte', '{1} πρόταση|[2,*] προτάσεις', '{1} Vorschlag|[2,*] Vorschläge'];
 
+// Public song feed (social proof)
+$rows[] = ['Already suggested', 'Già proposte', 'Ήδη προτεινόμενα', 'Bereits vorgeschlagen'];
+$rows[] = ['A quick look at what other guests have asked for — so you can avoid picking the same song twice.', 'Uno sguardo veloce alle canzoni chieste dagli altri ospiti — per non proporre la stessa due volte.', 'Μια γρήγορη ματιά σε όσα έχουν ζητήσει άλλοι καλεσμένοι — για να μην προτείνετε το ίδιο τραγούδι δύο φορές.', 'Ein kurzer Blick auf die Wünsche der anderen Gäste — so schlägst du nicht zweimal denselben Song vor.'];
+
+// Calendar actions near the countdown
+$rows[] = ['Choose a calendar', 'Scegli un calendario', 'Επιλέξτε ημερολόγιο', 'Kalender auswählen'];
+$rows[] = ['Google Calendar', 'Google Calendar', 'Google Calendar', 'Google Kalender'];
+$rows[] = ['Apple Calendar (iOS / macOS)', 'Apple Calendar (iOS / macOS)', 'Apple Calendar (iOS / macOS)', 'Apple Kalender (iOS / macOS)'];
+$rows[] = ['Outlook', 'Outlook', 'Outlook', 'Outlook'];
+
+// RSVP deadline
+$rows[] = ['Please respond by :date.', 'Rispondi entro :date.', 'Παρακαλούμε απαντήστε έως :date.', 'Bitte antworten Sie bis :date.'];
+$rows[] = ['It helps us confirm final numbers with the venue and caterer.', 'Ci aiuta a confermare i numeri definitivi con la location e il catering.', 'Μας βοηθά να επιβεβαιώσουμε τους τελικούς αριθμούς με τον χώρο και το κέτερινγκ.', 'So können wir die endgültige Teilnehmerzahl mit Location und Catering bestätigen.'];
+$rows[] = ['The RSVP deadline has passed.', 'La data limite per l\'RSVP è passata.', 'Η προθεσμία απάντησης έχει λήξει.', 'Die RSVP-Frist ist abgelaufen.'];
+$rows[] = ['You can still reply, but please let us know directly so we can update the plans.', 'Puoi comunque rispondere, ma faccelo sapere direttamente così aggiorniamo l\'organizzazione.', 'Μπορείτε ακόμα να απαντήσετε, αλλά ενημερώστε μας απευθείας για να ενημερώσουμε τον προγραμματισμό.', 'Sie können weiterhin antworten — sagen Sie uns bitte direkt Bescheid, damit wir die Planung anpassen können.'];
+
+// RSVP confirmation (dedicated thank-you card)
+$rows[] = ['Share photos', 'Condividi foto', 'Μοιραστείτε φωτογραφίες', 'Fotos teilen'];
+$rows[] = ['Suggest a song', 'Suggerisci una canzone', 'Πρότεινε ένα τραγούδι', 'Song vorschlagen'];
+$rows[] = ['Change my answer', 'Modifica la mia risposta', 'Άλλαξε την απάντησή μου', 'Antwort ändern'];
+
+// Gallery QR printable card (admin)
+$rows[] = ['Gallery QR card', 'Card QR della galleria', 'Κάρτα QR συλλογής', 'Galerie-QR-Karte'];
+$rows[] = ['Print this card and place it on reception tables so guests can scan and share their photos.', 'Stampa questa card e posizionala sui tavoli del ricevimento: gli ospiti potranno scansionare e condividere le loro foto.', 'Εκτυπώστε αυτή την κάρτα και τοποθετήστε την στα τραπέζια της δεξίωσης, ώστε οι καλεσμένοι να σαρώνουν και να μοιράζονται τις φωτογραφίες τους.', 'Drucken Sie diese Karte aus und legen Sie sie auf die Tische beim Empfang, damit Gäste scannen und ihre Fotos teilen können.'];
+$rows[] = ['Print card', 'Stampa card', 'Εκτύπωση κάρτας', 'Karte drucken'];
+$rows[] = ['Open gallery page', 'Apri la pagina galleria', 'Άνοιγμα σελίδας συλλογής', 'Galerieseite öffnen'];
+$rows[] = ['Share your photos with us', 'Condividi le tue foto con noi', 'Μοιραστείτε τις φωτογραφίες σας μαζί μας', 'Teilen Sie Ihre Fotos mit uns'];
+$rows[] = ['Scan the QR code with your phone camera and upload the photos you took — no app or sign-up needed.', 'Inquadra il QR code con la fotocamera del telefono e carica le foto che hai scattato — senza app né registrazione.', 'Σαρώστε το QR με την κάμερα του κινητού σας και ανεβάστε τις φωτογραφίες που τραβήξατε — χωρίς εφαρμογή ή εγγραφή.', 'Scannen Sie den QR-Code mit der Handykamera und laden Sie Ihre Fotos hoch — keine App, keine Registrierung nötig.'];
+$rows[] = ['QR code to the gallery page', 'QR code per la pagina galleria', 'QR κωδικός για τη σελίδα συλλογής', 'QR-Code zur Galerieseite'];
+$rows[] = ['Thank you for celebrating with us!', 'Grazie per festeggiare con noi!', 'Σας ευχαριστούμε που γιορτάζετε μαζί μας!', 'Danke, dass Sie mit uns feiern!'];
+$rows[] = ['Scan to share your photos', 'Scansiona per condividere le tue foto', 'Σαρώστε για να μοιραστείτε τις φωτογραφίες σας', 'Scannen, um Ihre Fotos zu teilen'];
+
+// Registry per-gift message
+$rows[] = ['Leave a note for the couple (optional)', 'Lascia un messaggio per gli sposi (facoltativo)', 'Αφήστε ένα μήνυμα για το ζευγάρι (προαιρετικό)', 'Hinterlasse dem Paar eine Nachricht (optional)'];
+$rows[] = ['Something kind, a memory, or why you picked this gift…', 'Qualcosa di bello, un ricordo o perché hai scelto questo regalo…', 'Κάτι ωραίο, μια ανάμνηση ή γιατί επιλέξατε αυτό το δώρο…', 'Etwas Liebes, eine Erinnerung oder warum du dieses Geschenk gewählt hast…'];
+$rows[] = ['Message:', 'Messaggio:', 'Μήνυμα:', 'Nachricht:'];
+$rows[] = ['Message from the guest', 'Messaggio dall\'ospite', 'Μήνυμα από τον καλεσμένο', 'Nachricht vom Gast'];
+
 // Admin: Audit log
 $rows[] = ['Audit log', 'Registro attività', 'Ιστορικό ενεργειών', 'Aktionsprotokoll'];
 $rows[] = ['Recent administrative actions on this site.', 'Azioni recenti eseguite dagli amministratori.', 'Πρόσφατες ενέργειες διαχειριστή στον ιστότοπο.', 'Letzte Administrator-Aktionen auf dieser Seite.'];

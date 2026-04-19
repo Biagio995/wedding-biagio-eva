@@ -129,3 +129,40 @@ td.actions form {
     line-height: 1.45;
     max-width: 42rem;
 }
+
+.registry-admin-msg {
+    display: block;
+    margin-top: 0.35rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.4;
+}
+
+.registry-admin-msg__label {
+    font-weight: 600;
+    color: var(--text);
+    margin-right: 0.3rem;
+}
+
+.registry-admin-msg__text {
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin: 0;
+}
+
+.registry-admin-msg--box {
+    padding: 0.75rem 0.9rem;
+    background: rgba(212, 180, 140, 0.12);
+    border: 1px solid rgba(212, 180, 140, 0.3);
+    border-radius: 10px;
+    margin-bottom: 0.75rem;
+}
+
+.registry-admin-msg--box .registry-admin-msg__label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+}

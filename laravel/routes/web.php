@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AuditLogController as AdminAuditLogController;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
+use App\Http\Controllers\Admin\GalleryQrController as AdminGalleryQrController;
 use App\Http\Controllers\Admin\GuestController as AdminGuestController;
 use App\Http\Controllers\Admin\PhotoController as AdminPhotoController;
 use App\Http\Controllers\Admin\RegistryItemController as AdminRegistryItemController;
@@ -162,5 +163,8 @@ Route::prefix('admin')->name('admin.')->group(function (): void {
             ->name('songs.destroy');
 
         Route::get('audit', [AdminAuditLogController::class, 'index'])->name('audit.index');
+
+        Route::get('gallery-qr', [AdminGalleryQrController::class, 'card'])
+            ->name('gallery.qr.card');
     });
 });

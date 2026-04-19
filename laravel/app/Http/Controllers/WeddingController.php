@@ -35,6 +35,7 @@ class WeddingController extends Controller
             'faqs' => $this->normalizedFaqs(),
             'songRecommendationsEnabled' => (bool) config('wedding.song_recommendations.enabled', true),
             'ownSongRecommendations' => PublicSongRecommendationController::ownSuggestions($request),
+            'publicSongRecommendations' => PublicSongRecommendationController::publicFeed(),
         ]);
     }
 
@@ -50,7 +51,45 @@ class WeddingController extends Controller
         return view('wedding-attend', [
             'guest' => $guest,
             'event' => config('wedding.event'),
+            'rsvpDeadline' => $this->resolveRsvpDeadline(),
+            'rsvpConfirmation' => $request->session()->get('wedding_rsvp_summary'),
         ]);
+    }
+
+    /**
+     * Returns a normalised view of the configured RSVP deadline:
+     *   - `date`: Carbon end-of-day in the event timezone (or null if unconfigured),
+     *   - `formatted`: locale-formatted full date string,
+     *   - `passed`: true when the deadline is in the past.
+     *
+     * @return array{date: \Illuminate\Support\Carbon|null, formatted: ?string, passed: bool}
+     */
+    private function resolveRsvpDeadline(): array
+    {
+        $raw = config('wedding.rsvp.deadline');
+        if (! is_string($raw) || trim($raw) === '') {
+            return ['date' => null, 'formatted' => null, 'passed' => false];
+        }
+
+        $event = config('wedding.event');
+        $timezone = is_array($event) && isset($event['timezone']) && is_string($event['timezone']) && $event['timezone'] !== ''
+            ? $event['timezone']
+            : (string) config('app.timezone', 'UTC');
+
+        try {
+            $deadline = \Illuminate\Support\Carbon::parse(trim($raw), $timezone)->endOfDay();
+        } catch (\Throwable) {
+            return ['date' => null, 'formatted' => null, 'passed' => false];
+        }
+
+        $locale = app()->getLocale();
+        $formatted = $deadline->copy()->locale($locale)->isoFormat('LL');
+
+        return [
+            'date' => $deadline,
+            'formatted' => $formatted,
+            'passed' => $deadline->isPast(),
+        ];
     }
 
     /**
@@ -152,7 +191,39 @@ class WeddingController extends Controller
                     ? __('Your RSVP has been updated.')
                     : __('Thank you — your response has been saved.'),
             )
-            ->with('wedding_confirmation_email_sent', $confirmationEmailSent);
+            ->with('wedding_confirmation_email_sent', $confirmationEmailSent)
+            ->with('wedding_rsvp_summary', $this->buildRsvpSummary($guest, $hadPriorRsvp));
+    }
+
+    /**
+     * Snapshot of the just-saved RSVP, rendered on the Attend page as a
+     * dedicated thank-you card (US-05/US-07 UX).
+     *
+     * @return array{
+     *   attending: bool,
+     *   name: string,
+     *   email: ?string,
+     *   guests_count: ?int,
+     *   companion_names: array<int, string>,
+     *   is_update: bool,
+     * }
+     */
+    private function buildRsvpSummary(Guest $guest, bool $hadPriorRsvp): array
+    {
+        $companions = is_array($guest->companion_names) ? $guest->companion_names : [];
+        $companions = array_values(array_filter(array_map(
+            static fn ($n): string => is_string($n) ? trim($n) : '',
+            $companions,
+        ), static fn (string $n): bool => $n !== ''));
+
+        return [
+            'attending' => $guest->rsvp_status === 'yes',
+            'name' => (string) $guest->name,
+            'email' => $guest->email,
+            'guests_count' => $guest->guests_count !== null ? (int) $guest->guests_count : null,
+            'companion_names' => $companions,
+            'is_update' => $hadPriorRsvp,
+        ];
     }
 
     /** US-24: optional email to the organiser when an RSVP is saved. */

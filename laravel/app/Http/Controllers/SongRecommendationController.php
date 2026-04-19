@@ -85,6 +85,39 @@ class SongRecommendationController extends Controller
             ->get();
     }
 
+    /** Maximum number of songs shown in the public "what others suggested" list. */
+    public const PUBLIC_FEED_LIMIT = 30;
+
+    /**
+     * Recent suggestions shown to everyone on the wedding page as social proof
+     * and to reduce duplicates. Returns lightweight rows with only title/artist
+     * and a first-name label — never emails, notes, or session tokens.
+     *
+     * @return \Illuminate\Support\Collection<int, array{title: string, artist: ?string, author: string}>
+     */
+    public static function publicFeed(): \Illuminate\Support\Collection
+    {
+        return SongRecommendation::query()
+            ->with('guest:id,name')
+            ->orderByDesc('created_at')
+            ->limit(self::PUBLIC_FEED_LIMIT)
+            ->get(['id', 'guest_id', 'submitted_by', 'title', 'artist', 'created_at'])
+            ->map(static function (SongRecommendation $song): array {
+                $full = $song->displayAuthor();
+                $first = '—';
+                if (is_string($full) && $full !== '' && $full !== '—') {
+                    $parts = preg_split('/\s+/u', trim($full)) ?: [];
+                    $first = $parts[0] ?? '—';
+                }
+
+                return [
+                    'title' => (string) $song->title,
+                    'artist' => $song->artist !== null ? (string) $song->artist : null,
+                    'author' => $first,
+                ];
+            });
+    }
+
     private function currentGuest(Request $request): ?Guest
     {
         $id = $request->session()->get(WeddingController::SESSION_WEDDING_GUEST_ID);

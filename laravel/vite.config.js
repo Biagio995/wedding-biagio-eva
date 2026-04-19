@@ -27,6 +27,7 @@ export default defineConfig({
                 'resources/css/admin/seating.css',
                 'resources/css/admin/audit.css',
                 'resources/css/admin/songs.css',
+                'resources/css/admin/gallery-qr.css',
             ],
             refresh: true,
         }),

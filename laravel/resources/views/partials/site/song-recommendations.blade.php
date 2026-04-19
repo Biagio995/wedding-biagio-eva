@@ -93,4 +93,25 @@
             @endforeach
         </ul>
     @endif
+
+    @php
+        $publicSongRecommendations = $publicSongRecommendations ?? collect();
+    @endphp
+    @if ($publicSongRecommendations->isNotEmpty())
+        <h3 class="song-list__title song-list__title--public">{{ __('Already suggested') }}</h3>
+        <p class="song-list__hint">{{ __('A quick look at what other guests have asked for — so you can avoid picking the same song twice.') }}</p>
+        <ul class="song-list song-list--public">
+            @foreach ($publicSongRecommendations as $entry)
+                <li class="song-list__item song-list__item--public">
+                    <div class="song-list__text">
+                        <strong>{{ $entry['title'] }}</strong>
+                        @if (!empty($entry['artist']))
+                            <span class="song-list__artist">— {{ $entry['artist'] }}</span>
+                        @endif
+                        <span class="song-list__author">· {{ $entry['author'] }}</span>
+                    </div>
+                </li>
+            @endforeach
+        </ul>
+    @endif
 </div>

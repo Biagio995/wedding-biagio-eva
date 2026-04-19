@@ -1,0 +1,203 @@
+@import './tokens.css';
+@import './locale-switcher.css';
+@import './body-admin.css';
+
+.wrap {
+    max-width: 52rem;
+    margin: 0 auto;
+}
+
+h1 {
+    font-size: 1.25rem;
+    margin: 0 0 0.35rem;
+    font-weight: 600;
+}
+
+.sub {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.toolbar {
+    margin-bottom: 1rem;
+    font-size: 0.88rem;
+}
+
+.toolbar a {
+    color: var(--accent);
+}
+
+.toolbar form {
+    display: inline;
+}
+
+button.link {
+    background: transparent;
+    border: none;
+    color: var(--accent);
+    font-weight: 500;
+    text-decoration: underline;
+    font-size: inherit;
+    cursor: pointer;
+    padding: 0;
+    font-family: inherit;
+}
+
+.cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.85rem;
+    align-items: center;
+    margin: 1rem 0 1.5rem;
+    font-size: 0.9rem;
+}
+
+.cta a {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 0.95rem;
+    border: none;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--on-accent);
+    font-weight: 600;
+    font-size: 0.88rem;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    text-decoration: none;
+    font-family: inherit;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(58, 50, 42, 0.12);
+}
+
+.gallery-qr-card {
+    max-width: 26rem;
+    margin: 0.5rem auto 2rem;
+    padding: 2.25rem 1.75rem;
+    background: #fff;
+    color: var(--text);
+    border: 1px solid rgba(58, 50, 42, 0.1);
+    border-radius: calc(var(--radius) + 6px);
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(58, 50, 42, 0.1);
+}
+
+.gallery-qr-card__brand {
+    font-size: 0.72rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 0.85rem;
+}
+
+.gallery-qr-card__headline {
+    font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+    font-size: clamp(1.45rem, 4vw, 1.95rem);
+    font-weight: 500;
+    line-height: 1.2;
+    margin: 0 0 0.65rem;
+    color: var(--text);
+}
+
+.gallery-qr-card__lead {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--muted);
+    margin: 0 auto 1.4rem;
+    max-width: 22rem;
+}
+
+.gallery-qr-card__qr-wrap {
+    display: inline-block;
+    padding: 0.9rem;
+    background: #fff;
+    border: 1px solid rgba(58, 50, 42, 0.08);
+    border-radius: var(--radius);
+}
+
+.gallery-qr-card__qr {
+    display: block;
+    width: 15rem;
+    height: 15rem;
+    max-width: 100%;
+}
+
+.gallery-qr-card__footer {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin: 1.1rem 0 0;
+    font-style: italic;
+}
+
+@media print {
+    /**
+     * Margin 0 suppresses the browser's default running headers/footers
+     * (page URL, timestamp, page numbers). We reintroduce breathing room via
+     * .gallery-qr-card's own margin below.
+     */
+    @page {
+        size: auto;
+        margin: 0;
+    }
+
+    html,
+    body {
+        background: #fff !important;
+        color: #000 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /**
+     * Hide every ancestor-level element, then re-show only the printable card
+     * and its descendants. This isolates the card regardless of what else the
+     * admin layout injects (toolbars, language switcher, future widgets).
+     */
+    body * {
+        visibility: hidden;
+    }
+
+    .gallery-qr-card,
+    .gallery-qr-card * {
+        visibility: visible;
+    }
+
+    .gallery-qr-card {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        margin: 12mm auto 0;
+        max-width: 22rem;
+        padding: 1.4rem 1.25rem !important;
+        box-shadow: none !important;
+        border: 1px dashed rgba(0, 0, 0, 0.35);
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+
+    /** Downsize the QR slightly so the whole card fits on a single sheet. */
+    .gallery-qr-card__qr {
+        width: 12rem !important;
+        height: 12rem !important;
+    }
+
+    .gallery-qr-card__lead {
+        margin-bottom: 1rem !important;
+    }
+
+    .gallery-qr-card__footer {
+        margin-top: 0.9rem !important;
+    }
+}

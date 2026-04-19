@@ -178,6 +178,38 @@
     padding-top: 0.2rem;
 }
 
+.registry-claim__message {
+    margin-top: 0.65rem;
+}
+
+.registry-claim__label--message {
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-weight: 500;
+    text-transform: none;
+    letter-spacing: normal;
+    margin-bottom: 0.35rem;
+    display: block;
+}
+
+.registry-claim__textarea {
+    width: 100%;
+    padding: 0.55rem 0.65rem;
+    border-radius: 10px;
+    border: 1px solid rgba(58, 50, 42, 0.18);
+    background: #fff;
+    font: inherit;
+    resize: vertical;
+    min-height: 3rem;
+    box-sizing: border-box;
+}
+
+.registry-claim__textarea:focus {
+    outline: none;
+    border-color: rgba(198, 165, 117, 0.55);
+    box-shadow: 0 0 0 3px rgba(198, 165, 117, 0.16);
+}
+
 .registry-item__title {
     font-size: 1.05rem;
     font-weight: 600;

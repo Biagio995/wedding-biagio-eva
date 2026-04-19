@@ -62,6 +62,24 @@ class CalendarIcsTest extends TestCase
         $this->assertStringContainsString('biagioeva-wedding.ics', $disposition);
     }
 
+    public function test_event_duration_hours_controls_dtend(): void
+    {
+        Config::set('wedding.event.title', 'Late-night wedding');
+        Config::set('wedding.event.calendar_title', '');
+        Config::set('wedding.event.date', '2027-06-26 19:00');
+        Config::set('wedding.event.timezone', 'Europe/Athens');
+        Config::set('wedding.event.duration_hours', 7);
+
+        $body = (string) $this->get('/w/calendar.ics')->assertOk()->getContent();
+
+        /**
+         * 2027-06-26 19:00 Athens (UTC+3) = 2027-06-26 16:00 UTC
+         * + 7h = 2027-06-26 23:00 UTC → 2027-06-27 02:00 Athens.
+         */
+        $this->assertStringContainsString('DTSTART:20270626T160000Z', $body);
+        $this->assertStringContainsString('DTEND:20270626T230000Z', $body);
+    }
+
     public function test_ics_endpoint_tolerates_missing_optional_fields(): void
     {
         Config::set('wedding.event.title', 'Simple wedding');

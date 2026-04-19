@@ -59,6 +59,7 @@ class RegistryItemController extends Controller
             $data['claimed_by_guest_id'] = null;
             $data['claimed_at'] = null;
             $data['claimed_by_name'] = null;
+            $data['claim_message'] = null;
         }
 
         $registryItem->update($data);

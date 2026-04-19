@@ -98,6 +98,12 @@
                                     @else
                                         {{ __('Anonymous (browser)') }}
                                     @endif
+                                    @if (filled($item->claim_message))
+                                        <div class="registry-admin-msg">
+                                            <span class="registry-admin-msg__label">{{ __('Message:') }}</span>
+                                            <span class="registry-admin-msg__text">{{ $item->claim_message }}</span>
+                                        </div>
+                                    @endif
                                 @else
                                     {{ __('Nobody yet') }}
                                 @endif

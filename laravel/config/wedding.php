@@ -39,7 +39,13 @@ return [
         /** Local wall-clock start: interpreted in `timezone` (or app timezone). */
         'date' => env('WEDDING_EVENT_DATE', '2027-06-26 19:00'),
         'timezone' => env('WEDDING_EVENT_TIMEZONE', 'Europe/Athens'),
-        'location_name' => env('WEDDING_LOCATION_NAME', 'Venue TBD'),
+        /**
+         * Event duration in hours, used to compute DTEND for the .ics calendar file and
+         * the Google/Outlook "add to calendar" deep-links. Defaults to 7 so a 19:00 start
+         * ends at 02:00 the next day.
+         */
+        'duration_hours' => max(1, (int) env('WEDDING_EVENT_DURATION_HOURS', 7)),
+        'location_name' => env('WEDDING_LOCATION_NAME', ''),
         'location_address' => env('WEDDING_LOCATION_ADDRESS', ''),
         /** Full Google Maps URL (place or directions) for the reception venue. Shown only if non-empty. */
         'maps_url' => env('WEDDING_MAPS_URL', ''),
@@ -94,6 +100,14 @@ return [
         'send_confirmation_email' => env('WEDDING_SEND_RSVP_CONFIRMATION_EMAIL', false),
         /** US-24: optional admin inbox when any guest submits or updates an RSVP (requires MAIL_*). */
         'notify_admin_email' => env('WEDDING_ADMIN_RSVP_NOTIFY_EMAIL'),
+        /**
+         * Optional RSVP deadline (ISO date, e.g. `2027-06-01`). When set:
+         *   - the Attend page shows "Please respond by …" above the form;
+         *   - after the date passes, a notice tells guests the deadline passed
+         *     but their (late) response will still be forwarded to the couple.
+         * Leave empty to hide the deadline UI entirely.
+         */
+        'deadline' => env('WEDDING_RSVP_DEADLINE'),
     ],
 
     /*

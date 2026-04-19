@@ -67,6 +67,20 @@
                                                 <span class="registry-checkbox-text">{{ __('I will bring this gift') }}</span>
                                             </label>
                                         </div>
+                                        <div class="registry-claim__message">
+                                            <label class="registry-claim__label registry-claim__label--message"
+                                                   for="registry-message-{{ $item->id }}">
+                                                {{ __('Leave a note for the couple (optional)') }}
+                                            </label>
+                                            <textarea
+                                                id="registry-message-{{ $item->id }}"
+                                                name="claim_message"
+                                                class="registry-claim__textarea"
+                                                rows="2"
+                                                maxlength="1000"
+                                                placeholder="{{ __('Something kind, a memory, or why you picked this gift…') }}"
+                                            >{{ old('claim_message') }}</textarea>
+                                        </div>
                                     </form>
                                     <p class="registry-item__meta">
                                         <span class="tag tag-free">{{ __('Available') }}</span>

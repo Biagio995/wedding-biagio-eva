@@ -13,8 +13,8 @@ use Illuminate\Support\Str;
  */
 class WeddingCalendarIcsGenerator
 {
-    /** Default duration when no explicit end is configured. */
-    private const DEFAULT_DURATION_HOURS = 5;
+    /** Fallback duration in hours when the event config doesn't supply one. */
+    private const DEFAULT_DURATION_HOURS = 7;
 
     /** @param array<string, mixed> $event */
     public function build(array $event, string $appUrl): string
@@ -83,7 +83,12 @@ class WeddingCalendarIcsGenerator
         $dateRaw = (string) ($event['date'] ?? 'now');
         $start = Carbon::parse($dateRaw, $timezone);
 
-        $end = $start->copy()->addHours(self::DEFAULT_DURATION_HOURS);
+        $durationHours = (int) ($event['duration_hours'] ?? self::DEFAULT_DURATION_HOURS);
+        if ($durationHours < 1) {
+            $durationHours = self::DEFAULT_DURATION_HOURS;
+        }
+
+        $end = $start->copy()->addHours($durationHours);
 
         return [$start, $end];
     }

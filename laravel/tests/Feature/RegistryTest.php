@@ -132,6 +132,59 @@ class RegistryTest extends TestCase
             ->assertDontSee('Le tue prenotazioni', false);
     }
 
+    public function test_guest_can_attach_an_optional_claim_message(): void
+    {
+        $item = RegistryItem::query()->create([
+            'title' => 'Espresso Cups',
+            'sort_order' => 0,
+            'is_active' => true,
+        ]);
+
+        $this->post(route('registry.claim', $item), [
+            'name' => 'Giulia',
+            'claim_message' => 'I saw this and instantly thought of your kitchen. Lots of love!',
+        ])->assertRedirect(route('registry.show'));
+
+        $item->refresh();
+        $this->assertSame('Giulia', $item->claimed_by_name);
+        $this->assertSame(
+            'I saw this and instantly thought of your kitchen. Lots of love!',
+            $item->claim_message,
+        );
+    }
+
+    public function test_claim_message_is_optional_and_trims_to_null_when_blank(): void
+    {
+        $item = RegistryItem::query()->create([
+            'title' => 'Soft Blanket',
+            'sort_order' => 0,
+            'is_active' => true,
+        ]);
+
+        $this->post(route('registry.claim', $item), [
+            'name' => 'Pietro',
+            'claim_message' => "   \n  ",
+        ])->assertRedirect(route('registry.show'));
+
+        $item->refresh();
+        $this->assertSame('Pietro', $item->claimed_by_name);
+        $this->assertNull($item->claim_message);
+    }
+
+    public function test_claim_message_rejects_over_max_length(): void
+    {
+        $item = RegistryItem::query()->create([
+            'title' => 'Napkins',
+            'sort_order' => 0,
+            'is_active' => true,
+        ]);
+
+        $this->post(route('registry.claim', $item), [
+            'name' => 'Long Typer',
+            'claim_message' => str_repeat('a', 1001),
+        ])->assertSessionHasErrors('claim_message');
+    }
+
     public function test_admin_can_manage_registry_items(): void
     {
         Config::set('wedding.admin.password_hash', bcrypt('secret'));

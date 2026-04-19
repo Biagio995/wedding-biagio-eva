@@ -7,7 +7,66 @@
         @if (session('wedding_error'))
             <div class="flash err" role="alert">{{ session('wedding_error') }}</div>
         @endif
-        @if (session('wedding_success'))
+
+        @php
+            $rsvpConfirmation = $rsvpConfirmation ?? null;
+        @endphp
+        @if ($rsvpConfirmation)
+            <div class="rsvp-confirmation card reveal-on-scroll"
+                 id="rsvp-confirmation"
+                 role="status"
+                 aria-live="polite">
+                <div class="rsvp-confirmation__badge" aria-hidden="true">
+                    @if ($rsvpConfirmation['attending'])
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                    @else
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M8 12h8"/></svg>
+                    @endif
+                </div>
+                <h2 class="rsvp-confirmation__title">
+                    @if ($rsvpConfirmation['is_update'])
+                        {{ __('Your RSVP has been updated.') }}
+                    @else
+                        {{ __('Thank you — your response has been saved.') }}
+                    @endif
+                </h2>
+                <dl class="rsvp-confirmation__facts">
+                    <div>
+                        <dt>{{ __('Name') }}</dt>
+                        <dd>{{ $rsvpConfirmation['name'] }}</dd>
+                    </div>
+                    <div>
+                        <dt>{{ __('Attending') }}</dt>
+                        <dd>{{ $rsvpConfirmation['attending'] ? __('Yes') : __('No') }}</dd>
+                    </div>
+                    @if ($rsvpConfirmation['attending'] && $rsvpConfirmation['guests_count'])
+                        <div>
+                            <dt>{{ __('Number of guests') }}</dt>
+                            <dd>{{ $rsvpConfirmation['guests_count'] }}</dd>
+                        </div>
+                    @endif
+                    @if ($rsvpConfirmation['attending'] && !empty($rsvpConfirmation['companion_names']))
+                        <div>
+                            <dt>{{ __('Companion names') }}</dt>
+                            <dd>{{ implode(', ', $rsvpConfirmation['companion_names']) }}</dd>
+                        </div>
+                    @endif
+                </dl>
+                @if (session('wedding_confirmation_email_sent'))
+                    <p class="rsvp-confirmation__email-note">{{ __('We also sent a confirmation to your email address.') }}</p>
+                @endif
+                <div class="rsvp-confirmation__actions">
+                    @if ($rsvpConfirmation['attending'])
+                        @include('partials.site.calendar-picker', ['event' => $event])
+                    @endif
+                    <a class="btn btn--ghost" href="{{ route('gallery.show') }}">{{ __('Share photos') }}</a>
+                    @if (!empty(config('wedding.song_recommendations.enabled', true)))
+                        <a class="btn btn--ghost" href="{{ route('wedding.show') }}#dj-songs">{{ __('Suggest a song') }}</a>
+                    @endif
+                    <a class="rsvp-confirmation__change" href="#attend-rsvp">{{ __('Change my answer') }}</a>
+                </div>
+            </div>
+        @elseif (session('wedding_success'))
             <div class="flash ok" role="status" aria-live="polite">
                 <strong>{{ session('wedding_success') }}</strong>
                 @if (session('wedding_confirmation_email_sent'))
@@ -20,6 +79,22 @@
             <h1>{{ __('Attend') }}</h1>
             <p class="sub">{{ __('Everything you need to join us: how to reach the venues and your RSVP.') }}</p>
         </div>
+
+        @php
+            $deadlineInfo = $rsvpDeadline ?? ['date' => null, 'formatted' => null, 'passed' => false];
+        @endphp
+        @if (! empty($deadlineInfo['formatted']))
+            <div class="rsvp-deadline @if ($deadlineInfo['passed']) rsvp-deadline--passed @endif reveal-on-scroll"
+                 role="note">
+                @if ($deadlineInfo['passed'])
+                    <strong>{{ __('The RSVP deadline has passed.') }}</strong>
+                    <span>{{ __('You can still reply, but please let us know directly so we can update the plans.') }}</span>
+                @else
+                    <strong>{{ __('Please respond by :date.', ['date' => $deadlineInfo['formatted']]) }}</strong>
+                    <span>{{ __('It helps us confirm final numbers with the venue and caterer.') }}</span>
+                @endif
+            </div>
+        @endif
 
         @php
             $companionsToText = static function ($names): string {

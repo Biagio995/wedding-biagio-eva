@@ -16,6 +16,7 @@
         'page-seating' => 'resources/css/admin/seating.css',
         'page-audit' => 'resources/css/admin/audit.css',
         'page-songs' => 'resources/css/admin/songs.css',
+        'page-gallery-qr' => 'resources/css/admin/gallery-qr.css',
         default => 'resources/css/admin/dashboard.css',
     };
 @endphp

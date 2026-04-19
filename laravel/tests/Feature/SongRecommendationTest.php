@@ -118,17 +118,35 @@ class SongRecommendationTest extends TestCase
             'title' => 'Starlight',
             'artist' => 'Muse',
         ]);
-        SongRecommendation::query()->create([
-            'title' => 'Should not appear for other browser',
-            'session_token' => 'another-token',
-        ]);
 
         $this->withSession([WeddingController::SESSION_WEDDING_GUEST_ID => $guest->id])
             ->get('/w')
             ->assertOk()
+            ->assertSee('Your suggestions', false)
             ->assertSee('Starlight')
-            ->assertSee('Muse')
-            ->assertDontSee('Should not appear for other browser');
+            ->assertSee('Muse');
+    }
+
+    public function test_public_feed_lists_every_recent_song_without_pii(): void
+    {
+        Config::set('wedding.admin.password_hash', null);
+
+        SongRecommendation::query()->create([
+            'submitted_by' => 'Maria Rossi',
+            'title' => 'Africa',
+            'artist' => 'Toto',
+            'notes' => 'private note that must stay hidden',
+            'session_token' => 'another-browser',
+        ]);
+
+        $response = $this->get('/w')->assertOk();
+        $response->assertSee('Already suggested', false);
+        $response->assertSee('Africa');
+        $response->assertSee('Toto');
+        /** First name only; surname and notes never leak in the public feed. */
+        $response->assertSee('· Maria', false);
+        $response->assertDontSee('Rossi');
+        $response->assertDontSee('private note that must stay hidden');
     }
 
     public function test_admin_index_requires_auth_and_lists_songs(): void
