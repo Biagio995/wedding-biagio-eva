@@ -98,7 +98,7 @@ class WeddingTest extends TestCase
                 'guests_count' => 2,
                 'notes' => 'Veggie meal',
             ])
-            ->assertRedirect(route('wedding.show'))
+            ->assertRedirect(route('wedding.attend'))
             ->assertSessionHas('wedding_success', __('Thank you — your response has been saved.'))
             ->assertSessionHas('wedding_confirmation_email_sent', false);
 
@@ -243,7 +243,7 @@ class WeddingTest extends TestCase
             ->post('/w/rsvp', [
                 'rsvp_status' => 'no',
             ])
-            ->assertRedirect(route('wedding.show'))
+            ->assertRedirect(route('wedding.attend'))
             ->assertSessionHas('wedding_success');
 
         $guest->refresh();
@@ -310,7 +310,7 @@ class WeddingTest extends TestCase
                 'guests_count' => 1,
                 'notes' => $detail,
             ])
-            ->assertRedirect(route('wedding.show'))
+            ->assertRedirect(route('wedding.attend'))
             ->assertSessionHas('wedding_success');
 
         $guest->refresh();
@@ -346,7 +346,7 @@ class WeddingTest extends TestCase
                 'rsvp_status' => 'no',
                 'notes' => "   \n  ",
             ])
-            ->assertRedirect(route('wedding.show'));
+            ->assertRedirect(route('wedding.attend'));
 
         $guest->refresh();
         $this->assertNull($guest->notes);
@@ -370,7 +370,7 @@ class WeddingTest extends TestCase
             'guests_count' => 2,
             'notes' => 'Table near exit',
         ])
-            ->assertRedirect(route('wedding.show'))
+            ->assertRedirect(route('wedding.attend'))
             ->assertSessionHas('wedding_success', __('Thank you — your response has been saved.'));
 
         $guest = Guest::query()->where('name', 'Walk-in Guest')->first();

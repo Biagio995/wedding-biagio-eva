@@ -24,6 +24,12 @@ return [
     'event' => [
         'title' => env('WEDDING_EVENT_TITLE', 'Our wedding'),
         /**
+         * Short monogram shown in the top-left brand badge (navbar). Overrides the
+         * auto-generated initials derived from the title. Use 2–3 characters for
+         * best visuals, e.g. "B&E".
+         */
+        'monogram' => env('WEDDING_MONOGRAM', 'B&E'),
+        /**
          * Optional separate title used only for the downloadable .ics calendar event (SUMMARY
          * and filename). Useful when the site H1 is generic ("Our wedding") but you want the
          * calendar entry to carry the couple's names (e.g. "Biagio & Eva Wedding").
@@ -70,6 +76,15 @@ return [
         //     'question' => 'Is there parking at the venue?',
         //     'answer' => 'Free parking is available on-site, and there is overflow parking 3 minutes on foot.',
         // ],
+    ],
+
+    /*
+    | Guest song recommendations for the DJ. When enabled, a small form appears on the
+    | public wedding page so guests can suggest songs; admins can review, export (CSV)
+    | and delete entries.
+    */
+    'song_recommendations' => [
+        'enabled' => (bool) env('WEDDING_SONG_RECOMMENDATIONS_ENABLED', true),
     ],
 
     /*

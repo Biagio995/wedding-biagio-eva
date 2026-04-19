@@ -15,6 +15,7 @@
         'page-registry' => 'resources/css/admin/registry.css',
         'page-seating' => 'resources/css/admin/seating.css',
         'page-audit' => 'resources/css/admin/audit.css',
+        'page-songs' => 'resources/css/admin/songs.css',
         default => 'resources/css/admin/dashboard.css',
     };
 @endphp

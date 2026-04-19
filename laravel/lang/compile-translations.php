@@ -16,9 +16,9 @@ $rows = [
     ['Approve', 'Approva', 'Έγκριση', 'Freigeben'],
     ['Approve or delete uploads. Deleted files are removed from the server.', 'Approva o elimina gli invii. I file eliminati vengono rimossi dal server.', 'Έγκριση ή διαγραφή μεταφορτώσεων. Τα διαγραμμένα αρχεία αφαιρούνται από τον διακομιστή.', 'Uploads genehmigen oder löschen. Gelöschte Dateien werden vom Server entfernt.'],
     ['Approved', 'Approvate', 'Εγκεκριμένα', 'Freigegeben'],
-    ['Attendance', 'Partecipazione', 'Συμμετοχή', 'Teilnahme'],
+    ['Attendance', 'Partecipazione', 'Παρουσία', 'Teilnahme'],
     ['Attending', 'Partecipano', 'Θα παρευρεθούν', 'Zugesagt'],
-    ['Attending (invitations)', 'Partecipano (inviti)', 'Συμμετοχή (προσκλήσεις)', 'Zugesagt (Einladungen)'],
+    ['Attending (invitations)', 'Partecipano (inviti)', 'Παρουσία (προσκλήσεις)', 'Zugesagt (Einladungen)'],
     ['Awaiting reply', 'In attesa di risposta', 'Αναμονή απάντησης', 'Antwort ausstehend'],
     ['Camera or gallery — multi-select', 'Fotocamera o galleria — selezione multipla', 'Κάμερα ή συλλογή — πολλαπλή επιλογή', 'Kamera oder Galerie — Mehrfachauswahl'],
     ['Choose a file.', 'Scegli un file.', 'Επιλέξτε αρχείο.', 'Wählen Sie eine Datei.'],
@@ -282,6 +282,38 @@ $rows[] = ['Unassigned guests', 'Ospiti non assegnati', 'Μη ανατεθειμ
 $rows[] = ['Everyone has a table.', 'Tutti hanno un tavolo.', 'Όλοι έχουν τραπέζι.', 'Alle haben einen Tisch.'];
 $rows[] = ['Edit table', 'Modifica tavolo', 'Επεξεργασία τραπεζιού', 'Tisch bearbeiten'];
 $rows[] = ['Back to seating chart', 'Torna alla disposizione tavoli', 'Πίσω στη διάταξη τραπεζιών', 'Zurück zur Sitzordnung'];
+
+// Attend page (map + RSVP grouped, linked from navbar)
+$rows[] = ['Attend', 'Partecipa', 'Παρουσία', 'Teilnehmen'];
+$rows[] = ['Everything you need to join us: how to reach the venues and your RSVP.', 'Tutto ciò che serve per essere con noi: come raggiungere le sedi e la tua conferma.', 'Όλα όσα χρειάζεστε για να συμμετέχετε: πώς θα φτάσετε στους χώρους και η επιβεβαίωση συμμετοχής.', 'Alles, was ihr zum Mitfeiern braucht: Anreise zu den Veranstaltungsorten und eure Zusage.'];
+$rows[] = ['Find the directions to the church and reception, and confirm your RSVP on a dedicated page.', 'Trova le indicazioni per la chiesa e il ricevimento e conferma la partecipazione in una pagina dedicata.', 'Βρείτε τις οδηγίες για την εκκλησία και τη δεξίωση και επιβεβαιώστε τη συμμετοχή σας σε μια ειδική σελίδα.', 'Findet die Anfahrt zu Kirche und Empfang und sagt eure Teilnahme auf einer eigenen Seite zu.'];
+$rows[] = ['Go to Attend page', 'Vai alla pagina Partecipa', 'Μετάβαση στη σελίδα Παρουσίας', 'Zur Teilnahme-Seite'];
+
+// Guest song recommendations (public page + admin)
+$rows[] = ['Song suggestions for the DJ', 'Canzoni da suggerire al DJ', 'Προτάσεις τραγουδιών για τον DJ', 'Songwünsche für den DJ'];
+$rows[] = ['Tell us which songs must absolutely play — we will share the list with the DJ.', 'Dicci quali canzoni non devono mancare — passeremo la lista al DJ.', 'Πείτε μας ποια τραγούδια πρέπει οπωσδήποτε να ακουστούν — θα δώσουμε τη λίστα στον DJ.', 'Sag uns, welche Songs auf keinen Fall fehlen dürfen — wir geben die Liste dem DJ.'];
+$rows[] = ['Song title', 'Titolo della canzone', 'Τίτλος τραγουδιού', 'Songtitel'];
+$rows[] = ['Artist (optional)', 'Artista (facoltativo)', 'Καλλιτέχνης (προαιρετικό)', 'Künstler (optional)'];
+$rows[] = ['Note for the DJ (optional)', 'Nota per il DJ (facoltativa)', 'Σημείωση για τον DJ (προαιρετικό)', 'Notiz für den DJ (optional)'];
+$rows[] = ['Add song', 'Aggiungi canzone', 'Προσθήκη τραγουδιού', 'Song hinzufügen'];
+$rows[] = ['Your suggestions', 'Le tue proposte', 'Οι προτάσεις σου', 'Deine Vorschläge'];
+$rows[] = ['Remove', 'Rimuovi', 'Αφαίρεση', 'Entfernen'];
+$rows[] = ['Remove :title', 'Rimuovi :title', 'Αφαίρεση :title', ':title entfernen'];
+$rows[] = ['Thanks! Your song suggestion has been added.', 'Grazie! La tua proposta è stata aggiunta.', 'Ευχαριστούμε! Η πρότασή σου προστέθηκε.', 'Danke! Dein Vorschlag wurde hinzugefügt.'];
+$rows[] = ['Song suggestion removed.', 'Proposta rimossa.', 'Η πρόταση αφαιρέθηκε.', 'Vorschlag entfernt.'];
+$rows[] = ['Please enter a song title.', 'Inserisci il titolo della canzone.', 'Εισαγάγετε τίτλο τραγουδιού.', 'Bitte gib einen Songtitel an.'];
+$rows[] = ['Song title cannot exceed :max characters.', 'Il titolo non può superare i :max caratteri.', 'Ο τίτλος δεν μπορεί να υπερβαίνει τους :max χαρακτήρες.', 'Der Songtitel darf höchstens :max Zeichen lang sein.'];
+$rows[] = ['Artist name cannot exceed :max characters.', 'Il nome dell\'artista non può superare i :max caratteri.', 'Το όνομα καλλιτέχνη δεν μπορεί να υπερβαίνει τους :max χαρακτήρες.', 'Der Künstlername darf höchstens :max Zeichen lang sein.'];
+$rows[] = ['Note cannot exceed :max characters.', 'La nota non può superare i :max caratteri.', 'Η σημείωση δεν μπορεί να υπερβαίνει τους :max χαρακτήρες.', 'Die Notiz darf höchstens :max Zeichen lang sein.'];
+$rows[] = ['DJ song suggestions', 'Canzoni per il DJ', 'Προτάσεις για τον DJ', 'Songwünsche für den DJ'];
+$rows[] = ['Songs guests want to hear at the reception.', 'Canzoni che gli ospiti vogliono sentire al ricevimento.', 'Τραγούδια που οι καλεσμένοι θέλουν να ακούσουν στη δεξίωση.', 'Songs, die Gäste beim Empfang hören möchten.'];
+$rows[] = ['No song suggestions yet.', 'Ancora nessuna canzone proposta.', 'Δεν υπάρχουν ακόμη προτάσεις τραγουδιών.', 'Noch keine Songvorschläge.'];
+$rows[] = ['Submitted by', 'Inviato da', 'Υποβολή από', 'Eingereicht von'];
+$rows[] = ['Artist', 'Artista', 'Καλλιτέχνης', 'Künstler'];
+$rows[] = ['Note', 'Nota', 'Σημείωση', 'Notiz'];
+$rows[] = ['Export as CSV', 'Esporta in CSV', 'Εξαγωγή σε CSV', 'Als CSV exportieren'];
+$rows[] = ['Delete this song suggestion?', 'Eliminare questa proposta?', 'Διαγραφή αυτής της πρότασης;', 'Diesen Vorschlag löschen?'];
+$rows[] = ['{1} suggestion|[2,*] suggestions', '{1} proposta|[2,*] proposte', '{1} πρόταση|[2,*] προτάσεις', '{1} Vorschlag|[2,*] Vorschläge'];
 
 // Admin: Audit log
 $rows[] = ['Audit log', 'Registro attività', 'Ιστορικό ενεργειών', 'Aktionsprotokoll'];

@@ -12,6 +12,8 @@
         ·
         <a href="{{ route('admin.photos.index') }}">{{ __('Photo moderation') }}</a>
         ·
+        <a href="{{ route('admin.songs.index') }}">{{ __('DJ song suggestions') }}</a>
+        ·
         <a href="{{ route('admin.guests.create') }}">{{ __('Add guest') }}</a>
         ·
         <a href="{{ route('admin.guests.import') }}">{{ __('Import from CSV') }}</a>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\SongRecommendationController as PublicSongRecommendationController;
 use App\Http\Requests\StoreRsvpRequest;
 use App\Mail\RsvpAdminNotificationMail;
 use App\Mail\RsvpConfirmationMail;
@@ -32,6 +33,23 @@ class WeddingController extends Controller
             'guest' => $guest,
             'event' => config('wedding.event'),
             'faqs' => $this->normalizedFaqs(),
+            'songRecommendationsEnabled' => (bool) config('wedding.song_recommendations.enabled', true),
+            'ownSongRecommendations' => PublicSongRecommendationController::ownSuggestions($request),
+        ]);
+    }
+
+    /**
+     * Dedicated page that groups "How to get there" (maps) and the RSVP form,
+     * linked from the navbar so guests have a focused place to reply.
+     */
+    public function attend(Request $request): View
+    {
+        $guestId = $request->session()->get(self::SESSION_WEDDING_GUEST_ID);
+        $guest = $guestId ? Guest::query()->find($guestId) : null;
+
+        return view('wedding-attend', [
+            'guest' => $guest,
+            'event' => config('wedding.event'),
         ]);
     }
 
@@ -127,7 +145,7 @@ class WeddingController extends Controller
         $this->sendAdminRsvpNotification($guest, $hadPriorRsvp);
 
         return redirect()
-            ->route('wedding.show')
+            ->route('wedding.attend')
             ->with(
                 'wedding_success',
                 $hadPriorRsvp

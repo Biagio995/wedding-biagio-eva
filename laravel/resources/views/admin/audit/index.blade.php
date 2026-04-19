@@ -14,6 +14,8 @@
         ·
         <a href="{{ route('admin.photos.index') }}">{{ __('Photo moderation') }}</a>
         ·
+        <a href="{{ route('admin.songs.index') }}">{{ __('DJ song suggestions') }}</a>
+        ·
         <form method="post" action="{{ route('admin.logout') }}" style="display:inline;">
             @csrf
             <button type="submit" class="link">{{ __('Sign out') }}</button>

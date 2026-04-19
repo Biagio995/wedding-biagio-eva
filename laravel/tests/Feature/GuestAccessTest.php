@@ -39,7 +39,7 @@ class GuestAccessTest extends TestCase
                 'guests_count' => 1,
                 'notes' => null,
             ])
-            ->assertRedirect(route('wedding.show'));
+            ->assertRedirect(route('wedding.attend'));
 
         $guest->refresh();
         $this->assertSame('yes', $guest->rsvp_status);

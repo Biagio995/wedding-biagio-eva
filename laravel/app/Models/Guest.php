@@ -65,4 +65,9 @@ class Guest extends Model
     {
         return $this->hasMany(RegistryItem::class, 'claimed_by_guest_id');
     }
+
+    public function songRecommendations(): HasMany
+    {
+        return $this->hasMany(SongRecommendation::class);
+    }
 }

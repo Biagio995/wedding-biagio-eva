@@ -1,0 +1,28 @@
+@import './tokens.css';
+@import './locale-switcher.css';
+@import './body-admin.css';
+@import './page-guest-list.css';
+
+.songs-table td,
+.songs-table th {
+    vertical-align: top;
+}
+
+.song-note {
+    max-width: 22rem;
+    white-space: pre-wrap;
+    word-break: break-word;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.song-actions-col {
+    width: 1%;
+    white-space: nowrap;
+}
+
+.song-empty {
+    color: var(--muted);
+    padding: 2rem;
+    text-align: center;
+}

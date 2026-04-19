@@ -26,6 +26,7 @@ export default defineConfig({
                 'resources/css/admin/registry.css',
                 'resources/css/admin/seating.css',
                 'resources/css/admin/audit.css',
+                'resources/css/admin/songs.css',
             ],
             refresh: true,
         }),

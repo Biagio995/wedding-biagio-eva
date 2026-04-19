@@ -7,9 +7,11 @@ use App\Http\Controllers\Admin\PhotoController as AdminPhotoController;
 use App\Http\Controllers\Admin\RegistryItemController as AdminRegistryItemController;
 use App\Http\Controllers\Admin\RsvpDashboardController as AdminRsvpDashboardController;
 use App\Http\Controllers\Admin\SeatingTableController as AdminSeatingTableController;
+use App\Http\Controllers\Admin\SongRecommendationController as AdminSongRecommendationController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\RegistryController;
+use App\Http\Controllers\SongRecommendationController;
 use App\Http\Controllers\WeddingController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +28,7 @@ Route::get('/locale/{locale}', function (string $locale) {
 // US-29: routes below — guest access via token + session only; no Laravel user registration.
 Route::get('/', [WeddingController::class, 'show'])->name('home');
 Route::get('/w', [WeddingController::class, 'show'])->name('wedding.show');
+Route::get('/w/attend', [WeddingController::class, 'attend'])->name('wedding.attend');
 Route::get('/w/{token}', [WeddingController::class, 'enterByToken'])
     ->where('token', '[A-Za-z0-9_-]+')
     ->middleware('throttle:60,1')
@@ -37,6 +40,14 @@ Route::post('/w/rsvp', [WeddingController::class, 'storeRsvp'])
 Route::get('/w/calendar.ics', [CalendarController::class, 'ics'])
     ->middleware('throttle:60,1')
     ->name('wedding.calendar.ics');
+
+Route::post('/w/songs', [SongRecommendationController::class, 'store'])
+    ->middleware('throttle:30,1')
+    ->name('wedding.songs.store');
+Route::delete('/w/songs/{songRecommendation}', [SongRecommendationController::class, 'destroy'])
+    ->middleware('throttle:60,1')
+    ->whereNumber('songRecommendation')
+    ->name('wedding.songs.destroy');
 
 Route::get('/gallery', [GalleryController::class, 'show'])->name('gallery.show');
 Route::get('/gallery/album', [GalleryController::class, 'album'])->name('gallery.album');
@@ -140,6 +151,15 @@ Route::prefix('admin')->name('admin.')->group(function (): void {
         Route::delete('registry/{registryItem}', [AdminRegistryItemController::class, 'destroy'])
             ->middleware('throttle:60,1')
             ->name('registry.destroy');
+
+        Route::get('songs', [AdminSongRecommendationController::class, 'index'])->name('songs.index');
+        Route::get('songs/export.csv', [AdminSongRecommendationController::class, 'export'])
+            ->middleware('throttle:6,1')
+            ->name('songs.export');
+        Route::delete('songs/{songRecommendation}', [AdminSongRecommendationController::class, 'destroy'])
+            ->middleware('throttle:60,1')
+            ->whereNumber('songRecommendation')
+            ->name('songs.destroy');
 
         Route::get('audit', [AdminAuditLogController::class, 'index'])->name('audit.index');
     });

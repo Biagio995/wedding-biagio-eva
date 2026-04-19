@@ -14,6 +14,8 @@
         ·
         <a href="{{ route('gallery.album') }}" target="_blank" rel="noopener">{{ __('Public album') }}</a>
         ·
+        <a href="{{ route('admin.songs.index') }}">{{ __('DJ song suggestions') }}</a>
+        ·
         <form method="post" action="{{ route('admin.logout') }}" style="display:inline;">
             @csrf
             <button type="submit" class="link">{{ __('Sign out') }}</button>

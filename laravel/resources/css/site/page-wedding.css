@@ -670,3 +670,89 @@ h1 {
         transition: none;
     }
 }
+
+/* Home → Attend CTA card */
+.card--cta {
+    text-align: center;
+}
+
+.card--cta .btn {
+    margin-top: 0.5rem;
+}
+
+/* Song recommendations for the DJ */
+.song-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-bottom: 1.25rem;
+}
+
+.song-form button[type="submit"] {
+    align-self: flex-start;
+    margin-top: 0.75rem;
+}
+
+.song-list__title {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin: 1.5rem 0 0.5rem;
+}
+
+.song-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.song-list__item {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.65rem 0.85rem;
+    border: 1px solid rgba(58, 50, 42, 0.12);
+    border-radius: 8px;
+    background: rgba(255, 252, 249, 0.8);
+}
+
+.song-list__text {
+    min-width: 0;
+    flex: 1 1 auto;
+    word-break: break-word;
+}
+
+.song-list__artist {
+    color: var(--muted);
+    margin-left: 0.25rem;
+}
+
+.song-list__notes {
+    margin: 0.25rem 0 0;
+    font-size: 0.9rem;
+    color: var(--muted);
+    white-space: pre-wrap;
+}
+
+.song-list__delete {
+    margin: 0;
+    flex: 0 0 auto;
+}
+
+.btn--ghost {
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid currentColor;
+    padding: 0.35rem 0.7rem;
+    font-size: 0.85rem;
+}
+
+.btn--ghost:hover,
+.btn--ghost:focus-visible {
+    background: rgba(58, 50, 42, 0.06);
+}

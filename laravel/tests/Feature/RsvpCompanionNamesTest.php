@@ -31,7 +31,7 @@ class RsvpCompanionNamesTest extends TestCase
                 'guests_count' => 3,
                 'companion_names' => "Alice Red\nBob Blue",
             ])
-            ->assertRedirect(route('wedding.show'))
+            ->assertRedirect(route('wedding.attend'))
             ->assertSessionHas('wedding_success');
 
         $guest->refresh();
@@ -51,7 +51,7 @@ class RsvpCompanionNamesTest extends TestCase
                 'guests_count' => 4,
                 'companion_names' => ['  Alice  ', '', 'Bob', 'Alice'],
             ])
-            ->assertRedirect(route('wedding.show'));
+            ->assertRedirect(route('wedding.attend'));
 
         $guest->refresh();
         $this->assertSame(['Alice', 'Bob'], $guest->companion_names);
@@ -72,7 +72,7 @@ class RsvpCompanionNamesTest extends TestCase
                 'rsvp_status' => 'no',
                 'companion_names' => "Should be ignored",
             ])
-            ->assertRedirect(route('wedding.show'));
+            ->assertRedirect(route('wedding.attend'));
 
         $guest->refresh();
         $this->assertNull($guest->companion_names);
