@@ -16,11 +16,15 @@ return [
         ],
         'allowed_mimetypes' => [
             'image/jpeg',
+            'image/jpg',
+            'image/pjpeg',
             'image/png',
+            'image/x-png',
             'image/gif',
             'image/webp',
             'image/heic',
             'image/heif',
+            'image/avif',
         ],
     ],
 
@@ -38,7 +42,7 @@ return [
     | US-13 public album + infinite scroll feed.
     */
     'public_feed' => [
-        'only_approved' => env('GALLERY_PUBLIC_ONLY_APPROVED', false),
+        'only_approved' => env('GALLERY_PUBLIC_ONLY_APPROVED', true),
         'per_page' => max(1, min(50, (int) env('GALLERY_FEED_PER_PAGE', 12))),
     ],
 

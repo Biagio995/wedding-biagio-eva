@@ -4,6 +4,8 @@ return [
 
     /*
     | UI languages (session key `locale`). Names are shown in the language switcher.
+    | On first visit, the best match from the browser Accept-Language header is chosen;
+    | if none match, the first locale below is used. Manual picks persist in session.
     */
     'locales' => [
         'it' => 'Italiano',

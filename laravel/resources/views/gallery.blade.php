@@ -9,12 +9,17 @@
             data-msg-failed="{{ __('Upload failed. Please try again.') }}"
             data-msg-rate-limit="{{ __('Too many uploads. Wait a moment, then try again.') }}"
             data-msg-network="{{ __('Network error. Check your connection.') }}"
+            data-msg-too-large="{{ __('The photo is too large for the server (max :mb MB). Try a smaller image or take a new photo.', ['mb' => (int) round(config('gallery.upload.max_kilobytes') / 1024)]) }}"
             data-msg-preview-one="{{ __('1 photo selected — tap Upload photos when ready.') }}"
             data-msg-preview-other="{{ __(':count photos selected — tap Upload photos when ready.') }}"
             data-msg-remove-photo="{{ __('Remove from selection') }}"
         ></div>
         <h1>{{ __('Wedding gallery') }}</h1>
         <p class="sub">{{ __('Share your photos from the day — quick upload from your phone.') }}</p>
+        <p class="sub">
+            <a href="{{ route('gallery.album') }}">{{ __('View shared photos in the album') }}</a>
+            — {{ __('approved uploads appear there.') }}
+        </p>
 
         @if($guest)
             <div class="badge" role="status">
@@ -25,7 +30,11 @@
         @endif
 
         @if(session('upload_success'))
-            <div class="flash" role="status" aria-live="polite">{{ __('Photos uploaded. Thank you!') }}</div>
+            <div class="flash" role="status" aria-live="polite">
+                {{ __('Photos uploaded. Thank you!') }}
+                {{ __('After approval, they will appear in the') }}
+                <a href="{{ route('gallery.album') }}">{{ __('Album') }}</a>.
+            </div>
         @endif
 
         <div class="card">
@@ -62,7 +71,7 @@
                     <p class="progress-label" id="progress-pct">{{ __('Uploading…') }} <span>0%</span></p>
                 </div>
                 <button type="submit" class="btn" id="submit-btn">{{ __('Upload photos') }}</button>
-                <p class="hint">{{ __('Up to :count images at once — JPEG, PNG, WebP, GIF, HEIC — max :mb MB each. Progress is shown while uploading.', ['count' => config('gallery.upload.max_files_per_request'), 'mb' => (int) round(config('gallery.upload.max_kilobytes') / 1024)]) }}</p>
+                <p class="hint">{{ __('Up to :count images at once — JPEG, PNG, WebP, GIF, HEIC, AVIF — max :mb MB each. Progress is shown while uploading.', ['count' => config('gallery.upload.max_files_per_request'), 'mb' => (int) round(config('gallery.upload.max_kilobytes') / 1024)]) }}</p>
             </form>
         </div>
     </div>

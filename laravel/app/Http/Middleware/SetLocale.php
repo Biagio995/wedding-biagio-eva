@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Services\BrowserLocaleResolver;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -10,12 +11,20 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SetLocale
 {
+    public function __construct(private readonly BrowserLocaleResolver $browserLocale) {}
+
     public function handle(Request $request, Closure $next): Response
     {
         $allowed = array_keys(config('wedding.locales', []));
-        $fallback = config('app.locale', 'en');
+        $fallback = $allowed[0] ?? (string) config('app.locale', 'en');
 
-        $locale = $request->session()->get('locale', $fallback);
+        if ($request->session()->has('locale')) {
+            $locale = (string) $request->session()->get('locale');
+        } else {
+            $locale = $this->browserLocale->resolve($request, $allowed) ?? $fallback;
+            $request->session()->put('locale', $locale);
+        }
+
         if (! in_array($locale, $allowed, true)) {
             $locale = $fallback;
         }

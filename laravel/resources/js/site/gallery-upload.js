@@ -179,6 +179,10 @@
                 }
                 return;
             }
+            if (xhr.status === 413) {
+                showErrors({ message: msg('msgTooLarge') || msg('msgFailed') });
+                return;
+            }
             if (xhr.status === 429) {
                 showErrors({ message: msg('msgRateLimit') });
                 return;

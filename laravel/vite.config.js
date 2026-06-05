@@ -1,9 +1,34 @@
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import tailwindcss from '@tailwindcss/vite';
 
-export default defineConfig({
-    plugins: [
+function tunnelServerConfig(env) {
+    const tunnelOrigin = env.VITE_DEV_TUNNEL_URL?.replace(/\/$/, '');
+
+    if (!tunnelOrigin) {
+        return {};
+    }
+
+    const url = new URL(tunnelOrigin);
+    const isHttps = url.protocol === 'https:';
+
+    return {
+        host: '0.0.0.0',
+        strictPort: true,
+        origin: tunnelOrigin,
+        hmr: {
+            protocol: isHttps ? 'wss' : 'ws',
+            host: url.hostname,
+            clientPort: url.port ? Number(url.port) : (isHttps ? 443 : 80),
+        },
+    };
+}
+
+export default defineConfig(({ mode }) => {
+    const env = loadEnv(mode, process.cwd(), '');
+
+    return {
+        plugins: [
         laravel({
             input: [
                 'resources/css/app.css',
@@ -31,11 +56,13 @@ export default defineConfig({
             ],
             refresh: true,
         }),
-        tailwindcss(),
-    ],
-    server: {
-        watch: {
-            ignored: ['**/storage/framework/views/**'],
+            tailwindcss(),
+        ],
+        server: {
+            ...tunnelServerConfig(env),
+            watch: {
+                ignored: ['**/storage/framework/views/**'],
+            },
         },
-    },
+    };
 });
