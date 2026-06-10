@@ -82,6 +82,7 @@ body.wedding-envelope-active {
 
 .wedding-envelope.is-open .wedding-envelope__cp-wrap {
     overflow: visible;
+    clip-path: inset(-130% -8% 0 -8%);
 }
 
 .wedding-envelope__cp-lid {
@@ -104,7 +105,7 @@ body.wedding-envelope-active {
     /* Tono del vecchio .wedding-envelope__flap-face (parte alta) */
     border-top: var(--cp-half-h) solid #efe6dc;
     transform: rotateX(0deg);
-    z-index: 3;
+    z-index: 4;
     transition-delay: 0.75s;
 }
 
@@ -169,6 +170,7 @@ body.wedding-envelope-active {
 
 .wedding-envelope.is-open .wedding-envelope__cp-lid--one {
     transform: rotateX(90deg);
+    z-index: 1;
     transition-delay: 0s;
 }
 
@@ -182,7 +184,6 @@ body.wedding-envelope-active {
     transform: translateY(-92%);
     /* Stesso istante per movimento e comparsa (effetto estrazione unico) */
     transition-delay: 0.42s;
-    z-index: 4;
 }
 
 .wedding-envelope__title {
