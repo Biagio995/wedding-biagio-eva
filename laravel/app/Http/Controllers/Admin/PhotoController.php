@@ -69,9 +69,12 @@ class PhotoController extends Controller
         if (
             GalleryExternalGallery::usesGooglePhotos()
             && GalleryExternalGallery::hasSharedAlbumLink()
-            && $googlePhotosSync->pushApprovedPhoto($photo->fresh())
         ) {
-            $status = __('Photo approved and added to the shared Google Photos album.');
+            if ($googlePhotosSync->pushApprovedPhoto($photo->fresh())) {
+                $status = __('Photo approved and added to the shared Google Photos album.');
+            } elseif (! $googlePhotosSync->isConfigured()) {
+                $status = __('Photo approved. Upload it to the Google Photos album using the link above.');
+            }
         }
 
         return redirect()

@@ -39,9 +39,5 @@
                 {!! $photos->links() !!}
             </nav>
         @endif
-
-        @if (\App\Services\GalleryExternalGallery::hasSharedAlbumLink())
-            @include('partials.gallery-google-photos-footer')
-        @endif
     </div>
 </x-layouts.site-public>

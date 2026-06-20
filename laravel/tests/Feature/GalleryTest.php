@@ -30,7 +30,7 @@ class GalleryTest extends TestCase
         $response->assertSee('id="photos-input"', false);
     }
 
-    public function test_google_photos_gallery_keeps_upload_and_shows_external_footer(): void
+    public function test_google_photos_gallery_keeps_upload_without_external_link_for_guests(): void
     {
         Config::set('gallery.external.provider', 'google_photos');
         Config::set('gallery.external.url', 'https://photos.app.goo.gl/test-album');
@@ -39,8 +39,7 @@ class GalleryTest extends TestCase
 
         $response->assertOk();
         $response->assertSee('id="gallery-form"', false);
-        $response->assertSee(__('Open shared album on Google Photos'), false);
-        $response->assertSee('https://photos.app.goo.gl/test-album', false);
+        $response->assertDontSee('https://photos.app.goo.gl/test-album', false);
     }
 
     public function test_upload_stores_pending_photo_when_google_photos_enabled(): void

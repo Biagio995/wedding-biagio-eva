@@ -30,6 +30,12 @@
     <h1>{{ __('Photo moderation') }}</h1>
     <p class="sub">{{ __('Approve or delete uploads before they appear in the public album.') }}</p>
 
+    @if (\App\Services\GalleryExternalGallery::hasSharedAlbumLink())
+        <p class="sub" role="note">
+            {{ __('Google Photos is for viewing only. Guests upload here; after you approve, add the photo to Google Photos manually (or enable automatic sync in settings).') }}
+        </p>
+    @endif
+
     @if (session('status'))
         <p class="ok" role="status">{{ session('status') }}</p>
     @endif
