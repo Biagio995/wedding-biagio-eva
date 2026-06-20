@@ -1,6 +1,7 @@
 @import './tokens.css';
 @import './locale-switcher.css';
 @import './body-admin.css';
+@import './ui-admin.css';
 @import './page-guest-list.css';
 
 .songs-table td,

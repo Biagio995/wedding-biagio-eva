@@ -13,7 +13,10 @@ class RsvpReminderMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public function __construct(public Guest $guest) {}
+    public function __construct(public Guest $guest)
+    {
+        $this->locale($guest->mailLocale());
+    }
 
     public function envelope(): Envelope
     {

@@ -14,6 +14,21 @@ return [
     ],
 
     /*
+    | Languages used for guest emails (invitation, RSVP confirmation, reminders).
+    | Independent of the site UI locale chosen by the admin or visitor.
+    */
+    'mail_locales' => [
+        'it' => 'Italiano',
+        'el' => 'Ελληνικά',
+        'de' => 'Deutsch',
+        'en' => 'English',
+    ],
+
+    'mail' => [
+        'default_locale' => env('WEDDING_MAIL_DEFAULT_LOCALE', 'en'),
+    ],
+
+    /*
     | US-29: Guest access does not use Laravel user accounts or registration.
     | Guests are recognized via opaque token (URL/QR) and session keys only; RSVP and
     | gallery uploads never require sign-up. Admin routes under /admin are separate.

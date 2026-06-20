@@ -9,14 +9,14 @@
 }
 
 .locale-switcher span {
-    color: var(--muted, #5f6d66);
+    color: var(--muted);
 }
 
 .locale-switcher a {
-    color: var(--accent, #c9a88f);
+    color: var(--accent-deep);
     text-decoration: none;
     padding: 0.35rem 0.45rem;
-    border-radius: 6px;
+    border-radius: 999px;
     min-height: 44px;
     display: inline-flex;
     align-items: center;
@@ -25,10 +25,11 @@
 
 .locale-switcher a[aria-current="true"] {
     font-weight: 600;
-    text-decoration: underline;
+    background: var(--accent-dim);
+    border: 1px solid rgba(198, 165, 117, 0.35);
 }
 
 .locale-switcher a:focus-visible {
-    outline: 2px solid var(--accent, #c9a88f);
+    outline: 2px solid var(--accent);
     outline-offset: 2px;
 }

@@ -16,15 +16,15 @@
         ·
         <form method="post" action="{{ route('admin.logout') }}" style="display:inline;">
             @csrf
-            <button type="submit" class="link" style="padding:0;font:inherit;">{{ __('Sign out') }}</button>
+            <button type="submit" class="link">{{ __('Sign out') }}</button>
         </form>
     </p>
     <h1>{{ __('Import guests (CSV)') }}</h1>
-    <p class="sub">{{ __('First row must be the header. Columns: name (required), email and token (optional). Use comma or semicolon as separator.') }}</p>
+    <p class="sub">{{ __('First row must be the header. Columns: name (required), email, locale and token (optional). Use comma or semicolon as separator.') }}</p>
 
-    <pre class="format" aria-label="CSV example">name,email,token
-Ada Lovelace,ada@example.com,
-Bob,,custom-token-1</pre>
+    <pre class="format" aria-label="CSV example">name,email,locale,token
+Ada Lovelace,ada@example.com,it,
+Bob,bob@example.com,el,custom-token-1</pre>
 
     @if (session('import_result'))
         @php($r = session('import_result'))

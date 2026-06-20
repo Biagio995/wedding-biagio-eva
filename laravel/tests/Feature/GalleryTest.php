@@ -15,13 +15,19 @@ class GalleryTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_gallery_page_loads(): void
+    public function test_gallery_page_redirects_to_album(): void
     {
-        $response = $this->get('/gallery');
+        $this->get('/gallery')
+            ->assertRedirect(route('gallery.album'));
+    }
+
+    public function test_album_page_includes_upload_form(): void
+    {
+        $response = $this->get(route('gallery.album'));
 
         $response->assertOk();
-        $response->assertSee('Wedding gallery', false);
-        $response->assertSee('multi-select', false);
+        $response->assertSee('id="gallery-form"', false);
+        $response->assertSee('id="photos-input"', false);
     }
 
     public function test_token_recognizes_guest_and_persists_in_session(): void
@@ -31,7 +37,7 @@ class GalleryTest extends TestCase
             'token' => 'test-token-ada',
         ]);
 
-        $response = $this->get('/gallery?token=test-token-ada');
+        $response = $this->get(route('gallery.album', ['token' => 'test-token-ada']));
 
         $response->assertOk();
         $response->assertSee('Ada Lovelace', false);
@@ -54,7 +60,7 @@ class GalleryTest extends TestCase
                     UploadedFile::fake()->image('party.jpg', 600, 400),
                 ],
             ])
-            ->assertRedirect(route('gallery.show'));
+            ->assertRedirect(route('gallery.album'));
 
         $this->assertDatabaseHas('photos', [
             'guest_id' => $guest->id,
@@ -78,7 +84,7 @@ class GalleryTest extends TestCase
                     UploadedFile::fake()->image('c.jpg', 100, 100),
                 ],
             ])
-            ->assertRedirect(route('gallery.show'));
+            ->assertRedirect(route('gallery.album'));
 
         $this->assertSame(3, Photo::query()->where('guest_id', $guest->id)->count());
     }
@@ -96,7 +102,7 @@ class GalleryTest extends TestCase
             ->post('/gallery', [
                 'photos' => [UploadedFile::fake()->image('one.jpg', 400, 300)],
             ])
-            ->assertRedirect(route('gallery.show'));
+            ->assertRedirect(route('gallery.album'));
 
         $photo = Photo::query()->first();
         $this->assertNotNull($photo);
@@ -110,7 +116,7 @@ class GalleryTest extends TestCase
 
         $this->post('/gallery', [
             'photos' => [UploadedFile::fake()->image('anon.jpg', 200, 200)],
-        ])->assertRedirect(route('gallery.show'));
+        ])->assertRedirect(route('gallery.album'));
 
         $photo = Photo::query()->first();
         $this->assertNotNull($photo);
@@ -139,7 +145,7 @@ class GalleryTest extends TestCase
 
         $response->assertOk();
         $response->assertJson([
-            'redirect' => route('gallery.show'),
+            'redirect' => route('gallery.album'),
         ]);
 
         $this->assertSame(1, Photo::query()->where('guest_id', $guest->id)->count());
@@ -201,13 +207,13 @@ class GalleryTest extends TestCase
             ->post('/gallery', [
                 'photos' => [UploadedFile::fake()->image('a.jpg', 40, 40)],
             ])
-            ->assertRedirect(route('gallery.show'));
+            ->assertRedirect(route('gallery.album'));
 
         $this->withSession($session)
             ->post('/gallery', [
                 'photos' => [UploadedFile::fake()->image('b.jpg', 40, 40)],
             ])
-            ->assertRedirect(route('gallery.show'));
+            ->assertRedirect(route('gallery.album'));
 
         $this->withSession($session)
             ->post('/gallery', [
@@ -252,15 +258,41 @@ class GalleryTest extends TestCase
     public function test_gallery_upload_route_redirects_with_query_string(): void
     {
         $this->get('/gallery/upload?token=abc')
-            ->assertRedirect('/gallery?token=abc');
+            ->assertRedirect(route('gallery.album', ['token' => 'abc']));
     }
 
     public function test_public_album_page_loads_us13(): void
     {
         $this->get(route('gallery.album'))
             ->assertOk()
-            ->assertSee('Shared photos', false)
-            ->assertSee('album-grid', false);
+            ->assertSee('id="album-grid"', false)
+            ->assertSee('id="submit-btn"', false);
+    }
+
+    public function test_public_album_paginates_twenty_per_page(): void
+    {
+        Storage::fake('public');
+        Config::set('gallery.public_feed.only_approved', false);
+        Config::set('gallery.public_feed.per_page', 20);
+
+        for ($i = 0; $i < 21; $i++) {
+            $path = "gallery/p{$i}.jpg";
+            Storage::disk('public')->put($path, 'x');
+            Photo::query()->create([
+                'guest_id' => null,
+                'file_path' => $path,
+                'original_filename' => "p{$i}.jpg",
+                'approved' => false,
+            ]);
+        }
+
+        $this->get(route('gallery.album'))
+            ->assertOk()
+            ->assertSee('album-item', false);
+
+        $this->get(route('gallery.album', ['page' => 2]))
+            ->assertOk()
+            ->assertSee('album-item', false);
     }
 
     public function test_public_feed_json_pagination_us13(): void
@@ -402,8 +434,7 @@ class GalleryTest extends TestCase
     {
         $this->get(route('gallery.album', ['date' => '2026-01-01']))
             ->assertOk()
-            ->assertSee('Shared photos', false)
-            ->assertSee('album-grid', false);
+            ->assertSee('id="album-grid"', false);
     }
 
     public function test_public_feed_includes_download_url_us15(): void

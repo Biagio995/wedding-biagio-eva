@@ -59,7 +59,7 @@
                     @if ($rsvpConfirmation['attending'])
                         @include('partials.site.calendar-picker', ['event' => $event])
                     @endif
-                    <a class="btn btn--ghost" href="{{ route('gallery.show') }}">{{ __('Share photos') }}</a>
+                    <a class="btn btn--ghost" href="{{ route('gallery.album') }}">{{ __('Share photos') }}</a>
                     @if (!empty(config('wedding.song_recommendations.enabled', true)))
                         <a class="btn btn--ghost" href="{{ route('wedding.show') }}#dj-songs">{{ __('Suggest a song') }}</a>
                     @endif

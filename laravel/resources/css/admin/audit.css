@@ -1,6 +1,7 @@
 @import './tokens.css';
 @import './locale-switcher.css';
 @import './body-admin.css';
+@import './ui-admin.css';
 @import './page-guest-list.css';
 
 .audit-filter {
@@ -18,16 +19,16 @@
 
 .audit-filter select,
 .audit-filter button {
-    padding: 0.4rem 0.7rem;
+    padding: 0.45rem 0.7rem;
     font-family: inherit;
     font-size: 0.9rem;
-    border-radius: 6px;
-    border: 1px solid rgba(58, 50, 42, 0.15);
-    background: #fffcf9;
+    border-radius: 10px;
+    border: 1px solid var(--stroke-strong);
+    background: #fffefb;
 }
 
 .audit-filter button {
-    background: var(--accent);
+    background: linear-gradient(165deg, var(--accent-light) 0%, var(--accent) 42%, var(--accent-deep) 100%);
     color: var(--on-accent);
     border: none;
     cursor: pointer;
@@ -36,7 +37,7 @@
 
 .audit-table code {
     font-size: 0.85rem;
-    background: rgba(58, 50, 42, 0.05);
+    background: rgba(90, 70, 58, 0.06);
     padding: 0.1rem 0.35rem;
     border-radius: 4px;
 }

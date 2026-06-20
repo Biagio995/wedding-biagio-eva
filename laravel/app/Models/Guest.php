@@ -12,6 +12,7 @@ class Guest extends Model
     protected $fillable = [
         'name',
         'email',
+        'locale',
         'token',
         'rsvp_status',
         'guests_count',
@@ -49,6 +50,17 @@ class Guest extends Model
         } while (static::query()->where('token', $token)->exists());
 
         return $token;
+    }
+
+    /** Locale for outbound emails to this guest (independent of site UI language). */
+    public function mailLocale(): string
+    {
+        $allowed = array_keys(config('wedding.mail_locales', []));
+        if (is_string($this->locale) && in_array($this->locale, $allowed, true)) {
+            return $this->locale;
+        }
+
+        return (string) config('wedding.mail.default_locale', 'en');
     }
 
     public function photos(): HasMany

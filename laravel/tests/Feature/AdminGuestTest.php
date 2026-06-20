@@ -2,10 +2,12 @@
 
 namespace Tests\Feature;
 
+use App\Mail\GuestInvitationMail;
 use App\Models\Guest;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class AdminGuestTest extends TestCase
@@ -35,6 +37,7 @@ class AdminGuestTest extends TestCase
 
     public function test_admin_can_login_and_create_guest_us16(): void
     {
+        Mail::fake();
         $this->configureAdminPassword();
 
         $this->post(route('admin.login'), ['password' => 'secret'])
@@ -43,7 +46,8 @@ class AdminGuestTest extends TestCase
         $this->post(route('admin.guests.store'), [
             'name' => 'Ada Lovelace',
             'email' => 'ada@example.com',
-        ])->assertRedirect(route('admin.guests.create'));
+        ])->assertRedirect(route('admin.guests.create'))
+            ->assertSessionHas('created_guest', fn (array $g) => $g['invitation_email_sent'] === true);
 
         $this->assertDatabaseHas('guests', [
             'name' => 'Ada Lovelace',
@@ -53,6 +57,68 @@ class AdminGuestTest extends TestCase
         $guest = Guest::query()->where('email', 'ada@example.com')->first();
         $this->assertNotNull($guest);
         $this->assertNotEmpty($guest->token);
+
+        Mail::assertSent(GuestInvitationMail::class, function (GuestInvitationMail $mail) use ($guest): bool {
+            return $mail->guest->is($guest);
+        });
+    }
+
+    public function test_create_guest_does_not_send_invitation_without_email(): void
+    {
+        Mail::fake();
+        $this->configureAdminPassword();
+        $this->post(route('admin.login'), ['password' => 'secret']);
+
+        $this->post(route('admin.guests.store'), [
+            'name' => 'No Email Guest',
+        ])->assertRedirect(route('admin.guests.create'))
+            ->assertSessionHas('created_guest', fn (array $g) => ($g['invitation_email_sent'] ?? false) === false);
+
+        Mail::assertNothingSent();
+    }
+
+    public function test_admin_can_resend_invitation_email(): void
+    {
+        Mail::fake();
+        $this->configureAdminPassword();
+        $this->post(route('admin.login'), ['password' => 'secret']);
+
+        $guest = Guest::query()->create([
+            'name' => 'Resend Me',
+            'email' => 'resend@example.com',
+            'locale' => 'de',
+        ]);
+
+        $this->post(route('admin.guests.send-invitation', $guest), [
+            'return_rsvp' => 'all',
+        ])->assertRedirect()
+            ->assertSessionHas('status');
+
+        Mail::assertSent(GuestInvitationMail::class, function (GuestInvitationMail $mail) use ($guest): bool {
+            return $mail->guest->is($guest) && $mail->locale === 'de';
+        });
+    }
+
+    public function test_invitation_email_uses_guest_locale_not_site_locale(): void
+    {
+        Mail::fake();
+        Config::set('app.locale', 'de');
+        $this->configureAdminPassword();
+        $this->post(route('admin.login'), ['password' => 'secret']);
+
+        $this->withSession(['locale' => 'de'])
+            ->post(route('admin.guests.store'), [
+                'name' => 'Greek Guest',
+                'email' => 'greek@example.com',
+                'locale' => 'el',
+            ])->assertRedirect(route('admin.guests.create'));
+
+        $guest = Guest::query()->where('email', 'greek@example.com')->first();
+        $this->assertNotNull($guest);
+
+        Mail::assertSent(GuestInvitationMail::class, function (GuestInvitationMail $mail) use ($guest): bool {
+            return $mail->guest->is($guest) && $mail->locale === 'el';
+        });
     }
 
     public function test_create_guest_accepts_optional_token_us16(): void

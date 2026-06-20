@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\GuestMailLocale;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -18,6 +19,11 @@ class StoreAdminGuestRequest extends FormRequest
         if ($token === '') {
             $this->merge(['token' => null]);
         }
+
+        $locale = $this->input('locale');
+        if ($locale === '') {
+            $this->merge(['locale' => null]);
+        }
     }
 
     /**
@@ -30,6 +36,7 @@ class StoreAdminGuestRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['nullable', 'email', 'max:255'],
+            'locale' => ['nullable', new GuestMailLocale],
             'token' => [
                 'nullable',
                 'string',

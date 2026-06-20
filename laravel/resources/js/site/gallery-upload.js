@@ -11,6 +11,8 @@
     var previewRoot = document.getElementById('gallery-preview');
     var previewGrid = document.getElementById('gallery-preview-grid');
     var previewSummary = document.getElementById('gallery-preview-summary');
+    var btnLabel = btn ? btn.querySelector('.album-upload-cta__label') : null;
+    var defaultCtaLabel = btnLabel ? btnLabel.textContent : '';
     if (!form || !input) return;
 
     var objectUrls = [];
@@ -62,6 +64,14 @@
         item.appendChild(removeBtn);
     }
 
+    function syncCtaState(count) {
+        if (!btn) return;
+        btn.classList.toggle('is-ready', count > 0);
+        if (btnLabel) {
+            btnLabel.textContent = count > 0 ? (msg('msgCtaReady') || defaultCtaLabel) : defaultCtaLabel;
+        }
+    }
+
     function renderPreview() {
         revokeAllObjectUrls();
         if (!previewGrid || !previewRoot) return;
@@ -70,10 +80,12 @@
         if (!files || !files.length) {
             previewRoot.hidden = true;
             if (previewSummary) previewSummary.textContent = '';
+            syncCtaState(0);
             return;
         }
         previewRoot.hidden = false;
         if (previewSummary) previewSummary.textContent = previewLabel(files.length);
+        syncCtaState(files.length);
 
         for (var i = 0; i < files.length; i++) {
             var file = files[i];
@@ -108,6 +120,19 @@
     input.addEventListener('change', renderPreview);
 
     var uploading = false;
+    var shutterTimer = null;
+
+    function triggerApertureSnap() {
+        if (!btn || btn.disabled || uploading) return;
+        if (shutterTimer) clearTimeout(shutterTimer);
+        btn.classList.remove('is-shuttering');
+        void btn.offsetWidth;
+        btn.classList.add('is-shuttering');
+        shutterTimer = setTimeout(function () {
+            btn.classList.remove('is-shuttering');
+            shutterTimer = null;
+        }, 560);
+    }
 
     function showErrors(payload) {
         if (!errBox) return;
@@ -201,17 +226,11 @@
 
     form.addEventListener('submit', function (e) {
         e.preventDefault();
+        triggerApertureSnap();
         if (!input.files || !input.files.length) {
             input.click();
             return;
         }
         uploadWithProgress();
-    });
-
-    btn.addEventListener('click', function (e) {
-        if (!input.files || !input.files.length) {
-            e.preventDefault();
-            input.click();
-        }
     });
 })();

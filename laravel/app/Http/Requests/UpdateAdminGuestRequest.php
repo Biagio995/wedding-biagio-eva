@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Guest;
+use App\Rules\GuestMailLocale;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -18,6 +19,11 @@ class UpdateAdminGuestRequest extends FormRequest
         $token = $this->input('token');
         if ($token === '') {
             $this->merge(['token' => null]);
+        }
+
+        $locale = $this->input('locale');
+        if ($locale === '') {
+            $this->merge(['locale' => null]);
         }
 
         $rsvp = $this->input('rsvp_status');
@@ -63,6 +69,7 @@ class UpdateAdminGuestRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['nullable', 'email', 'max:255'],
+            'locale' => ['nullable', new GuestMailLocale],
             'token' => [
                 'required',
                 'string',

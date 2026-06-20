@@ -1,0 +1,64 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "Il nostro matrimonio" [ref=e4] [cursor=pointer]:
+        - /url: https://payments-helpful-hour-jurisdiction.trycloudflare.com
+        - generic [ref=e5]: B&E
+        - generic [ref=e6]: Il nostro matrimonio
+      - generic "Lingua" [ref=e7]:
+        - link "Italiano" [ref=e8] [cursor=pointer]:
+          - /url: https://payments-helpful-hour-jurisdiction.trycloudflare.com/locale/it
+        - generic [ref=e9]: ·
+        - link "Ελληνικά" [ref=e10] [cursor=pointer]:
+          - /url: https://payments-helpful-hour-jurisdiction.trycloudflare.com/locale/el
+        - generic [ref=e11]: ·
+        - link "Deutsch" [ref=e12] [cursor=pointer]:
+          - /url: https://payments-helpful-hour-jurisdiction.trycloudflare.com/locale/de
+    - navigation "Site" [ref=e13]:
+      - list [ref=e14]:
+        - listitem [ref=e15]:
+          - link "Inizio" [ref=e16] [cursor=pointer]:
+            - /url: https://payments-helpful-hour-jurisdiction.trycloudflare.com
+            - img [ref=e17]
+            - text: Inizio
+        - listitem [ref=e20]:
+          - link "Partecipa" [ref=e21] [cursor=pointer]:
+            - /url: https://payments-helpful-hour-jurisdiction.trycloudflare.com/w/attend
+            - img [ref=e22]
+            - text: Partecipa
+        - listitem [ref=e25]:
+          - link "Galleria" [ref=e26] [cursor=pointer]:
+            - /url: https://payments-helpful-hour-jurisdiction.trycloudflare.com/gallery
+            - img [ref=e27]
+            - text: Galleria
+        - listitem [ref=e31]:
+          - link "Album" [ref=e32] [cursor=pointer]:
+            - /url: https://payments-helpful-hour-jurisdiction.trycloudflare.com/gallery/album
+            - img [ref=e33]
+            - text: Album
+        - listitem [ref=e36]:
+          - link "Lista nozze" [ref=e37] [cursor=pointer]:
+            - /url: https://payments-helpful-hour-jurisdiction.trycloudflare.com/registry
+            - img [ref=e38]
+            - text: Lista nozze
+  - generic [ref=e43]:
+    - heading "Galleria matrimonio" [level=1] [ref=e44]
+    - paragraph [ref=e45]: Condividi le foto della giornata — caricamento rapido dal telefono.
+    - paragraph [ref=e46]:
+      - link "Vedi le foto condivise nell'album" [ref=e47] [cursor=pointer]:
+        - /url: https://payments-helpful-hour-jurisdiction.trycloudflare.com/gallery/album
+      - text: — le foto approvate compaiono lì.
+    - paragraph [ref=e48]: Apri questa pagina con il link d’invito o il QR code per essere riconosciuto.
+    - generic [ref=e50]:
+      - generic [ref=e52] [cursor=pointer]:
+        - text: Tocca per scegliere le foto
+        - strong [ref=e53]: Fotocamera o galleria — selezione multipla
+      - button "Tocca per scegliere le foto Fotocamera o galleria — selezione multipla" [ref=e54]
+      - button "Carica foto" [ref=e55] [cursor=pointer]
+      - paragraph [ref=e56]: Fino a 20 immagini alla volta — JPEG, PNG, WebP, GIF, HEIC, AVIF — max 10 MB ciascuna. Avanzamento mostrato durante il caricamento.
+  - button "Riproduci la musica del matrimonio" [ref=e57] [cursor=pointer]:
+    - generic [ref=e58]:
+      - img [ref=e61]
+      - generic:
+        - img
+        - img

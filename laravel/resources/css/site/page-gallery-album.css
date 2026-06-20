@@ -1,20 +1,236 @@
-.wrap {
+.wrap--album {
     max-width: 56rem;
     margin: 0 auto;
 }
 
-h1 {
-    font-family: var(--font-display);
-    font-size: clamp(1.65rem, 4vw, 1.95rem);
-    font-weight: 600;
-    letter-spacing: 0.03em;
-    margin: 0 0 0.35rem;
+.album-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-bottom: 1.15rem;
+    min-height: 2.75rem;
 }
 
-.sub {
-    color: var(--muted);
-    font-size: 0.9rem;
+.album-upload-form {
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.album-upload-cta {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    width: auto;
+    min-height: 46px;
+    padding: 0.4rem 1.05rem 0.4rem 0.4rem;
+    border-radius: var(--radius);
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    line-height: 1.2;
+    text-transform: none;
+    color: var(--text);
+    background: var(--accent);
+    border: 1px solid transparent;
+    cursor: pointer;
+    box-shadow: 0 8px 22px rgba(74, 52, 42, 0.08);
+    overflow: hidden;
+    isolation: isolate;
+    -webkit-tap-highlight-color: transparent;
+    transition:
+        color 0.2s ease 0.08s,
+        box-shadow 0.22s ease,
+        transform 0.15s ease;
+}
+
+/* Oro sotto — visibile quando l’otturatore si chiude */
+.album-upload-cta::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: inherit;
+    background: var(--accent);
+    transition: background 0.22s ease;
+}
+
+/* Maschera champagne — si chiude verso il centro come un diaframma */
+.album-upload-cta::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+    background: linear-gradient(165deg, var(--champagne-mist) 0%, var(--surface) 100%);
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.65) inset,
+        inset 0 0 0 1px var(--gold-line);
+    clip-path: circle(150% at 50% 50%);
+    pointer-events: none;
+}
+
+.album-upload-cta.is-shuttering {
+    color: var(--on-accent);
+}
+
+.album-upload-cta.is-shuttering:not(.is-ready)::after {
+    animation: album-aperture-snap 0.56s cubic-bezier(0.45, 0, 0.2, 1) forwards;
+}
+
+.album-upload-cta.is-shuttering.is-ready::after {
+    animation: album-aperture-snap-ready 0.56s cubic-bezier(0.45, 0, 0.2, 1) forwards;
+}
+
+@keyframes album-aperture-snap {
+    0% {
+        clip-path: circle(150% at 50% 50%);
+    }
+
+    38% {
+        clip-path: polygon(
+            50% 50%,
+            50% 0%,
+            93.3% 25%,
+            93.3% 75%,
+            50% 100%,
+            6.7% 75%,
+            6.7% 25%
+        );
+    }
+
+    52% {
+        clip-path: circle(0% at 50% 50%);
+    }
+
+    100% {
+        clip-path: circle(150% at 50% 50%);
+    }
+}
+
+@keyframes album-aperture-snap-ready {
+    0% {
+        clip-path: circle(150% at 50% 50%);
+    }
+
+    38% {
+        clip-path: polygon(
+            50% 50%,
+            50% 0%,
+            93.3% 25%,
+            93.3% 75%,
+            50% 100%,
+            6.7% 75%,
+            6.7% 25%
+        );
+    }
+
+    52%,
+    100% {
+        clip-path: circle(0% at 50% 50%);
+    }
+}
+
+.album-upload-cta__icon-wrap {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 2.15rem;
+    height: 2.15rem;
+    border-radius: 50%;
+    background: #fffefb;
+    border: 1px solid var(--gold-line);
+    box-shadow: 0 1px 3px rgba(74, 52, 42, 0.08);
+}
+
+.album-upload-cta__icon {
+    width: 1.05rem;
+    height: 1.05rem;
+    color: var(--accent-deep);
+}
+
+.album-upload-cta__label {
+    position: relative;
+    z-index: 2;
+    padding-right: 0.15rem;
+}
+
+.album-upload-cta:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+
+.album-upload-cta:active:not(:disabled) {
+    transform: scale(0.98);
+}
+
+.album-upload-cta.is-ready {
+    color: var(--on-accent);
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.25) inset,
+        0 3px 14px rgba(90, 60, 40, 0.2);
+}
+
+.album-upload-cta.is-ready::before {
+    background: linear-gradient(165deg, var(--accent-light) 0%, var(--accent) 42%, var(--accent-deep) 100%);
+}
+
+.album-upload-cta.is-ready::after {
+    clip-path: circle(0% at 50% 50%);
+}
+
+.album-upload-cta:disabled {
+    opacity: 0.55;
+    cursor: wait;
+    transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .album-upload-cta.is-shuttering:not(.is-ready)::after {
+        animation: none;
+        clip-path: circle(0% at 50% 50%);
+    }
+
+    .album-upload-cta.is-shuttering.is-ready::after {
+        animation: none;
+    }
+
+    .album-upload-cta:active:not(:disabled) {
+        transform: none;
+    }
+}
+
+.album-upload .gallery-preview {
+    padding: 0.85rem;
     margin-bottom: 1rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--gold-line);
+    background: linear-gradient(165deg, var(--champagne-mist) 0%, var(--surface) 100%);
+    box-shadow: 0 2px 12px rgba(74, 52, 42, 0.06);
+}
+
+.album-upload .progress-wrap {
+    margin-bottom: 1rem;
+}
+
+.album-upload-errors {
+    color: #ef9a9a;
+    font-size: 0.85rem;
+    margin: 0 0 0.75rem;
+}
+
+.album-upload-errors[hidden] {
+    display: none !important;
+}
+
+.badge--inline {
+    margin-bottom: 0;
+    margin-right: auto;
 }
 
 .album-grid {
@@ -78,25 +294,35 @@ h1 {
     outline-offset: 2px;
 }
 
-.album-hint {
+.album-pagination {
+    margin-top: 1.25rem;
+    font-size: 0.88rem;
     text-align: center;
-    font-size: 0.8rem;
+}
+
+.album-pagination nav {
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.35rem 0.65rem;
+}
+
+.album-pagination a,
+.album-pagination span {
+    color: var(--text);
+    text-decoration: none;
+}
+
+.album-pagination a:hover,
+.album-pagination a:focus-visible {
+    color: var(--accent-deep);
+}
+
+.album-pagination span[aria-current="page"] {
+    font-weight: 600;
+    color: var(--accent-deep);
+}
+
+.album-pagination .disabled span {
     color: var(--muted);
-    margin: 1rem 0 0;
-}
-
-.album-loading {
-    text-align: center;
-    font-size: 0.85rem;
-    color: var(--muted);
-    margin: 0.75rem 0;
-}
-
-.album-loading[hidden] {
-    display: none !important;
-}
-
-#album-sentinel {
-    height: 1px;
-    margin: 0;
 }

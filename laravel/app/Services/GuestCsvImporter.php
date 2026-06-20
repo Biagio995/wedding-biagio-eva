@@ -60,6 +60,7 @@ final class GuestCsvImporter
 
                 $name = $this->cell($row, $indexes['name']);
                 $email = $indexes['email'] !== null ? $this->cell($row, $indexes['email']) : null;
+                $locale = $indexes['locale'] !== null ? $this->cell($row, $indexes['locale']) : null;
                 $token = $indexes['token'] !== null ? $this->cell($row, $indexes['token']) : null;
 
                 if ($token === '') {
@@ -67,6 +68,9 @@ final class GuestCsvImporter
                 }
                 if ($email === '') {
                     $email = null;
+                }
+                if ($locale === '') {
+                    $locale = null;
                 }
 
                 if ($name === '' || $name === null) {
@@ -91,11 +95,13 @@ final class GuestCsvImporter
                     [
                         'name' => $name,
                         'email' => $email,
+                        'locale' => $locale,
                         'token' => $token,
                     ],
                     [
                         'name' => ['required', 'string', 'max:255'],
                         'email' => ['nullable', 'email', 'max:255'],
+                        'locale' => ['nullable', 'string', Rule::in(array_keys(config('wedding.mail_locales', [])))],
                         'token' => [
                             'nullable',
                             'string',
@@ -157,16 +163,17 @@ final class GuestCsvImporter
 
     /**
      * @param  list<string>  $headerRow
-     * @return array{name: ?int, email: ?int, token: ?int}
+     * @return array{name: ?int, email: ?int, locale: ?int, token: ?int}
      */
     private function mapHeaderIndexes(array $headerRow): array
     {
-        $indexes = ['name' => null, 'email' => null, 'token' => null];
+        $indexes = ['name' => null, 'email' => null, 'locale' => null, 'token' => null];
 
         foreach ($headerRow as $i => $h) {
             match ($h) {
                 'name' => $indexes['name'] = $i,
                 'email' => $indexes['email'] = $i,
+                'locale' => $indexes['locale'] = $i,
                 'token' => $indexes['token'] = $i,
                 default => null,
             };

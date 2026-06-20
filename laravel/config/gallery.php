@@ -43,7 +43,7 @@ return [
     */
     'public_feed' => [
         'only_approved' => env('GALLERY_PUBLIC_ONLY_APPROVED', true),
-        'per_page' => max(1, min(50, (int) env('GALLERY_FEED_PER_PAGE', 12))),
+        'per_page' => max(1, min(50, (int) env('GALLERY_FEED_PER_PAGE', 20))),
     ],
 
     /*

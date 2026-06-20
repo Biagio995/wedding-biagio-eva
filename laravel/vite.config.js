@@ -11,11 +11,14 @@ function tunnelServerConfig(env) {
 
     const url = new URL(tunnelOrigin);
     const isHttps = url.protocol === 'https:';
+    const appOrigin = env.APP_URL?.replace(/\/$/, '');
+    const corsOrigins = [tunnelOrigin, appOrigin].filter(Boolean);
 
     return {
         host: '0.0.0.0',
         strictPort: true,
         origin: tunnelOrigin,
+        cors: corsOrigins.length > 0 ? { origin: corsOrigins } : true,
         hmr: {
             protocol: isHttps ? 'wss' : 'ws',
             host: url.hostname,

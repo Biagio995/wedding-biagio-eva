@@ -1,57 +1,8 @@
-.wrap {
-    max-width: 52rem;
-    margin: 0 auto;
-}
-
-h1 {
-    font-size: 1.25rem;
-    margin: 0 0 0.35rem;
-    font-weight: 600;
-}
-
-.sub {
-    color: var(--muted);
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
-}
-
-.ok {
-    padding: 0.65rem 0.85rem;
-    border-radius: 8px;
-    background: rgba(80, 160, 120, 0.2);
-    border: 1px solid rgba(120, 200, 160, 0.35);
-    margin-bottom: 1rem;
-    font-size: 0.9rem;
-}
-
-.toolbar {
-    margin-bottom: 1rem;
-    font-size: 0.88rem;
-}
-
-.toolbar a {
-    color: var(--accent);
-}
-
-.toolbar form {
-    display: inline;
-}
-
-button.link {
-    background: transparent;
-    border: none;
-    color: var(--accent);
-    font-weight: 500;
-    text-decoration: underline;
-    font-size: inherit;
-    cursor: pointer;
-    padding: 0;
-    font-family: inherit;
-}
-
 .inline-form {
-    display: inline;
+    display: inline-flex;
+    align-items: center;
     margin: 0;
+    vertical-align: middle;
 }
 
 .guest-actions {
@@ -65,24 +16,33 @@ button.link {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
     width: 2.35rem;
     height: 2.35rem;
+    min-width: 2.35rem;
+    min-height: 2.35rem;
     padding: 0;
-    border-radius: 10px;
-    border: 1px solid rgba(58, 50, 42, 0.14);
-    background: rgba(255, 252, 249, 0.95);
+    border-radius: 12px;
+    border: 1px solid var(--stroke-strong);
+    background: #fffefb;
     color: var(--text);
     text-decoration: none;
     cursor: pointer;
     transition: background 0.15s, border-color 0.15s, color 0.15s;
     -webkit-tap-highlight-color: transparent;
     font: inherit;
+    line-height: 0;
     box-sizing: border-box;
 }
 
+.icon-btn svg {
+    display: block;
+    flex-shrink: 0;
+}
+
 .icon-btn:hover {
-    background: rgba(58, 50, 42, 0.06);
-    border-color: rgba(58, 50, 42, 0.22);
+    background: var(--accent-dim);
+    border-color: rgba(198, 165, 117, 0.45);
 }
 
 .icon-btn:focus-visible {
@@ -91,14 +51,13 @@ button.link {
 }
 
 .icon-btn--danger {
-    color: #b71c1c;
-    border-color: rgba(183, 28, 28, 0.25);
+    color: var(--danger-text);
+    border-color: rgba(183, 28, 28, 0.22);
 }
 
 .icon-btn--danger:hover {
-    background: rgba(183, 28, 28, 0.08);
+    background: var(--danger-bg);
     border-color: rgba(183, 28, 28, 0.35);
-    color: #8f1010;
 }
 
 th.actions-col,
@@ -107,84 +66,6 @@ td.actions-col {
     width: 1%;
     text-align: right;
     vertical-align: middle;
-}
-
-.filters {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.35rem 0.75rem;
-    margin-bottom: 1rem;
-    font-size: 0.88rem;
-}
-
-.filters a {
-    color: var(--muted);
-    text-decoration: none;
-    padding: 0.25rem 0.5rem;
-    border-radius: 6px;
-}
-
-.filters a:hover {
-    color: var(--text);
-}
-
-.filters a.active {
-    color: var(--text);
-    font-weight: 600;
-    background: rgba(201, 168, 143, 0.35);
-}
-
-.table-wrap {
-    overflow-x: auto;
-    border-radius: var(--radius);
-    border: 1px solid rgba(58, 50, 42, 0.1);
-    background: var(--surface);
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.88rem;
-}
-
-th,
-td {
-    padding: 0.5rem 0.65rem;
-    text-align: left;
-    border-bottom: 1px solid rgba(58, 50, 42, 0.08);
-}
-
-th {
-    color: var(--muted);
-    font-weight: 600;
-    font-size: 0.8rem;
-}
-
-tr:last-child td {
-    border-bottom: none;
-}
-
-.badge {
-    display: inline-block;
-    padding: 0.15rem 0.45rem;
-    border-radius: 6px;
-    font-size: 0.78rem;
-    font-weight: 600;
-}
-
-.badge-yes {
-    background: rgba(80, 160, 120, 0.25);
-    color: var(--ok);
-}
-
-.badge-no {
-    background: rgba(200, 100, 100, 0.25);
-    color: var(--no);
-}
-
-.badge-pending {
-    background: rgba(200, 190, 140, 0.15);
-    color: var(--pending);
 }
 
 .num {
@@ -198,13 +79,4 @@ tr:last-child td {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-}
-
-.pagination {
-    margin-top: 1rem;
-    font-size: 0.88rem;
-}
-
-.pagination a {
-    color: var(--accent);
 }

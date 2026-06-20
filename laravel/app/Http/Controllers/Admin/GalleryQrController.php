@@ -17,7 +17,7 @@ class GalleryQrController extends Controller
 {
     public function card(WeddingInviteQrGenerator $generator): View
     {
-        $galleryUrl = route('gallery.show', [], absolute: true);
+        $galleryUrl = route('gallery.album', [], absolute: true);
         $result = $generator->make($galleryUrl);
 
         $dataUri = 'data:'.$result->getMimeType().';base64,'.base64_encode($result->getString());

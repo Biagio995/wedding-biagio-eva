@@ -1,2 +1,2 @@
-import './gallery-album-infinite.js';
+import './gallery-upload.js';
 import './wedding-music-player.js';

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreAdminGuestCsvImportRequest;
 use App\Http\Requests\StoreAdminGuestRequest;
 use App\Http\Requests\UpdateAdminGuestRequest;
+use App\Mail\GuestInvitationMail;
 use App\Models\Guest;
 use App\Services\AuditLogger;
 use App\Services\GuestCsvImporter;
@@ -13,8 +14,9 @@ use App\Services\WeddingInviteQrGenerator;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Symfony\Component\HttpFoundation\StreamedResponse;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class GuestController extends Controller
 {
@@ -87,14 +89,45 @@ class GuestController extends Controller
         $guest = Guest::query()->create($request->validated());
         $this->audit->log('guest.created', $guest, ['name' => $guest->name]);
 
+        $invitationEmailSent = $this->sendGuestInvitation($guest);
+
         return redirect()
             ->route('admin.guests.create')
             ->with('status', __('Guest created.'))
             ->with('created_guest', [
                 'id' => $guest->id,
                 'name' => $guest->name,
+                'email' => $guest->email,
                 'invite_url' => route('wedding.enter', ['token' => $guest->token]),
+                'invitation_email_sent' => $invitationEmailSent,
             ]);
+    }
+
+    public function sendInvitation(Request $request, Guest $guest): RedirectResponse
+    {
+        if (! filled($guest->email)) {
+            return redirect()
+                ->back()
+                ->withErrors(['email' => __('Add an email address before sending the invitation.')]);
+        }
+
+        $sent = $this->sendGuestInvitation($guest);
+        $this->audit->log('guest.invitation_email_sent', $guest, ['email' => $guest->email, 'sent' => $sent]);
+
+        $filter = $request->input('return_rsvp', $request->query('rsvp', 'all'));
+        if (! is_string($filter) || ! in_array($filter, ['all', 'yes', 'no', 'pending'], true)) {
+            $filter = 'all';
+        }
+
+        $redirectTo = $request->headers->get('referer')
+            ? redirect()->back()
+            : redirect()->route('admin.guests.edit', ['guest' => $guest, 'rsvp' => $filter]);
+
+        if ($sent) {
+            return $redirectTo->with('status', __('Invitation email sent to :email.', ['email' => $guest->email]));
+        }
+
+        return $redirectTo->withErrors(['email' => __('Invitation email could not be sent.')]);
     }
 
     public function edit(Request $request, Guest $guest): View
@@ -169,6 +202,23 @@ class GuestController extends Controller
         }
 
         return response($result->getString(), 200, $headers);
+    }
+
+    private function sendGuestInvitation(Guest $guest): bool
+    {
+        if (! filled($guest->email)) {
+            return false;
+        }
+
+        try {
+            Mail::to($guest->email)->send(new GuestInvitationMail($guest));
+
+            return true;
+        } catch (\Throwable $e) {
+            report($e);
+
+            return false;
+        }
     }
 
     private function qrDownloadFilename(Guest $guest): string

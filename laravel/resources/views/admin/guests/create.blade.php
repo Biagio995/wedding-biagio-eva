@@ -16,7 +16,7 @@
         ·
         <form method="post" action="{{ route('admin.logout') }}" style="display:inline;">
             @csrf
-            <button type="submit" class="link" style="padding:0;font:inherit;">{{ __('Sign out') }}</button>
+            <button type="submit" class="link">{{ __('Sign out') }}</button>
         </form>
     </p>
     <h1>{{ __('Add guest') }}</h1>
@@ -29,6 +29,13 @@
                 @php($g = session('created_guest'))
                 <p><strong>{{ e($g['name']) }}</strong></p>
                 <p><a href="{{ $g['invite_url'] }}">{{ $g['invite_url'] }}</a></p>
+                @if (!empty($g['email']))
+                    @if (!empty($g['invitation_email_sent']))
+                        <p>{{ __('Invitation email sent to :email.', ['email' => $g['email']]) }}</p>
+                    @else
+                        <p class="err">{{ __('Invitation email could not be sent.') }}</p>
+                    @endif
+                @endif
                 @if (!empty($g['id']))
                     <div class="qr-block">
                         <p>{{ __('Invitation QR code') }}</p>
@@ -61,6 +68,8 @@
             @error('email')
                 <p class="err">{{ $message }}</p>
             @enderror
+
+            @include('admin.guests.partials.locale-field')
 
             <label for="token">{{ __('Invitation token') }} <span class="hint">({{ __('optional; leave empty for a random link') }})</span></label>
             <input type="text" id="token" name="token" value="{{ old('token') }}" maxlength="64" pattern="[A-Za-z0-9_-]*" inputmode="text" autocomplete="off">

@@ -14,11 +14,15 @@
         ·
         <form method="post" action="{{ route('admin.logout') }}" style="display:inline;">
             @csrf
-            <button type="submit" class="link" style="padding:0;font:inherit;">{{ __('Sign out') }}</button>
+            <button type="submit" class="link">{{ __('Sign out') }}</button>
         </form>
     </p>
     <h1>{{ __('Edit guest') }}</h1>
     <p class="sub">{{ __('Update invitation details and RSVP.') }}</p>
+
+    @if (session('status'))
+        <p class="ok" role="status">{{ session('status') }}</p>
+    @endif
 
     <div class="card">
         <form method="post" action="{{ route('admin.guests.update', $guest) }}">
@@ -37,6 +41,8 @@
             @error('email')
                 <p class="err">{{ $message }}</p>
             @enderror
+
+            @include('admin.guests.partials.locale-field', ['selectedLocale' => old('locale', $guest->locale)])
 
             <label for="token">{{ __('Invitation token') }}</label>
             <input type="text" id="token" name="token" value="{{ old('token', $guest->token) }}" maxlength="64" pattern="[A-Za-z0-9_-]+" inputmode="text" autocomplete="off" required>
@@ -119,6 +125,17 @@
             ·
             <a href="{{ route('admin.guests.qr', ['guest' => $guest, 'download' => 1]) }}">{{ __('Download QR (PNG)') }}</a>
         </p>
+        @if ($guest->email)
+            <form
+                method="post"
+                action="{{ route('admin.guests.send-invitation', $guest) }}"
+                style="margin-top:0.75rem;"
+            >
+                @csrf
+                <input type="hidden" name="return_rsvp" value="{{ $filter }}">
+                <button type="submit">{{ __('Send invitation email') }}</button>
+            </form>
+        @endif
     </div>
 
     <script>

@@ -10,50 +10,7 @@
     margin-bottom: 1rem;
 }
 
-.card {
-    margin-bottom: 0;
-}
-
-label.upload-zone {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: clamp(9rem, 36vh, 14rem);
-    border: 2px dashed rgba(58, 50, 42, 0.22);
-    border-radius: var(--radius);
-    cursor: pointer;
-    transition: border-color 0.2s, background 0.2s;
-    margin-bottom: 0.85rem;
-    -webkit-tap-highlight-color: transparent;
-}
-
-@media (prefers-reduced-motion: reduce) {
-    label.upload-zone {
-        transition: none;
-    }
-}
-
-label.upload-zone:active,
-label.upload-zone:focus-within {
-    border-color: var(--accent);
-    background: rgba(58, 50, 42, 0.03);
-}
-
-.upload-zone span {
-    font-size: 0.95rem;
-    color: var(--muted);
-    text-align: center;
-    padding: 0 0.5rem;
-}
-
-.upload-zone strong {
-    color: var(--text);
-    display: block;
-    margin-top: 0.35rem;
-}
-
-.gallery-preview {
+.album-upload .gallery-preview {
     margin-bottom: 0.85rem;
 }
 
@@ -177,12 +134,7 @@ input[type="file"] {
 .flash {
     background: var(--ok-bg);
     color: var(--ok-text);
-}
-
-.hint {
-    font-size: 0.78rem;
-    margin-top: 0.65rem;
-    text-align: center;
+    margin-bottom: 0.85rem;
 }
 
 .progress-wrap {

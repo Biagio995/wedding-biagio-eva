@@ -116,6 +116,10 @@ Route::prefix('admin')->name('admin.')->group(function (): void {
             ->middleware('throttle:120,1')
             ->whereNumber('guest')
             ->name('guests.qr');
+        Route::post('guests/{guest}/send-invitation', [AdminGuestController::class, 'sendInvitation'])
+            ->middleware('throttle:30,1')
+            ->whereNumber('guest')
+            ->name('guests.send-invitation');
 
         Route::get('seating', [AdminSeatingTableController::class, 'index'])->name('seating.index');
         Route::post('seating', [AdminSeatingTableController::class, 'store'])

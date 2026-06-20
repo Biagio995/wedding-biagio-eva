@@ -1,13 +1,11 @@
-* {
-    box-sizing: border-box;
-}
+@import '../site/base-body-public.css';
+@import '../site/typography-public.css';
 
 body {
-    margin: 0;
-    min-height: 100dvh;
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.45;
-    padding: 1rem;
+    line-height: 1.5;
+}
+
+h1 {
+    font-size: 1.5rem;
+    letter-spacing: 0.03em;
 }

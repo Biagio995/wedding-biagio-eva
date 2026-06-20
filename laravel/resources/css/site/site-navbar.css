@@ -124,7 +124,7 @@
     padding: 0;
 }
 
-/* Lista nozze: più distacco dal blocco Inizio / Galleria / Album */
+/* Lista nozze: più distacco dal blocco Inizio / Album */
 .site-header__nav-li--registry {
     margin-left: clamp(1.5rem, 6vw, 3rem);
 }

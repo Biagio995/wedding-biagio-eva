@@ -1,0 +1,195 @@
+- generic [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "Il nostro matrimonio" [ref=e4] [cursor=pointer]:
+        - /url: https://payments-helpful-hour-jurisdiction.trycloudflare.com
+        - generic [ref=e5]: B&E
+        - generic [ref=e6]: Il nostro matrimonio
+      - generic "Lingua" [ref=e7]:
+        - link "Italiano" [ref=e8] [cursor=pointer]:
+          - /url: https://payments-helpful-hour-jurisdiction.trycloudflare.com/locale/it
+        - generic [ref=e9]: ·
+        - link "Ελληνικά" [ref=e10] [cursor=pointer]:
+          - /url: https://payments-helpful-hour-jurisdiction.trycloudflare.com/locale/el
+        - generic [ref=e11]: ·
+        - link "Deutsch" [ref=e12] [cursor=pointer]:
+          - /url: https://payments-helpful-hour-jurisdiction.trycloudflare.com/locale/de
+    - navigation "Site" [ref=e13]:
+      - list [ref=e14]:
+        - listitem [ref=e15]:
+          - link "Inizio" [ref=e16] [cursor=pointer]:
+            - /url: https://payments-helpful-hour-jurisdiction.trycloudflare.com
+            - img [ref=e17]
+            - text: Inizio
+        - listitem [ref=e20]:
+          - link "Partecipa" [ref=e21] [cursor=pointer]:
+            - /url: https://payments-helpful-hour-jurisdiction.trycloudflare.com/w/attend
+            - img [ref=e22]
+            - text: Partecipa
+        - listitem [ref=e25]:
+          - link "Galleria" [ref=e26] [cursor=pointer]:
+            - /url: https://payments-helpful-hour-jurisdiction.trycloudflare.com/gallery
+            - img [ref=e27]
+            - text: Galleria
+        - listitem [ref=e31]:
+          - link "Album" [ref=e32] [cursor=pointer]:
+            - /url: https://payments-helpful-hour-jurisdiction.trycloudflare.com/gallery/album
+            - img [ref=e33]
+            - text: Album
+        - listitem [ref=e36]:
+          - link "Lista nozze" [ref=e37] [cursor=pointer]:
+            - /url: https://payments-helpful-hour-jurisdiction.trycloudflare.com/registry
+            - img [ref=e38]
+            - text: Lista nozze
+  - dialog "Sei stato invitato al nostro matrimonio" [ref=e43]:
+    - generic "Lingua" [ref=e44]:
+      - link "Italiano" [ref=e45] [cursor=pointer]:
+        - /url: https://payments-helpful-hour-jurisdiction.trycloudflare.com/locale/it
+      - generic [ref=e46]: ·
+      - link "Ελληνικά" [ref=e47] [cursor=pointer]:
+        - /url: https://payments-helpful-hour-jurisdiction.trycloudflare.com/locale/el
+      - generic [ref=e48]: ·
+      - link "Deutsch" [ref=e49] [cursor=pointer]:
+        - /url: https://payments-helpful-hour-jurisdiction.trycloudflare.com/locale/de
+    - button "Apri l'invito" [active] [ref=e50] [cursor=pointer]:
+      - generic [ref=e51]:
+        - generic:
+          - paragraph: Sei stato invitato al nostro matrimonio
+  - generic [ref=e54]:
+    - generic [ref=e55]:
+      - heading "Il nostro matrimonio" [level=1] [ref=e56]
+      - paragraph [ref=e57]: Sarà una grande gioia per noi e per i nostri genitori avervi con noi all'inizio della nostra nuova vita.
+    - region "Segna la data" [ref=e59]:
+      - generic [ref=e60]:
+        - generic [ref=e63]: Giugno
+        - generic [ref=e65]:
+          - generic [ref=e66]: LUN
+          - generic [ref=e67]: MAR
+          - generic [ref=e68]: MER
+          - generic [ref=e69]: GIO
+          - generic [ref=e70]: VEN
+          - generic [ref=e71]: SAB
+          - generic [ref=e72]: DOM
+        - grid "Giugno 2027" [ref=e73]:
+          - gridcell "1" [ref=e74]:
+            - generic [ref=e75]: "1"
+          - gridcell "2" [ref=e76]:
+            - generic [ref=e77]: "2"
+          - gridcell "3" [ref=e78]:
+            - generic [ref=e79]: "3"
+          - gridcell "4" [ref=e80]:
+            - generic [ref=e81]: "4"
+          - gridcell "5" [ref=e82]:
+            - generic [ref=e83]: "5"
+          - gridcell "6" [ref=e84]:
+            - generic [ref=e85]: "6"
+          - gridcell "7" [ref=e86]:
+            - generic [ref=e87]: "7"
+          - gridcell "8" [ref=e88]:
+            - generic [ref=e89]: "8"
+          - gridcell "9" [ref=e90]:
+            - generic [ref=e91]: "9"
+          - gridcell "10" [ref=e92]:
+            - generic [ref=e93]: "10"
+          - gridcell "11" [ref=e94]:
+            - generic [ref=e95]: "11"
+          - gridcell "12" [ref=e96]:
+            - generic [ref=e97]: "12"
+          - gridcell "13" [ref=e98]:
+            - generic [ref=e99]: "13"
+          - gridcell "14" [ref=e100]:
+            - generic [ref=e101]: "14"
+          - gridcell "15" [ref=e102]:
+            - generic [ref=e103]: "15"
+          - gridcell "16" [ref=e104]:
+            - generic [ref=e105]: "16"
+          - gridcell "17" [ref=e106]:
+            - generic [ref=e107]: "17"
+          - gridcell "18" [ref=e108]:
+            - generic [ref=e109]: "18"
+          - gridcell "19" [ref=e110]:
+            - generic [ref=e111]: "19"
+          - gridcell "20" [ref=e112]:
+            - generic [ref=e113]: "20"
+          - gridcell "21" [ref=e114]:
+            - generic [ref=e115]: "21"
+          - gridcell "22" [ref=e116]:
+            - generic [ref=e117]: "22"
+          - gridcell "23" [ref=e118]:
+            - generic [ref=e119]: "23"
+          - gridcell "24" [ref=e120]:
+            - generic [ref=e121]: "24"
+          - gridcell "25" [ref=e122]:
+            - generic [ref=e123]: "25"
+          - gridcell "26" [ref=e124]:
+            - generic:
+              - img
+            - generic [ref=e125]: "26"
+          - gridcell "27" [ref=e126]:
+            - generic [ref=e127]: "27"
+          - gridcell "28" [ref=e128]:
+            - generic [ref=e129]: "28"
+          - gridcell "29" [ref=e130]:
+            - generic [ref=e131]: "29"
+          - gridcell "30" [ref=e132]:
+            - generic [ref=e133]: "30"
+        - paragraph [ref=e134]: 26 GIUGNO 2027
+        - paragraph [ref=e135]: BIAGIO & EVA
+    - generic [ref=e137]:
+      - heading "Conto alla rovescia" [level=2] [ref=e138]
+      - timer "Tempo all’evento" [ref=e139]:
+        - generic [ref=e140]:
+          - generic [ref=e141]: "382"
+          - generic [ref=e142]: Giorni
+        - generic [ref=e143]:
+          - generic [ref=e144]: "5"
+          - generic [ref=e145]: Ore
+        - generic [ref=e146]:
+          - generic [ref=e147]: "23"
+          - generic [ref=e148]: Minuti
+        - generic [ref=e149]:
+          - generic [ref=e150]: "41"
+          - generic [ref=e151]: Secondi
+      - group [ref=e153]:
+        - generic "Aggiungi al calendario" [ref=e154] [cursor=pointer]:
+          - img [ref=e155]
+          - generic [ref=e159]: Aggiungi al calendario
+          - img [ref=e160]
+    - region "Quando e dove — Sabato 26 Giugno 2027 alle ore 19:00. Chiesa di Sant'Anna a Katerini. Dopo la cerimonia, seguirà il ricevimento nella Sala Ricevimenti \"Aria\"." [ref=e162]:
+      - paragraph [ref=e163]: Quando e dove
+      - paragraph [ref=e164]:
+        - generic [ref=e165]:
+          - img [ref=e166]
+          - img [ref=e169]
+        - generic [ref=e172]: Sabato 26 Giugno 2027 alle ore 19:00
+      - generic [ref=e173]:
+        - img [ref=e174]
+        - paragraph [ref=e177]: Chiesa di Sant'Anna a Katerini.
+      - generic [ref=e178]:
+        - img [ref=e179]
+        - paragraph [ref=e184]: Dopo la cerimonia, seguirà il ricevimento nella Sala Ricevimenti "Aria".
+    - generic [ref=e185]:
+      - heading "Partecipa" [level=2] [ref=e186]
+      - paragraph [ref=e187]: Trova le indicazioni per la chiesa e il ricevimento e conferma la partecipazione in una pagina dedicata.
+      - paragraph [ref=e188]:
+        - link "Vai alla pagina Partecipa" [ref=e189] [cursor=pointer]:
+          - /url: https://payments-helpful-hour-jurisdiction.trycloudflare.com/w/attend
+    - generic [ref=e190]:
+      - heading "Canzoni da suggerire al DJ" [level=2] [ref=e191]
+      - paragraph [ref=e192]: Dicci quali canzoni non devono mancare — passeremo la lista al DJ.
+      - generic [ref=e193]:
+        - generic [ref=e194]: Il tuo nome
+        - textbox "Il tuo nome" [ref=e195]
+        - generic [ref=e196]: Titolo della canzone
+        - textbox "Titolo della canzone" [ref=e197]
+        - generic [ref=e198]: Artista (facoltativo)
+        - textbox "Artista (facoltativo)" [ref=e199]
+        - generic [ref=e200]: Nota per il DJ (facoltativa)
+        - textbox "Nota per il DJ (facoltativa)" [ref=e201]
+        - button "Aggiungi canzone" [ref=e202] [cursor=pointer]
+  - button "Riproduci la musica del matrimonio" [ref=e203] [cursor=pointer]:
+    - generic [ref=e204]:
+      - img [ref=e207]
+      - generic:
+        - img
+        - img

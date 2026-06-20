@@ -24,46 +24,31 @@ class GalleryController extends Controller
 {
     private const SESSION_GUEST_ID = 'gallery_guest_id';
 
-    public function show(Request $request): View|RedirectResponse
+    public function show(Request $request): RedirectResponse
     {
-        $token = $request->query('token');
+        $query = $request->getQueryString();
 
-        $guest = null;
-        if (is_string($token) && $token !== '') {
-            $guest = Guest::query()->where('token', $token)->first();
-            if ($guest) {
-                $request->session()->put(self::SESSION_GUEST_ID, $guest->id);
-            }
-        }
-
-        if ($guest === null) {
-            $guestId = $request->session()->get(self::SESSION_GUEST_ID);
-            $guest = $guestId ? Guest::query()->find($guestId) : null;
-        }
-
-        return view('gallery', [
-            'guest' => $guest,
-        ]);
+        return redirect()->to(route('gallery.album') . ($query ? '?' . $query : ''));
     }
 
-    /** US-13 / US-14: public album (first page SSR + infinite scroll via {@see feed}). */
-    public function album(): View
+    /** US-13 / US-14: public album with server-side pagination. */
+    public function album(Request $request): View
     {
+        $guest = $this->resolveGalleryGuest($request);
+
         $perPage = (int) config('gallery.public_feed.per_page');
 
-        $paginator = $this->publicPhotoQuery(null)
+        $photos = $this->publicPhotoQuery(null)
             ->latest('id')
-            ->paginate($perPage);
+            ->paginate($perPage)
+            ->withQueryString();
 
-        $paginator->setPath(route('gallery.feed'));
-
-        $initialPhotos = $paginator->getCollection()
-            ->map(fn (Photo $p) => $this->photoPublicArray($p))
-            ->all();
+        $photos->setPath(route('gallery.album'));
+        $photos->getCollection()->transform(fn(Photo $p) => $this->photoPublicArray($p));
 
         return view('gallery-album', [
-            'initialPhotos' => $initialPhotos,
-            'nextPageUrl' => $paginator->nextPageUrl(),
+            'guest' => $guest,
+            'photos' => $photos,
         ]);
     }
 
@@ -83,12 +68,12 @@ class GalleryController extends Controller
         $maxAge = max(0, (int) config('gallery.http_cache.feed_max_age', 30));
         $headers = [];
         if ($maxAge > 0) {
-            $headers['Cache-Control'] = 'public, max-age='.$maxAge;
+            $headers['Cache-Control'] = 'public, max-age=' . $maxAge;
         }
 
         return response()->json([
             'data' => $paginator->getCollection()
-                ->map(fn (Photo $p) => $this->photoPublicArray($p))
+                ->map(fn(Photo $p) => $this->photoPublicArray($p))
                 ->values()
                 ->all(),
             'next_page_url' => $paginator->nextPageUrl(),
@@ -113,7 +98,7 @@ class GalleryController extends Controller
         if ($maxAge > 0) {
             $response->setPublic();
             $response->setMaxAge($maxAge);
-            $response->headers->set('Cache-Control', 'public, max-age='.$maxAge.', immutable');
+            $response->headers->set('Cache-Control', 'public, max-age=' . $maxAge . ', immutable');
         }
 
         return $response;
@@ -181,14 +166,14 @@ class GalleryController extends Controller
 
         $ext = pathinfo($photo->file_path, PATHINFO_EXTENSION);
 
-        return 'photo-'.$photo->id.($ext !== '' ? '.'.$ext : '');
+        return 'photo-' . $photo->id . ($ext !== '' ? '.' . $ext : '');
     }
 
     public function uploadAlias(Request $request): RedirectResponse
     {
         $query = $request->getQueryString();
 
-        return redirect()->to('/gallery'.($query ? '?'.$query : ''));
+        return redirect()->to(route('gallery.album') . ($query ? '?' . $query : ''));
     }
 
     public function store(StoreGalleryPhotosRequest $request, GalleryImageCompressor $compressor): RedirectResponse|JsonResponse
@@ -211,10 +196,30 @@ class GalleryController extends Controller
 
         if ($request->ajax() || $request->wantsJson()) {
             return response()->json([
-                'redirect' => route('gallery.show'),
+                'redirect' => route('gallery.album'),
             ]);
         }
 
-        return redirect()->route('gallery.show');
+        return redirect()->route('gallery.album');
+    }
+
+    private function resolveGalleryGuest(Request $request): ?Guest
+    {
+        $token = $request->query('token');
+
+        $guest = null;
+        if (is_string($token) && $token !== '') {
+            $guest = Guest::query()->where('token', $token)->first();
+            if ($guest) {
+                $request->session()->put(self::SESSION_GUEST_ID, $guest->id);
+            }
+        }
+
+        if ($guest === null) {
+            $guestId = $request->session()->get(self::SESSION_GUEST_ID);
+            $guest = $guestId ? Guest::query()->find($guestId) : null;
+        }
+
+        return $guest;
     }
 }
