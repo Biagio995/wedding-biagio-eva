@@ -15,7 +15,35 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        if (env('VERCEL')) {
+            $this->configureForVercel();
+        }
+    }
+
+    /**
+     * Vercel dashboard env vars override vercel.json. Force serverless-safe defaults
+     * so a copied local .env (sqlite, session/cache database) does not 500 web routes.
+     */
+    private function configureForVercel(): void
+    {
+        $databaseUrl = env('DB_URL') ?: env('DATABASE_URL') ?: env('POSTGRES_URL');
+
+        if (is_string($databaseUrl) && $databaseUrl !== '') {
+            config([
+                'database.default' => 'pgsql',
+                'database.connections.pgsql.url' => $databaseUrl,
+            ]);
+        }
+
+        if (! env('APP_URL') && is_string(env('VERCEL_URL')) && env('VERCEL_URL') !== '') {
+            config(['app.url' => 'https://'.env('VERCEL_URL')]);
+        }
+
+        config([
+            'session.driver' => 'cookie',
+            'cache.default' => 'array',
+            'queue.default' => 'sync',
+        ]);
     }
 
     /**
