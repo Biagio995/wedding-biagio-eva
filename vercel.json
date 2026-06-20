@@ -63,6 +63,7 @@
         "GALLERY_IMAGE_COMPRESSION": "false",
         "GALLERY_EXTERNAL_PROVIDER": "google_photos",
         "GALLERY_GOOGLE_PHOTOS_EMAIL": "biagioevasposi@gmail.com",
+        "GALLERY_EXTERNAL_URL": "https://photos.app.goo.gl/EsQr8XhRPLV1rYzy5",
         "APP_URL": "https://wedding-biagio-eva.vercel.app"
     }
 }
