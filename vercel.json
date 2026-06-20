@@ -26,7 +26,7 @@
         },
         {
             "src": "/storage/(.*)",
-            "dest": "/laravel/public/storage/$1"
+            "dest": "/api/index.php"
         },
         {
             "src": "/favicon.ico",

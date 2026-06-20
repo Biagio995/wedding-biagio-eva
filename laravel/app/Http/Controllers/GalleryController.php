@@ -180,16 +180,28 @@ class GalleryController extends Controller
     {
         $guestId = $request->session()->get(self::SESSION_GUEST_ID);
 
-        foreach ($request->file('photos') as $file) {
-            $path = $compressor->compressAndStore($file, 'public');
+        try {
+            foreach ($request->file('photos') as $file) {
+                $path = $compressor->compressAndStore($file, 'public');
 
-            /** US-12: trace uploads to the guest resolved from token/session (nullable). */
-            Photo::query()->create([
-                'guest_id' => $guestId,
-                'file_path' => $path,
-                'original_filename' => $file->getClientOriginalName(),
-                'approved' => false,
-            ]);
+                /** US-12: trace uploads to the guest resolved from token/session (nullable). */
+                Photo::query()->create([
+                    'guest_id' => $guestId,
+                    'file_path' => $path,
+                    'original_filename' => $file->getClientOriginalName(),
+                    'approved' => false,
+                ]);
+            }
+        } catch (\Throwable $e) {
+            report($e);
+
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'message' => __('Upload failed. Please try again.'),
+                ], 500);
+            }
+
+            throw $e;
         }
 
         $request->session()->flash('upload_success', true);

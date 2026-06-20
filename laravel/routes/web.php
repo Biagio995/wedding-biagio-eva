@@ -15,6 +15,7 @@ use App\Http\Controllers\RegistryController;
 use App\Http\Controllers\SongRecommendationController;
 use App\Http\Controllers\WeddingController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 Route::get('/locale/{locale}', function (string $locale) {
     $allowed = array_keys(config('wedding.locales', []));
@@ -25,6 +26,13 @@ Route::get('/locale/{locale}', function (string $locale) {
 
     return redirect()->back();
 })->name('locale.switch');
+
+Route::get('/storage/{path}', function (string $path) {
+    $path = ltrim(str_replace(['..', '\\'], '', $path), '/');
+    abort_unless($path !== '' && Storage::disk('public')->exists($path), 404);
+
+    return Storage::disk('public')->response($path);
+})->where('path', '.+')->name('storage.public');
 
 // US-29: routes below — guest access via token + session only; no Laravel user registration.
 Route::get('/', [WeddingController::class, 'show'])->name('home');

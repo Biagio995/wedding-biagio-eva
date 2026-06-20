@@ -44,6 +44,26 @@ class AppServiceProvider extends ServiceProvider
             'cache.default' => 'array',
             'queue.default' => 'sync',
         ]);
+
+        $this->configureWritablePublicDisk();
+    }
+
+    /** Vercel lambdas cannot write under storage/; use /tmp and serve via Laravel routes. */
+    private function configureWritablePublicDisk(): void
+    {
+        $root = rtrim(sys_get_temp_dir(), '/\\').DIRECTORY_SEPARATOR.'laravel-public';
+
+        foreach (['', 'gallery'] as $subdir) {
+            $dir = $subdir === '' ? $root : $root.DIRECTORY_SEPARATOR.$subdir;
+            if (! is_dir($dir)) {
+                mkdir($dir, 0755, true);
+            }
+        }
+
+        config([
+            'filesystems.disks.public.root' => $root,
+            'filesystems.disks.public.url' => rtrim((string) config('app.url'), '/').'/storage',
+        ]);
     }
 
     /**
