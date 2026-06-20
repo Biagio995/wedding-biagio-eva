@@ -17,6 +17,7 @@ $rows = [
     ['Approve or delete uploads. Deleted files are removed from the server.', 'Approva o elimina gli invii. I file eliminati vengono rimossi dal server.', 'Έγκριση ή διαγραφή μεταφορτώσεων. Τα διαγραμμένα αρχεία αφαιρούνται από τον διακομιστή.', 'Uploads genehmigen oder löschen. Gelöschte Dateien werden vom Server entfernt.'],
     ['Approved', 'Approvate', 'Εγκεκριμένα', 'Freigegeben'],
     ['Attendance', 'Partecipazione', 'Παρουσία', 'Teilnahme'],
+    ['Attendees', 'Partecipanti', 'Συμμετέχοντες', 'Teilnehmer'],
     ['Attending', 'Partecipano', 'Θα παρευρεθούν', 'Zugesagt'],
     ['Attending (invitations)', 'Partecipano (inviti)', 'Παρουσία (προσκλήσεις)', 'Zugesagt (Einladungen)'],
     ['Awaiting reply', 'In attesa di risposta', 'Αναμονή απάντησης', 'Antwort ausstehend'],

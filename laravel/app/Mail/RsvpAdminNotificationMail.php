@@ -16,7 +16,9 @@ class RsvpAdminNotificationMail extends Mailable
     public function __construct(
         public Guest $guest,
         public bool $isUpdate,
-    ) {}
+    ) {
+        $this->locale((string) config('wedding.rsvp.notify_admin_locale', 'it'));
+    }
 
     public function envelope(): Envelope
     {

@@ -404,6 +404,35 @@ class WeddingTest extends TestCase
         });
     }
 
+    public function test_rsvp_admin_notification_includes_attendee_names_us24(): void
+    {
+        Config::set('wedding.rsvp.notify_admin_email', 'admin-notify@example.test');
+        Config::set('wedding.rsvp.send_confirmation_email', false);
+
+        $guest = Guest::query()->create([
+            'name' => 'Maria Rossi',
+            'email' => 'maria@example.test',
+            'token' => 'tok-us24-names',
+        ]);
+
+        $this->withSession([WeddingController::SESSION_WEDDING_GUEST_ID => $guest->id])
+            ->post('/w/rsvp', [
+                'rsvp_status' => 'yes',
+                'guests_count' => 3,
+                'companion_names' => ['Luca Rossi', 'Sara Bianchi'],
+            ])
+            ->assertSessionHas('wedding_success');
+
+        Mail::assertSent(RsvpAdminNotificationMail::class, function (RsvpAdminNotificationMail $mail): bool {
+            $html = $mail->render();
+
+            return str_contains($html, 'Maria Rossi')
+                && str_contains($html, 'Luca Rossi')
+                && str_contains($html, 'Sara Bianchi')
+                && str_contains($html, '3');
+        });
+    }
+
     public function test_rsvp_admin_notification_marks_update_us24(): void
     {
         Config::set('wedding.rsvp.notify_admin_email', 'admin@example.test');
