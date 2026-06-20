@@ -412,6 +412,7 @@ class WeddingTest extends TestCase
         $guest = Guest::query()->create([
             'name' => 'Maria Rossi',
             'email' => 'maria@example.test',
+            'locale' => 'el',
             'token' => 'tok-us24-names',
         ]);
 
@@ -426,7 +427,8 @@ class WeddingTest extends TestCase
         Mail::assertSent(RsvpAdminNotificationMail::class, function (RsvpAdminNotificationMail $mail): bool {
             $html = $mail->render();
 
-            return str_contains($html, 'Maria Rossi')
+            return $mail->locale === 'el'
+                && str_contains($html, 'Maria Rossi')
                 && str_contains($html, 'Luca Rossi')
                 && str_contains($html, 'Sara Bianchi')
                 && str_contains($html, '3');

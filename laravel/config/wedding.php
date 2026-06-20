@@ -117,8 +117,6 @@ return [
         'send_confirmation_email' => env('WEDDING_SEND_RSVP_CONFIRMATION_EMAIL', false),
         /** US-24: optional admin inbox when any guest submits or updates an RSVP (requires MAIL_*). */
         'notify_admin_email' => env('WEDDING_ADMIN_RSVP_NOTIFY_EMAIL'),
-        /** Language for organiser RSVP notification emails. */
-        'notify_admin_locale' => env('WEDDING_ADMIN_RSVP_NOTIFY_LOCALE', 'it'),
         /**
          * Optional RSVP deadline (ISO date, e.g. `2027-06-01`). When set:
          *   - the Attend page shows "Please respond by …" above the form;
