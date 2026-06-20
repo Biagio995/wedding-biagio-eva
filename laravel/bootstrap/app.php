@@ -17,7 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        if (env('APP_ENV', 'production') === 'local') {
+        if (env('APP_ENV', 'production') === 'local' || env('VERCEL')) {
             $middleware->trustProxies(at: '*');
         }
         $middleware->web(append: [

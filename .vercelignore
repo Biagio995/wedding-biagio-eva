@@ -2,7 +2,7 @@ laravel/vendor
 laravel/node_modules
 laravel/tools
 laravel/tests
-laravel/storage
+laravel/storage/logs
 laravel/.playwright-mcp
 laravel/docker
 laravel/Dockerfile

@@ -8,7 +8,7 @@
     "functions": {
         "api/index.php": {
             "runtime": "vercel-php@0.7.4",
-            "excludeFiles": "{laravel/node_modules/**,laravel/tools/**,laravel/tests/**,laravel/storage/**,laravel/.playwright-mcp/**,laravel/docker/**,laravel/Dockerfile,laravel/.dockerignore,laravel/.phpunit.result.cache,laravel/phpunit.xml,laravel/README.md,laravel/public/hot}"
+            "excludeFiles": "{laravel/node_modules/**,laravel/tools/**,laravel/tests/**,laravel/storage/logs/**,laravel/.playwright-mcp/**,laravel/docker/**,laravel/Dockerfile,laravel/.dockerignore,laravel/.phpunit.result.cache,laravel/phpunit.xml,laravel/README.md,laravel/public/hot}"
         }
     },
     "routes": [
@@ -30,6 +30,8 @@
         }
     ],
     "env": {
+        "APP_ENV": "production",
+        "APP_DEBUG": "false",
         "APP_CONFIG_CACHE": "/tmp/config.php",
         "APP_EVENTS_CACHE": "/tmp/events.php",
         "APP_PACKAGES_CACHE": "/tmp/packages.php",
@@ -38,7 +40,10 @@
         "CACHE_DRIVER": "array",
         "CACHE_STORE": "array",
         "LOG_CHANNEL": "stderr",
+        "LOG_LEVEL": "error",
+        "QUEUE_CONNECTION": "sync",
         "SESSION_DRIVER": "cookie",
-        "VIEW_COMPILED_PATH": "/tmp"
+        "VIEW_COMPILED_PATH": "/tmp",
+        "DB_CONNECTION": "pgsql"
     }
 }
