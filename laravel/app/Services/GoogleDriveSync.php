@@ -98,6 +98,16 @@ class GoogleDriveSync
     /** @return array<string, mixed> */
     private function post(array $payload): array
     {
+        $body = [
+            'secret' => config('gallery.google_drive.secret'),
+            ...$payload,
+        ];
+
+        $folderId = trim((string) config('gallery.google_drive.folder_id'));
+        if ($folderId !== '') {
+            $body['folderId'] = $folderId;
+        }
+
         $response = Http::withOptions([
             'allow_redirects' => [
                 'max' => 5,
@@ -107,10 +117,7 @@ class GoogleDriveSync
         ])
             ->asJson()
             ->timeout((int) config('gallery.google_drive.timeout_seconds', 120))
-            ->post((string) config('gallery.google_drive.apps_script_url'), [
-                'secret' => config('gallery.google_drive.secret'),
-                ...$payload,
-            ])
+            ->post((string) config('gallery.google_drive.apps_script_url'), $body)
             ->throw();
 
         $data = $response->json();

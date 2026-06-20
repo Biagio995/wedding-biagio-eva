@@ -1,15 +1,5 @@
 /**
- * Wedding gallery → Google Drive (after admin approval only).
- *
- * Secrets live in Laravel .env only. Apps Script reads SECRET from Script properties.
- *
- * Setup:
- * 1. Fill GOOGLE_DRIVE_* in laravel/.env (and Vercel).
- * 2. Paste this file into script.google.com → Save.
- * 3. Project settings (ingranaggio) → Script properties → add:
- *      SECRET = same as GOOGLE_DRIVE_APPS_SCRIPT_SECRET in .env
- * 4. Run authorizeDriveOnce() once (▶) and approve Drive access.
- * 5. Deploy → Web app → Execute as: Me → Who has access: Anyone → copy /exec URL to .env
+ * Template — identical to google-drive-sync.gs (kept for reference).
  */
 
 function expectedSecret() {
@@ -20,7 +10,6 @@ function expectedSecret() {
   return secret;
 }
 
-/** Apri l'URL /exec nel browser: se vedi ok:true, il deploy web è attivo. */
 function doGet() {
   return jsonResponse({
     ok: true,
@@ -28,7 +17,6 @@ function doGet() {
   });
 }
 
-/** Esegui una volta dall'editor (▶) per autorizzare l'accesso a Drive. */
 function authorizeDriveOnce() {
   const folderId = PropertiesService.getScriptProperties().getProperty('FOLDER_ID');
   if (!folderId) {
