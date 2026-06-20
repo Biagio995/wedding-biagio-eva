@@ -43,10 +43,15 @@ class AdminGuestTest extends TestCase
         $this->post(route('admin.login'), ['password' => 'secret'])
             ->assertRedirect(route('admin.guests.create'));
 
-        $this->post(route('admin.guests.store'), [
+        $response = $this->post(route('admin.guests.store'), [
             'name' => 'Ada Lovelace',
             'email' => 'ada@example.com',
-        ])->assertRedirect(route('admin.guests.create'))
+        ]);
+
+        $guest = Guest::query()->where('email', 'ada@example.com')->first();
+        $this->assertNotNull($guest);
+
+        $response->assertRedirect(route('admin.guests.create', ['created' => $guest->id]))
             ->assertSessionHas('created_guest', fn (array $g) => $g['invitation_email_sent'] === true);
 
         $this->assertDatabaseHas('guests', [
@@ -54,8 +59,6 @@ class AdminGuestTest extends TestCase
             'email' => 'ada@example.com',
         ]);
 
-        $guest = Guest::query()->where('email', 'ada@example.com')->first();
-        $this->assertNotNull($guest);
         $this->assertNotEmpty($guest->token);
 
         Mail::assertSent(GuestInvitationMail::class, function (GuestInvitationMail $mail) use ($guest): bool {
@@ -69,9 +72,14 @@ class AdminGuestTest extends TestCase
         $this->configureAdminPassword();
         $this->post(route('admin.login'), ['password' => 'secret']);
 
-        $this->post(route('admin.guests.store'), [
+        $response = $this->post(route('admin.guests.store'), [
             'name' => 'No Email Guest',
-        ])->assertRedirect(route('admin.guests.create'))
+        ]);
+
+        $guest = Guest::query()->where('name', 'No Email Guest')->first();
+        $this->assertNotNull($guest);
+
+        $response->assertRedirect(route('admin.guests.create', ['created' => $guest->id]))
             ->assertSessionHas('created_guest', fn (array $g) => ($g['invitation_email_sent'] ?? false) === false);
 
         Mail::assertNothingSent();
@@ -106,15 +114,17 @@ class AdminGuestTest extends TestCase
         $this->configureAdminPassword();
         $this->post(route('admin.login'), ['password' => 'secret']);
 
-        $this->withSession(['locale' => 'de'])
+        $response = $this->withSession(['locale' => 'de'])
             ->post(route('admin.guests.store'), [
                 'name' => 'Greek Guest',
                 'email' => 'greek@example.com',
                 'locale' => 'el',
-            ])->assertRedirect(route('admin.guests.create'));
+            ]);
 
         $guest = Guest::query()->where('email', 'greek@example.com')->first();
         $this->assertNotNull($guest);
+
+        $response->assertRedirect(route('admin.guests.create', ['created' => $guest->id]));
 
         Mail::assertSent(GuestInvitationMail::class, function (GuestInvitationMail $mail) use ($guest): bool {
             return $mail->guest->is($guest) && $mail->locale === 'el';
@@ -126,10 +136,15 @@ class AdminGuestTest extends TestCase
         $this->configureAdminPassword();
         $this->post(route('admin.login'), ['password' => 'secret']);
 
-        $this->post(route('admin.guests.store'), [
+        $response = $this->post(route('admin.guests.store'), [
             'name' => 'Custom',
             'token' => 'my-invite-99',
-        ])->assertRedirect(route('admin.guests.create'));
+        ]);
+
+        $guest = Guest::query()->where('token', 'my-invite-99')->first();
+        $this->assertNotNull($guest);
+
+        $response->assertRedirect(route('admin.guests.create', ['created' => $guest->id]));
 
         $this->assertDatabaseHas('guests', [
             'name' => 'Custom',
@@ -177,7 +192,7 @@ class AdminGuestTest extends TestCase
             ->assertRedirect(route('admin.login'));
     }
 
-    public function test_admin_qr_returns_png_us17(): void
+    public function test_admin_qr_returns_svg_us17(): void
     {
         Config::set('app.url', 'http://wedding.test');
         $this->configureAdminPassword();
@@ -191,10 +206,10 @@ class AdminGuestTest extends TestCase
 
         $response = $this->get(route('admin.guests.qr', ['guest' => $guest->id]));
         $response->assertOk();
-        $response->assertHeader('Content-Type', 'image/png');
+        $response->assertHeader('Content-Type', 'image/svg+xml');
         $binary = $response->getContent();
         $this->assertIsString($binary);
-        $this->assertStringStartsWith("\x89PNG\r\n\x1a\n", $binary);
+        $this->assertStringContainsString('<svg', $binary);
     }
 
     public function test_admin_qr_download_sets_attachment_us17(): void
@@ -217,7 +232,7 @@ class AdminGuestTest extends TestCase
         $disposition = $response->headers->get('Content-Disposition');
         $this->assertIsString($disposition);
         $this->assertStringContainsString('attachment', $disposition);
-        $this->assertStringContainsString('.png', $disposition);
+        $this->assertStringContainsString('.svg', $disposition);
     }
 
     public function test_admin_qr_unknown_guest_returns_404(): void
@@ -227,6 +242,29 @@ class AdminGuestTest extends TestCase
 
         $this->get(route('admin.guests.qr', ['guest' => 999999]))
             ->assertNotFound();
+    }
+
+    public function test_qr_generator_returns_svg_markup_us17(): void
+    {
+        $result = (new \App\Services\WeddingInviteQrGenerator)->make('https://example.com/w/test-token');
+
+        $this->assertSame('image/svg+xml', $result->getMimeType());
+        $this->assertStringContainsString('<svg', $result->getString());
+    }
+
+    public function test_create_guest_page_embeds_qr_after_creation_us17(): void
+    {
+        Config::set('app.url', 'http://wedding.test');
+        $this->configureAdminPassword();
+        $this->post(route('admin.login'), ['password' => 'secret']);
+
+        $this->post(route('admin.guests.store'), [
+            'name' => 'Embedded QR Guest',
+        ])->assertRedirect();
+
+        $response = $this->get(route('admin.guests.create', ['created' => Guest::query()->where('name', 'Embedded QR Guest')->value('id')]));
+        $response->assertOk();
+        $response->assertSee('<svg', false);
     }
 
     public function test_csv_import_requires_auth_us18(): void

@@ -26,12 +26,13 @@ class AdminGalleryQrTest extends TestCase
 
     public function test_admin_can_see_printable_card_with_gallery_qr(): void
     {
+        Config::set('app.locale', 'en');
         $this->loginAsAdmin();
 
         $response = $this->get(route('admin.gallery.qr.card'))->assertOk();
 
-        $response->assertSee('Share your photos with us', false);
+        $response->assertSee(__('Share your photos with us'), false);
         /** Embedded QR rendered as data URI so the card prints standalone. */
-        $response->assertSee('data:image/png;base64,', false);
+        $response->assertSee('data:image/svg+xml;base64,', false);
     }
 }

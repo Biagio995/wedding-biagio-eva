@@ -50,9 +50,37 @@ class GuestController extends Controller
         ]);
     }
 
-    public function create(): View
+    public function create(Request $request, WeddingInviteQrGenerator $generator): View
     {
-        return view('admin.guests.create');
+        $flashGuest = session('created_guest');
+        $createdGuest = null;
+        $createdGuestQrSvg = null;
+
+        $guestId = $request->integer('created');
+        if ($guestId <= 0 && is_array($flashGuest)) {
+            $guestId = (int) ($flashGuest['id'] ?? 0);
+        }
+
+        if ($guestId > 0) {
+            $guest = Guest::query()->find($guestId);
+            if ($guest instanceof Guest) {
+                $createdGuest = [
+                    'id' => $guest->id,
+                    'name' => $guest->name,
+                    'email' => $guest->email,
+                    'invite_url' => route('wedding.enter', ['token' => $guest->token]),
+                    'invitation_email_sent' => is_array($flashGuest) && (int) ($flashGuest['id'] ?? 0) === $guest->id
+                        ? (bool) ($flashGuest['invitation_email_sent'] ?? false)
+                        : false,
+                ];
+                $createdGuestQrSvg = $this->inviteQrSvg($guest, $generator);
+            }
+        }
+
+        return view('admin.guests.create', [
+            'createdGuest' => $createdGuest,
+            'createdGuestQrSvg' => $createdGuestQrSvg,
+        ]);
     }
 
     public function importForm(): View
@@ -92,7 +120,7 @@ class GuestController extends Controller
         $invitationEmailSent = $this->sendGuestInvitation($guest);
 
         return redirect()
-            ->route('admin.guests.create')
+            ->route('admin.guests.create', ['created' => $guest->id])
             ->with('status', __('Guest created.'))
             ->with('created_guest', [
                 'id' => $guest->id,
@@ -130,7 +158,7 @@ class GuestController extends Controller
         return $redirectTo->withErrors(['email' => __('Invitation email could not be sent.')]);
     }
 
-    public function edit(Request $request, Guest $guest): View
+    public function edit(Request $request, Guest $guest, WeddingInviteQrGenerator $generator): View
     {
         $filter = $request->query('rsvp', 'all');
         if (! is_string($filter) || ! in_array($filter, ['all', 'yes', 'no', 'pending'], true)) {
@@ -140,6 +168,7 @@ class GuestController extends Controller
         return view('admin.guests.edit', [
             'guest' => $guest,
             'filter' => $filter,
+            'inviteQrSvg' => $this->inviteQrSvg($guest, $generator),
         ]);
     }
 
@@ -186,7 +215,7 @@ class GuestController extends Controller
             ->with('status', __('Guest deleted.'));
     }
 
-    /** US-17: PNG QR encoding the guest’s absolute wedding invitation URL. */
+    /** US-17: SVG QR encoding the guest’s absolute wedding invitation URL. */
     public function qr(Request $request, Guest $guest, WeddingInviteQrGenerator $generator): Response
     {
         $inviteUrl = route('wedding.enter', ['token' => $guest->token], absolute: true);
@@ -198,7 +227,7 @@ class GuestController extends Controller
         ];
 
         if ($request->boolean('download')) {
-            $headers['Content-Disposition'] = 'attachment; filename="'.$this->qrDownloadFilename($guest).'"';
+            $headers['Content-Disposition'] = 'attachment; filename="'.$this->qrDownloadFilename($guest, $result->getMimeType()).'"';
         }
 
         return response($result->getString(), 200, $headers);
@@ -221,7 +250,14 @@ class GuestController extends Controller
         }
     }
 
-    private function qrDownloadFilename(Guest $guest): string
+    private function inviteQrSvg(Guest $guest, WeddingInviteQrGenerator $generator): string
+    {
+        $inviteUrl = route('wedding.enter', ['token' => $guest->token], absolute: true);
+
+        return $generator->toSvgMarkup($inviteUrl);
+    }
+
+    private function qrDownloadFilename(Guest $guest, string $mimeType): string
     {
         $base = preg_replace('/[^a-zA-Z0-9_-]+/', '-', $guest->name);
         $base = trim(is_string($base) ? $base : '', '-');
@@ -229,7 +265,9 @@ class GuestController extends Controller
             $base = 'guest';
         }
 
-        return 'invite-'.$guest->id.'-'.$base.'.png';
+        $extension = str_contains($mimeType, 'svg') ? 'svg' : 'png';
+
+        return 'invite-'.$guest->id.'-'.$base.'.'.$extension;
     }
 
     /**

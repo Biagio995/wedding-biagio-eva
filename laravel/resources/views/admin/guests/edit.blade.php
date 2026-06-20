@@ -120,11 +120,10 @@
     <div class="card" style="margin-top:1rem;">
         <p class="sub" style="margin-bottom:0.75rem;">{{ __('Invitation link') }}</p>
         <p><a href="{{ route('wedding.enter', ['token' => $guest->token]) }}">{{ route('wedding.enter', ['token' => $guest->token]) }}</a></p>
-        <p style="margin-top:0.75rem;">
-            <a href="{{ route('admin.guests.qr', $guest) }}" target="_blank" rel="noopener">{{ __('View QR') }}</a>
-            ·
-            <a href="{{ route('admin.guests.qr', ['guest' => $guest, 'download' => 1]) }}">{{ __('Download QR (PNG)') }}</a>
-        </p>
+        @include('admin.guests.partials.qr-block', [
+            'guest' => $guest,
+            'qrSvg' => $inviteQrSvg,
+        ])
         @if ($guest->email)
             <form
                 method="post"

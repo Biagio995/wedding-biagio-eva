@@ -6,7 +6,8 @@
     margin-top: 0.75rem;
 }
 
-.qr-block img {
+.qr-block img,
+.qr-block__code {
     display: block;
     width: 160px;
     height: auto;
@@ -15,6 +16,12 @@
     padding: 0.5rem;
     border-radius: 12px;
     border: 1px solid var(--stroke);
+}
+
+.qr-block__code svg {
+    display: block;
+    width: 100%;
+    height: auto;
 }
 
 .qr-block a {

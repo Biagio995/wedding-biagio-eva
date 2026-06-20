@@ -25,8 +25,8 @@
     @if (session('status'))
         <div class="ok" role="status">
             <p>{{ session('status') }}</p>
-            @if (session('created_guest'))
-                @php($g = session('created_guest'))
+            @php($g = $createdGuest ?? session('created_guest'))
+            @if (is_array($g))
                 <p><strong>{{ e($g['name']) }}</strong></p>
                 <p><a href="{{ $g['invite_url'] }}">{{ $g['invite_url'] }}</a></p>
                 @if (!empty($g['email']))
@@ -36,19 +36,11 @@
                         <p class="err">{{ __('Invitation email could not be sent.') }}</p>
                     @endif
                 @endif
-                @if (!empty($g['id']))
-                    <div class="qr-block">
-                        <p>{{ __('Invitation QR code') }}</p>
-                        <img
-                            src="{{ route('admin.guests.qr', ['guest' => $g['id']]) }}"
-                            width="160"
-                            height="160"
-                            alt=""
-                        >
-                        <p>
-                            <a href="{{ route('admin.guests.qr', ['guest' => $g['id'], 'download' => 1]) }}">{{ __('Download QR (PNG)') }}</a>
-                        </p>
-                    </div>
+                @if (!empty($createdGuestQrSvg))
+                    @include('admin.guests.partials.qr-block', [
+                        'guest' => $g['id'],
+                        'qrSvg' => $createdGuestQrSvg,
+                    ])
                 @endif
             @endif
         </div>

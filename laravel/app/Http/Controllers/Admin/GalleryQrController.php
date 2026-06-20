@@ -18,13 +18,10 @@ class GalleryQrController extends Controller
     public function card(WeddingInviteQrGenerator $generator): View
     {
         $galleryUrl = route('gallery.album', [], absolute: true);
-        $result = $generator->make($galleryUrl);
-
-        $dataUri = 'data:'.$result->getMimeType().';base64,'.base64_encode($result->getString());
 
         return view('admin.gallery.qr', [
             'galleryUrl' => $galleryUrl,
-            'qrDataUri' => $dataUri,
+            'qrDataUri' => $generator->toDataUri($galleryUrl),
             'eventTitle' => (string) config('wedding.event.title', config('app.name', 'Wedding')),
         ]);
     }
