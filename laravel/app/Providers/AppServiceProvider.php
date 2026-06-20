@@ -18,6 +18,8 @@ class AppServiceProvider extends ServiceProvider
     {
         if (env('VERCEL')) {
             $this->configureForVercel();
+        } elseif ($this->usesObjectStorage()) {
+            $this->configureObjectStoragePublicDisk();
         }
     }
 
@@ -51,7 +53,38 @@ class AppServiceProvider extends ServiceProvider
             ),
         ]);
 
-        $this->configureWritablePublicDisk();
+        if ($this->usesObjectStorage()) {
+            $this->configureObjectStoragePublicDisk();
+        } else {
+            $this->configureWritablePublicDisk();
+        }
+    }
+
+    private function usesObjectStorage(): bool
+    {
+        return filled(env('AWS_BUCKET'))
+            && filled(env('AWS_ACCESS_KEY_ID'))
+            && filled(env('AWS_SECRET_ACCESS_KEY'));
+    }
+
+    /** S3-compatible object storage (AWS S3, Cloudflare R2, etc.) survives Vercel cold starts. */
+    private function configureObjectStoragePublicDisk(): void
+    {
+        config([
+            'filesystems.disks.public' => [
+                'driver' => 's3',
+                'key' => env('AWS_ACCESS_KEY_ID'),
+                'secret' => env('AWS_SECRET_ACCESS_KEY'),
+                'region' => env('AWS_DEFAULT_REGION', 'auto'),
+                'bucket' => env('AWS_BUCKET'),
+                'url' => env('AWS_URL'),
+                'endpoint' => env('AWS_ENDPOINT'),
+                'use_path_style_endpoint' => filter_var(env('AWS_USE_PATH_STYLE_ENDPOINT', false), FILTER_VALIDATE_BOOL),
+                'visibility' => 'public',
+                'throw' => false,
+                'report' => false,
+            ],
+        ]);
     }
 
     /** Vercel lambdas cannot write under storage/; use /tmp and serve via Laravel routes. */
@@ -77,7 +110,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if (env('VERCEL')) {
+        if (env('VERCEL') || $this->usesObjectStorage()) {
             Storage::forgetDisk('public');
         }
 

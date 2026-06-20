@@ -67,10 +67,17 @@ class AdminPhotoModerationTest extends TestCase
         Storage::disk('public')->put('gallery/a.jpg', 'a');
         Storage::disk('public')->put('gallery/b.jpg', 'b');
 
-        Photo::query()->create([
+        $photo = Photo::query()->create([
             'guest_id' => null,
             'file_path' => 'gallery/a.jpg',
             'original_filename' => 'a.jpg',
+            'approved' => false,
+        ]);
+
+        Photo::query()->create([
+            'guest_id' => null,
+            'file_path' => 'gallery/b.jpg',
+            'original_filename' => 'b.jpg',
             'approved' => false,
         ]);
 
@@ -80,7 +87,46 @@ class AdminPhotoModerationTest extends TestCase
         $this->get(route('admin.photos.index', ['status' => 'pending']))
             ->assertOk()
             ->assertSee(__('Photo moderation'), false)
-            ->assertSee(__('Approve'), false);
+            ->assertSee(__('Approve'), false)
+            ->assertSee(route('admin.photos.show', ['photo' => $photo->id]), false);
+    }
+
+    public function test_admin_can_preview_photo_file_us21(): void
+    {
+        Storage::fake('public');
+        Storage::disk('public')->put('gallery/x.jpg', 'preview-bytes');
+
+        $photo = Photo::query()->create([
+            'guest_id' => null,
+            'file_path' => 'gallery/x.jpg',
+            'original_filename' => 'x.jpg',
+            'approved' => false,
+        ]);
+
+        $this->configureAdminPassword();
+        $this->post(route('admin.login'), ['password' => 'secret']);
+
+        $response = $this->get(route('admin.photos.show', ['photo' => $photo->id]));
+        $response->assertOk();
+        $this->assertSame('preview-bytes', $response->streamedContent());
+    }
+
+    public function test_admin_photo_preview_requires_authentication_us21(): void
+    {
+        Storage::fake('public');
+        Storage::disk('public')->put('gallery/x.jpg', 'x');
+
+        $photo = Photo::query()->create([
+            'guest_id' => null,
+            'file_path' => 'gallery/x.jpg',
+            'original_filename' => 'x.jpg',
+            'approved' => false,
+        ]);
+
+        $this->configureAdminPassword();
+
+        $this->get(route('admin.photos.show', ['photo' => $photo->id]))
+            ->assertRedirect(route('admin.login'));
     }
 
     public function test_admin_can_delete_photo_and_storage_file_us22(): void

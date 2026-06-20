@@ -6,6 +6,8 @@ use App\Http\Requests\StoreGalleryPhotosRequest;
 use App\Models\Guest;
 use App\Models\Photo;
 use App\Services\GalleryImageCompressor;
+use App\Services\GalleryPhotoDelivery;
+use App\Services\GalleryPhotoUrls;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
@@ -23,6 +25,11 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 class GalleryController extends Controller
 {
     private const SESSION_GUEST_ID = 'gallery_guest_id';
+
+    public function __construct(
+        private readonly GalleryPhotoUrls $photoUrls,
+        private readonly GalleryPhotoDelivery $photoDelivery,
+    ) {}
 
     public function show(Request $request): RedirectResponse
     {
@@ -80,28 +87,20 @@ class GalleryController extends Controller
         ])->withHeaders($headers);
     }
 
+    /** US-15: inline view for photos visible in the public album (same rules as the album feed). */
+    public function showPhoto(int $photo): StreamedResponse
+    {
+        $model = Photo::query()->forPublicFeed()->whereKey($photo)->firstOrFail();
+
+        return $this->photoDelivery->inline($model);
+    }
+
     /** US-15: single-file download for photos visible in the public album (same rules as the album feed). */
     public function download(int $photo): StreamedResponse
     {
         $model = Photo::query()->forPublicFeed()->whereKey($photo)->firstOrFail();
 
-        if (! Storage::disk('public')->exists($model->file_path)) {
-            abort(404);
-        }
-
-        $response = Storage::disk('public')->download(
-            $model->file_path,
-            $this->publicDownloadFilename($model),
-        );
-
-        $maxAge = max(0, (int) config('gallery.http_cache.download_max_age', 86400));
-        if ($maxAge > 0) {
-            $response->setPublic();
-            $response->setMaxAge($maxAge);
-            $response->headers->set('Cache-Control', 'public, max-age=' . $maxAge . ', immutable');
-        }
-
-        return $response;
+        return $this->photoDelivery->download($model);
     }
 
     private function publicPhotoQuery(?string $filterDate): Builder
@@ -148,25 +147,10 @@ class GalleryController extends Controller
     {
         return [
             'id' => $p->id,
-            'url' => Storage::disk('public')->url($p->file_path),
+            'url' => $this->photoUrls->viewUrl($p),
             'alt' => $p->original_filename ?: __('Photo'),
             'download_url' => route('gallery.photo.download', ['photo' => $p->id]),
         ];
-    }
-
-    private function publicDownloadFilename(Photo $photo): string
-    {
-        $original = $photo->original_filename;
-        if (is_string($original) && $original !== '') {
-            $base = basename(str_replace(['\\', "\0"], '', $original));
-            if ($base !== '') {
-                return $base;
-            }
-        }
-
-        $ext = pathinfo($photo->file_path, PATHINFO_EXTENSION);
-
-        return 'photo-' . $photo->id . ($ext !== '' ? '.' . $ext : '');
     }
 
     public function uploadAlias(Request $request): RedirectResponse

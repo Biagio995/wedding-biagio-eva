@@ -60,6 +60,7 @@
         "VIEW_COMPILED_PATH": "/tmp",
         "DB_CONNECTION": "pgsql",
         "GALLERY_UPLOAD_MAX_KB": "4096",
-        "GALLERY_IMAGE_COMPRESSION": "false"
+        "GALLERY_IMAGE_COMPRESSION": "false",
+        "APP_URL": "https://wedding-biagio-eva.vercel.app"
     }
 }

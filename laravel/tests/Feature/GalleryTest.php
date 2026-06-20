@@ -468,7 +468,27 @@ class GalleryTest extends TestCase
 
         $this->getJson(route('gallery.feed'))
             ->assertOk()
+            ->assertJsonPath('data.0.url', route('gallery.photo.show', ['photo' => $photo->id]))
             ->assertJsonPath('data.0.download_url', route('gallery.photo.download', ['photo' => $photo->id]));
+    }
+
+    public function test_guest_can_view_public_photo_inline(): void
+    {
+        Storage::fake('public');
+        Config::set('gallery.public_feed.only_approved', false);
+
+        $content = 'fake-image-bytes';
+        Storage::disk('public')->put('gallery/party.jpg', $content);
+        $photo = Photo::query()->create([
+            'guest_id' => null,
+            'file_path' => 'gallery/party.jpg',
+            'original_filename' => 'party.jpg',
+            'approved' => false,
+        ]);
+
+        $response = $this->get(route('gallery.photo.show', ['photo' => $photo->id]));
+        $response->assertOk();
+        $this->assertSame($content, $response->streamedContent());
     }
 
     public function test_guest_can_download_public_photo_us15(): void

@@ -63,6 +63,10 @@ Route::get('/gallery/album', [GalleryController::class, 'album'])->name('gallery
 Route::get('/gallery/feed', [GalleryController::class, 'feed'])
     ->middleware('throttle:120,1')
     ->name('gallery.feed');
+Route::get('/gallery/photos/{photo}', [GalleryController::class, 'showPhoto'])
+    ->whereNumber('photo')
+    ->middleware('throttle:120,1')
+    ->name('gallery.photo.show');
 Route::get('/gallery/photos/{photo}/download', [GalleryController::class, 'download'])
     ->middleware('throttle:120,1')
     ->whereNumber('photo')
@@ -86,6 +90,9 @@ Route::prefix('admin')->name('admin.')->group(function (): void {
     Route::middleware('wedding.admin')->group(function (): void {
         Route::get('rsvp', [AdminRsvpDashboardController::class, 'index'])->name('rsvp.dashboard');
         Route::get('photos', [AdminPhotoController::class, 'index'])->name('photos.index');
+        Route::get('photos/{photo}/file', [AdminPhotoController::class, 'show'])
+            ->whereNumber('photo')
+            ->name('photos.show');
         Route::get('photos/archive.zip', [AdminPhotoController::class, 'downloadArchive'])
             ->middleware('throttle:6,1')
             ->name('photos.archive');

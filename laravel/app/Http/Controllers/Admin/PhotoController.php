@@ -5,17 +5,24 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Photo;
 use App\Services\AuditLogger;
+use App\Services\GalleryPhotoDelivery;
+use App\Services\GalleryPhotoUrls;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use ZipArchive;
 
 class PhotoController extends Controller
 {
-    public function __construct(private readonly AuditLogger $audit) {}
+    public function __construct(
+        private readonly AuditLogger $audit,
+        private readonly GalleryPhotoUrls $photoUrls,
+        private readonly GalleryPhotoDelivery $photoDelivery,
+    ) {}
 
     /** US-21: review pending uploads; optional filter status=pending|approved|all. */
     public function index(Request $request): View
@@ -41,7 +48,13 @@ class PhotoController extends Controller
         return view('admin.photos.index', [
             'photos' => $photos,
             'filter' => $filter,
+            'photoUrls' => $this->photoUrls,
         ]);
+    }
+
+    public function show(Photo $photo): StreamedResponse
+    {
+        return $this->photoDelivery->inline($photo);
     }
 
     public function approve(Photo $photo): RedirectResponse

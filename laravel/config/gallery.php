@@ -52,6 +52,7 @@ return [
     */
     'http_cache' => [
         'feed_max_age' => max(0, (int) env('GALLERY_FEED_HTTP_MAX_AGE', 30)),
+        'view_max_age' => max(0, (int) env('GALLERY_VIEW_HTTP_MAX_AGE', 3600)),
         'download_max_age' => max(0, (int) env('GALLERY_DOWNLOAD_HTTP_MAX_AGE', 86400)),
     ],
 

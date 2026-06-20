@@ -50,7 +50,7 @@
             @foreach ($photos as $photo)
                 <article class="card">
                     <img
-                        src="{{ Storage::disk('public')->url($photo->file_path) }}"
+                        src="{{ $photoUrls->viewUrl($photo, admin: true) }}"
                         alt="{{ $photo->original_filename ?: __('Photo') }}"
                         loading="lazy"
                         width="256"
