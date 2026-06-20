@@ -2,36 +2,29 @@
     "$schema": "https://openapi.vercel.sh/vercel.json",
     "version": 2,
     "framework": null,
-    "builds": [
-        {
-            "src": "/api/index.php",
-            "use": "vercel-php@0.9.0"
-        },
-        {
-            "src": "/public/**",
-            "use": "@vercel/static"
+    "installCommand": "npm ci",
+    "buildCommand": "npm run build",
+    "functions": {
+        "api/index.php": {
+            "runtime": "vercel-php@0.9.0"
         }
-    ],
-    "routes": [
+    },
+    "rewrites": [
         {
-            "src": "/build/assets/(.*)",
-            "dest": "/public/build/assets/$1"
+            "source": "/build/assets/(.*)",
+            "destination": "/public/build/assets/$1"
         },
         {
-            "src": "/favicon.(.*)",
-            "dest": "/public/favicon.$1"
+            "source": "/favicon.ico",
+            "destination": "/public/favicon.ico"
         },
         {
-            "src": "/apple-touch-icon.png",
-            "dest": "/public/apple-touch-icon.png"
+            "source": "/robots.txt",
+            "destination": "/public/robots.txt"
         },
         {
-            "src": "/robots.txt",
-            "dest": "/public/robots.txt"
-        },
-        {
-            "src": "/(.*)",
-            "dest": "/api/index.php"
+            "source": "/(.*)",
+            "destination": "/api/index.php"
         }
     ],
     "env": {
