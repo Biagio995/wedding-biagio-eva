@@ -18,8 +18,9 @@
         ·
         <a href="{{ route('admin.songs.index') }}">{{ __('DJ song suggestions') }}</a>
         ·
-        @if (\App\Services\GalleryExternalGallery::hasSharedAlbumLink())
-            <a href="{{ \App\Services\GalleryExternalGallery::sharedAlbumUrl() }}" target="_blank" rel="noopener">{{ __('Open shared album on Google Photos') }}</a>
+        @php($driveFolderUrl = app(\App\Services\GoogleDriveSync::class)->folderUrl())
+        @if ($driveFolderUrl)
+            <a href="{{ $driveFolderUrl }}" target="_blank" rel="noopener">{{ __('Open Google Drive folder') }}</a>
             ·
         @endif
         <form method="post" action="{{ route('admin.logout') }}" style="display:inline;">
@@ -30,10 +31,8 @@
     <h1>{{ __('Photo moderation') }}</h1>
     <p class="sub">{{ __('Approve or delete uploads before they appear in the public album.') }}</p>
 
-    @if (\App\Services\GalleryExternalGallery::hasSharedAlbumLink())
-        <p class="sub" role="note">
-            {{ __('Google Photos is for viewing only. Guests upload here; after you approve, add the photo to Google Photos manually (or enable automatic sync in settings).') }}
-        </p>
+    @if (app(\App\Services\GoogleDriveSync::class)->isConfigured())
+        <p class="sub" role="note">{{ __('Approved photos are uploaded automatically to Google Drive.') }}</p>
     @endif
 
     @if (session('status'))

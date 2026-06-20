@@ -5,10 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Photo;
 use App\Services\AuditLogger;
-use App\Services\GalleryExternalGallery;
 use App\Services\GalleryPhotoDelivery;
 use App\Services\GalleryPhotoUrls;
-use App\Services\GooglePhotosAlbumSync;
+use App\Services\GoogleDriveSync;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -59,22 +58,18 @@ class PhotoController extends Controller
         return $this->photoDelivery->inline($photo);
     }
 
-    public function approve(Photo $photo, GooglePhotosAlbumSync $googlePhotosSync): RedirectResponse
+    public function approve(Photo $photo, GoogleDriveSync $googleDrive): RedirectResponse
     {
         $photo->update(['approved' => true]);
         $this->audit->log('photo.approved', $photo);
 
+        $fresh = $photo->fresh();
         $status = __('Photo approved.');
 
-        if (
-            GalleryExternalGallery::usesGooglePhotos()
-            && GalleryExternalGallery::hasSharedAlbumLink()
-        ) {
-            if ($googlePhotosSync->pushApprovedPhoto($photo->fresh())) {
-                $status = __('Photo approved and added to the shared Google Photos album.');
-            } elseif (! $googlePhotosSync->isConfigured()) {
-                $status = __('Photo approved. Upload it to the Google Photos album using the link above.');
-            }
+        if ($googleDrive->isConfigured()) {
+            $status = $googleDrive->pushApprovedPhoto($fresh)
+                ? __('Photo approved and uploaded to Google Drive.')
+                : __('Photo approved, but Google Drive upload failed. Try approving again or upload manually.');
         }
 
         return redirect()

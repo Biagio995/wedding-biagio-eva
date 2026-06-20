@@ -70,4 +70,15 @@ return [
         'google_photos_album_id' => env('GOOGLE_PHOTOS_ALBUM_ID'),
     ],
 
+    /*
+    | Approved photos are uploaded to Google Drive via a Google Apps Script web app
+    | (no Google Cloud billing / credit card required).
+    */
+    'google_drive' => [
+        'apps_script_url' => env('GOOGLE_DRIVE_APPS_SCRIPT_URL'),
+        'secret' => env('GOOGLE_DRIVE_APPS_SCRIPT_SECRET'),
+        'folder_id' => env('GOOGLE_DRIVE_FOLDER_ID'),
+        'timeout_seconds' => max(30, (int) env('GOOGLE_DRIVE_APPS_SCRIPT_TIMEOUT', 120)),
+    ],
+
 ];

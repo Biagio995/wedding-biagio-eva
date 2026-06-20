@@ -15,6 +15,8 @@ class Photo extends Model
         'approved',
         'google_photos_media_id',
         'synced_to_google_photos_at',
+        'google_drive_file_id',
+        'synced_to_google_drive_at',
     ];
 
     protected function casts(): array
@@ -22,6 +24,7 @@ class Photo extends Model
         return [
             'approved' => 'boolean',
             'synced_to_google_photos_at' => 'datetime',
+            'synced_to_google_drive_at' => 'datetime',
         ];
     }
 

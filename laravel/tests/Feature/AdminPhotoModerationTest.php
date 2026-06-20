@@ -61,6 +61,42 @@ class AdminPhotoModerationTest extends TestCase
         $this->assertTrue($photo->approved);
     }
 
+    public function test_approve_uploads_photo_to_google_drive_when_configured(): void
+    {
+        Storage::fake('public');
+        Storage::disk('public')->put('gallery/x.jpg', 'fake-image');
+
+        Config::set('gallery.google_drive.apps_script_url', 'https://script.google.com/macros/s/test/exec');
+        Config::set('gallery.google_drive.secret', 'apps-script-secret');
+        Config::set('gallery.google_drive.folder_id', 'folder-id');
+
+        \Illuminate\Support\Facades\Http::fake([
+            'script.google.com/macros/s/test/exec' => \Illuminate\Support\Facades\Http::response([
+                'ok' => true,
+                'id' => 'drive-file-123',
+            ]),
+        ]);
+
+        $photo = Photo::query()->create([
+            'guest_id' => null,
+            'file_path' => 'gallery/x.jpg',
+            'original_filename' => 'x.jpg',
+            'approved' => false,
+        ]);
+
+        $this->configureAdminPassword();
+        $this->post(route('admin.login'), ['password' => 'secret']);
+
+        $this->post(route('admin.photos.approve', ['photo' => $photo->id]))
+            ->assertRedirect()
+            ->assertSessionHas('status', __('Photo approved and uploaded to Google Drive.'));
+
+        $photo->refresh();
+        $this->assertTrue($photo->approved);
+        $this->assertSame('drive-file-123', $photo->google_drive_file_id);
+        $this->assertNotNull($photo->synced_to_google_drive_at);
+    }
+
     public function test_moderation_page_lists_pending_photos_us21(): void
     {
         Storage::fake('public');
