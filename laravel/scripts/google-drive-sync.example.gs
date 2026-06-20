@@ -1,14 +1,10 @@
 /**
- * Template — identical to google-drive-sync.gs (kept for reference).
+ * Template — copy to google-drive-sync.gs and fill SECRET + FOLDER_ID.
+ * google-drive-sync.gs is gitignored (contains secrets).
  */
 
-function expectedSecret() {
-  const secret = PropertiesService.getScriptProperties().getProperty('SECRET');
-  if (!secret) {
-    throw new Error('Missing Script property SECRET (copy GOOGLE_DRIVE_APPS_SCRIPT_SECRET from .env)');
-  }
-  return secret;
-}
+const SECRET = 'change-me-to-a-long-random-string';
+const FOLDER_ID = 'your-google-drive-folder-id';
 
 function doGet() {
   return jsonResponse({
@@ -18,11 +14,7 @@ function doGet() {
 }
 
 function authorizeDriveOnce() {
-  const folderId = PropertiesService.getScriptProperties().getProperty('FOLDER_ID');
-  if (!folderId) {
-    throw new Error('Add Script property FOLDER_ID (same as GOOGLE_DRIVE_FOLDER_ID in .env) before authorizing.');
-  }
-  return DriveApp.getFolderById(folderId).getName();
+  return DriveApp.getFolderById(FOLDER_ID).getName();
 }
 
 function doPost(e) {
@@ -33,7 +25,7 @@ function doPost(e) {
 
     const payload = JSON.parse(e.postData.contents);
 
-    if (payload.secret !== expectedSecret()) {
+    if (payload.secret !== SECRET) {
       return jsonResponse({ ok: false, error: 'unauthorized' });
     }
 
@@ -62,12 +54,7 @@ function uploadDriveFile(payload) {
     return jsonResponse({ ok: false, error: 'missing file' });
   }
 
-  const folderId = payload.folderId;
-  if (!folderId) {
-    return jsonResponse({ ok: false, error: 'missing folderId' });
-  }
-
-  const folder = DriveApp.getFolderById(folderId);
+  const folder = DriveApp.getFolderById(FOLDER_ID);
   const bytes = Utilities.base64Decode(payload.fileBase64);
   const mime = payload.mimeType || 'image/jpeg';
   const blob = Utilities.newBlob(bytes, mime, payload.filename);
