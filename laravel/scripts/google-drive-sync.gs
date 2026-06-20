@@ -17,6 +17,20 @@
 const SECRET = 'change-me-to-a-long-random-string';
 const FOLDER_ID = 'your-google-drive-folder-id';
 
+/** Apri l'URL /exec nel browser: se vedi ok:true, il deploy web è attivo. */
+function doGet() {
+  return jsonResponse({
+    ok: true,
+    message: 'Drive sync ready. Uploads arrive via POST after admin approval.',
+  });
+}
+
+/** Esegui una volta dall'editor (▶) per autorizzare l'accesso a Drive. */
+function authorizeDriveOnce() {
+  const folder = DriveApp.getFolderById(FOLDER_ID);
+  return folder.getName();
+}
+
 function doPost(e) {
   try {
     if (!e || !e.postData || !e.postData.contents) {
@@ -29,20 +43,38 @@ function doPost(e) {
       return jsonResponse({ ok: false, error: 'unauthorized' });
     }
 
-    if (!payload.fileBase64 || !payload.filename) {
-      return jsonResponse({ ok: false, error: 'missing file' });
+    if (payload.action === 'delete') {
+      return deleteDriveFile(payload.fileId);
     }
 
-    const folder = DriveApp.getFolderById(FOLDER_ID);
-    const bytes = Utilities.base64Decode(payload.fileBase64);
-    const mime = payload.mimeType || 'image/jpeg';
-    const blob = Utilities.newBlob(bytes, mime, payload.filename);
-    const file = folder.createFile(blob);
-
-    return jsonResponse({ ok: true, id: file.getId() });
+    return uploadDriveFile(payload);
   } catch (err) {
     return jsonResponse({ ok: false, error: String(err) });
   }
+}
+
+function deleteDriveFile(fileId) {
+  if (!fileId) {
+    return jsonResponse({ ok: false, error: 'missing fileId' });
+  }
+
+  DriveApp.getFileById(fileId).setTrashed(true);
+
+  return jsonResponse({ ok: true });
+}
+
+function uploadDriveFile(payload) {
+  if (!payload.fileBase64 || !payload.filename) {
+    return jsonResponse({ ok: false, error: 'missing file' });
+  }
+
+  const folder = DriveApp.getFolderById(FOLDER_ID);
+  const bytes = Utilities.base64Decode(payload.fileBase64);
+  const mime = payload.mimeType || 'image/jpeg';
+  const blob = Utilities.newBlob(bytes, mime, payload.filename);
+  const file = folder.createFile(blob);
+
+  return jsonResponse({ ok: true, id: file.getId() });
 }
 
 function jsonResponse(obj) {

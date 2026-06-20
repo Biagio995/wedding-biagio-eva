@@ -187,6 +187,44 @@ class AdminPhotoModerationTest extends TestCase
         Storage::disk('public')->assertMissing('gallery/remove.jpg');
     }
 
+    public function test_admin_delete_removes_photo_from_google_drive_when_configured(): void
+    {
+        Storage::fake('public');
+        Storage::disk('public')->put('gallery/remove.jpg', 'image-bytes');
+
+        Config::set('gallery.google_drive.apps_script_url', 'https://script.google.com/macros/s/test/exec');
+        Config::set('gallery.google_drive.secret', 'apps-script-secret');
+
+        \Illuminate\Support\Facades\Http::fake([
+            'script.google.com/macros/s/test/exec' => \Illuminate\Support\Facades\Http::response([
+                'ok' => true,
+            ]),
+        ]);
+
+        $photo = Photo::query()->create([
+            'guest_id' => null,
+            'file_path' => 'gallery/remove.jpg',
+            'original_filename' => 'remove.jpg',
+            'approved' => true,
+            'google_drive_file_id' => 'drive-file-123',
+        ]);
+
+        $this->configureAdminPassword();
+        $this->post(route('admin.login'), ['password' => 'secret']);
+
+        $this->delete(route('admin.photos.destroy', ['photo' => $photo->id]))
+            ->assertRedirect()
+            ->assertSessionHas('status', __('Photo removed.'));
+
+        \Illuminate\Support\Facades\Http::assertSent(function (\Illuminate\Http\Client\Request $request): bool {
+            $data = $request->data();
+
+            return $request->url() === 'https://script.google.com/macros/s/test/exec'
+                && ($data['action'] ?? null) === 'delete'
+                && ($data['fileId'] ?? null) === 'drive-file-123';
+        });
+    }
+
     public function test_photo_archive_requires_authentication_us23(): void
     {
         $this->configureAdminPassword();

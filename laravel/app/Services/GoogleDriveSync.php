@@ -26,6 +26,33 @@ class GoogleDriveSync
         return 'https://drive.google.com/drive/folders/'.$folderId;
     }
 
+    /** Remove a synced photo from Google Drive when deleted in admin. */
+    public function removeApprovedPhoto(Photo $photo): bool
+    {
+        if (! $this->isConfigured()) {
+            return false;
+        }
+
+        $fileId = $photo->google_drive_file_id;
+        if (! is_string($fileId) || $fileId === '') {
+            return true;
+        }
+
+        try {
+            $this->post([
+                'action' => 'delete',
+                'fileId' => $fileId,
+                'photoId' => $photo->id,
+            ]);
+
+            return true;
+        } catch (Throwable $e) {
+            report($e);
+
+            return false;
+        }
+    }
+
     /** Upload an approved photo into Google Drive via Apps Script (no Google Cloud billing). */
     public function pushApprovedPhoto(Photo $photo): bool
     {
@@ -42,21 +69,13 @@ class GoogleDriveSync
             $mime = Storage::disk('public')->mimeType($photo->file_path) ?: 'image/jpeg';
             $filename = $this->filename($photo);
 
-            $response = Http::asJson()
-                ->timeout((int) config('gallery.google_drive.timeout_seconds', 120))
-                ->post((string) config('gallery.google_drive.apps_script_url'), [
-                    'secret' => config('gallery.google_drive.secret'),
-                    'filename' => $filename,
-                    'mimeType' => $mime,
-                    'fileBase64' => base64_encode($bytes),
-                    'photoId' => $photo->id,
-                ])
-                ->throw();
-
-            $data = $response->json();
-            if (! is_array($data) || ! ($data['ok'] ?? false)) {
-                throw new \RuntimeException(is_string($data['error'] ?? null) ? $data['error'] : 'Google Drive Apps Script upload failed.');
-            }
+            $data = $this->post([
+                'action' => 'upload',
+                'filename' => $filename,
+                'mimeType' => $mime,
+                'fileBase64' => base64_encode($bytes),
+                'photoId' => $photo->id,
+            ]);
 
             $fileId = $data['id'] ?? null;
             if (! is_string($fileId) || $fileId === '') {
@@ -74,6 +93,32 @@ class GoogleDriveSync
 
             return false;
         }
+    }
+
+    /** @return array<string, mixed> */
+    private function post(array $payload): array
+    {
+        $response = Http::withOptions([
+            'allow_redirects' => [
+                'max' => 5,
+                'strict' => true,
+                'protocols' => ['https'],
+            ],
+        ])
+            ->asJson()
+            ->timeout((int) config('gallery.google_drive.timeout_seconds', 120))
+            ->post((string) config('gallery.google_drive.apps_script_url'), [
+                'secret' => config('gallery.google_drive.secret'),
+                ...$payload,
+            ])
+            ->throw();
+
+        $data = $response->json();
+        if (! is_array($data) || ! ($data['ok'] ?? false)) {
+            throw new \RuntimeException(is_string($data['error'] ?? null) ? $data['error'] : 'Google Drive Apps Script request failed.');
+        }
+
+        return $data;
     }
 
     private function filename(Photo $photo): string

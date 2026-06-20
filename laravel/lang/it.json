@@ -107,6 +107,7 @@
     "Photo moderation": "Moderazione foto",
     "Public album": "Album pubblico",
     "Photo removed.": "Foto rimossa.",
+    "Photo removed from the site, but Google Drive delete failed. Remove it manually from Drive.": "Foto rimossa dal sito, ma l'eliminazione su Google Drive non è riuscita. Rimuovila manualmente da Drive.",
     "Photos from": "Foto del",
     "Photos uploaded. Thank you!": "Foto caricate. Grazie!",
     "Photos uploaded. They will appear in the album after approval.": "Foto inviate. Saranno visibili nell'album dopo l'approvazione.",

@@ -78,9 +78,16 @@ class PhotoController extends Controller
     }
 
     /** US-22: remove a photo from storage and the database. */
-    public function destroy(Photo $photo): RedirectResponse
+    public function destroy(Photo $photo, GoogleDriveSync $googleDrive): RedirectResponse
     {
         $path = $photo->file_path;
+        $driveFileId = $photo->google_drive_file_id;
+        $driveRemoved = true;
+
+        if ($googleDrive->isConfigured() && filled($driveFileId)) {
+            $driveRemoved = $googleDrive->removeApprovedPhoto($photo);
+        }
+
         $this->audit->log('photo.deleted', $photo, ['file_path' => $path]);
         $photo->delete();
 
@@ -88,9 +95,14 @@ class PhotoController extends Controller
             Storage::disk('public')->delete($path);
         }
 
+        $status = __('Photo removed.');
+        if ($googleDrive->isConfigured() && filled($driveFileId) && ! $driveRemoved) {
+            $status = __('Photo removed from the site, but Google Drive delete failed. Remove it manually from Drive.');
+        }
+
         return redirect()
             ->back()
-            ->with('status', __('Photo removed.'));
+            ->with('status', $status);
     }
 
     /** US-23: ZIP archive of all stored photo files (skips missing paths). */
