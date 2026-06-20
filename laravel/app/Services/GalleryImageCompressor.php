@@ -11,12 +11,7 @@ use Throwable;
 
 class GalleryImageCompressor
 {
-    private ImageManager $manager;
-
-    public function __construct()
-    {
-        $this->manager = ImageManager::usingDriver(Driver::class);
-    }
+    private ?ImageManager $manager = null;
 
     /**
      * Store a compressed JPEG (max dimension + quality) under public/gallery/.
@@ -25,11 +20,11 @@ class GalleryImageCompressor
     public function compressAndStore(UploadedFile $file, string $disk = 'public'): string
     {
         if (! config('gallery.compression.enabled')) {
-            return $file->store('gallery', $disk);
+            return $this->storeUploadedFile($file, $disk);
         }
 
         try {
-            $image = $this->manager->decodeSplFileInfo($file);
+            $image = $this->manager()->decodeSplFileInfo($file);
 
             if ($image->isAnimated()) {
                 $image = $this->useFirstAnimationFrame($image);
@@ -42,14 +37,32 @@ class GalleryImageCompressor
             $encoded = $image->encodeUsingFileExtension('jpg', quality: $quality);
 
             $relativePath = 'gallery/'.uniqid('c_', true).'.jpg';
-            Storage::disk($disk)->put($relativePath, $encoded->toString());
+            if (! Storage::disk($disk)->put($relativePath, $encoded->toString())) {
+                throw new \RuntimeException('Unable to store compressed gallery image.');
+            }
 
             return $relativePath;
         } catch (Throwable $e) {
             report($e);
 
-            return $file->store('gallery', $disk);
+            return $this->storeUploadedFile($file, $disk);
         }
+    }
+
+    private function manager(): ImageManager
+    {
+        return $this->manager ??= ImageManager::usingDriver(Driver::class);
+    }
+
+    private function storeUploadedFile(UploadedFile $file, string $disk): string
+    {
+        $path = $file->store('gallery', $disk);
+
+        if (! is_string($path) || $path === '') {
+            throw new \RuntimeException('Unable to store uploaded gallery image.');
+        }
+
+        return $path;
     }
 
     private function useFirstAnimationFrame(ImageInterface $image): ImageInterface

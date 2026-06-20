@@ -123,6 +123,21 @@ class GalleryTest extends TestCase
         $this->assertNull($photo->guest_id);
     }
 
+    public function test_stale_gallery_guest_id_in_session_is_ignored_on_upload(): void
+    {
+        Storage::fake('public');
+
+        session(['gallery_guest_id' => 999999]);
+
+        $this->post('/gallery', [
+            'photos' => [UploadedFile::fake()->image('stale.jpg', 200, 200)],
+        ])->assertRedirect(route('gallery.album'));
+
+        $photo = Photo::query()->first();
+        $this->assertNotNull($photo);
+        $this->assertNull($photo->guest_id);
+    }
+
     public function test_upload_ajax_returns_json_redirect_us10(): void
     {
         Storage::fake('public');

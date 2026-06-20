@@ -8,6 +8,8 @@
     "functions": {
         "api/index.php": {
             "runtime": "vercel-php@0.7.4",
+            "maxDuration": 30,
+            "memory": 1024,
             "excludeFiles": "{laravel/node_modules/**,laravel/tools/**,laravel/tests/**,laravel/storage/logs/**,laravel/.playwright-mcp/**,laravel/docker/**,laravel/Dockerfile,laravel/.dockerignore,laravel/.phpunit.result.cache,laravel/phpunit.xml,laravel/README.md,laravel/public/hot}"
         }
     },
@@ -56,6 +58,8 @@
         "QUEUE_CONNECTION": "sync",
         "SESSION_DRIVER": "cookie",
         "VIEW_COMPILED_PATH": "/tmp",
-        "DB_CONNECTION": "pgsql"
+        "DB_CONNECTION": "pgsql",
+        "GALLERY_UPLOAD_MAX_KB": "4096",
+        "GALLERY_IMAGE_COMPRESSION": "false"
     }
 }

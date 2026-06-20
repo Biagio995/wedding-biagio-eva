@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
@@ -43,6 +44,11 @@ class AppServiceProvider extends ServiceProvider
             'session.driver' => 'cookie',
             'cache.default' => 'array',
             'queue.default' => 'sync',
+            'gallery.compression.enabled' => false,
+            'gallery.upload.max_kilobytes' => min(
+                max(256, (int) config('gallery.upload.max_kilobytes', 10240)),
+                4096
+            ),
         ]);
 
         $this->configureWritablePublicDisk();
@@ -71,6 +77,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if (env('VERCEL')) {
+            Storage::forgetDisk('public');
+        }
+
         $appUrl = config('app.url');
 
         if (is_string($appUrl) && str_starts_with($appUrl, 'https://')) {

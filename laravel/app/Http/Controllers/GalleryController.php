@@ -178,9 +178,9 @@ class GalleryController extends Controller
 
     public function store(StoreGalleryPhotosRequest $request, GalleryImageCompressor $compressor): RedirectResponse|JsonResponse
     {
-        $guestId = $request->session()->get(self::SESSION_GUEST_ID);
-
         try {
+            $guestId = $this->resolveGalleryGuestIdForUpload($request);
+
             foreach ($request->file('photos') as $file) {
                 $path = $compressor->compressAndStore($file, 'public');
 
@@ -233,5 +233,24 @@ class GalleryController extends Controller
         }
 
         return $guest;
+    }
+
+    /** Drop stale session guest ids so PostgreSQL FK checks do not 500 anonymous uploads. */
+    private function resolveGalleryGuestIdForUpload(Request $request): ?int
+    {
+        $guestId = $request->session()->get(self::SESSION_GUEST_ID);
+
+        if ($guestId === null) {
+            return null;
+        }
+
+        $exists = Guest::query()->whereKey($guestId)->exists();
+        if (! $exists) {
+            $request->session()->forget(self::SESSION_GUEST_ID);
+
+            return null;
+        }
+
+        return (int) $guestId;
     }
 }
