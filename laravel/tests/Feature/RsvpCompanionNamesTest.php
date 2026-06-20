@@ -49,12 +49,12 @@ class RsvpCompanionNamesTest extends TestCase
             ->post('/w/rsvp', [
                 'rsvp_status' => 'yes',
                 'guests_count' => 4,
-                'companion_names' => ['  Alice  ', '', 'Bob', 'Alice'],
+                'companion_names' => ['  Alice  ', '', 'Bob', 'Alice', 'Charlie'],
             ])
             ->assertRedirect(route('wedding.attend'));
 
         $guest->refresh();
-        $this->assertSame(['Alice', 'Bob'], $guest->companion_names);
+        $this->assertSame(['Alice', 'Bob', 'Charlie'], $guest->companion_names);
     }
 
     public function test_companion_names_cleared_when_declining(): void
@@ -111,5 +111,46 @@ class RsvpCompanionNamesTest extends TestCase
                 'companion_names' => 'Partner',
             ])
             ->assertSessionHasErrors('companion_names');
+    }
+
+    public function test_companion_names_required_when_attending_with_multiple_guests(): void
+    {
+        $guest = Guest::query()->create([
+            'name' => 'Family Head',
+            'token' => 'tok-family',
+        ]);
+
+        $this->withSession([WeddingController::SESSION_WEDDING_GUEST_ID => $guest->id])
+            ->post('/w/rsvp', [
+                'rsvp_status' => 'yes',
+                'guests_count' => 7,
+                'companion_names' => "Alice\n",
+            ])
+            ->assertSessionHasErrors('companion_names');
+
+        $guest->refresh();
+        $this->assertNull($guest->rsvp_status);
+    }
+
+    public function test_exact_companion_count_required_for_multiple_guests(): void
+    {
+        $guest = Guest::query()->create([
+            'name' => 'Exact Count',
+            'token' => 'tok-exact',
+        ]);
+
+        $names = ['One', 'Two', 'Three', 'Four', 'Five', 'Six'];
+
+        $this->withSession([WeddingController::SESSION_WEDDING_GUEST_ID => $guest->id])
+            ->post('/w/rsvp', [
+                'rsvp_status' => 'yes',
+                'guests_count' => 7,
+                'companion_names' => $names,
+            ])
+            ->assertRedirect(route('wedding.attend'));
+
+        $guest->refresh();
+        $this->assertSame($names, $guest->companion_names);
+        $this->assertSame(7, $guest->guests_count);
     }
 }

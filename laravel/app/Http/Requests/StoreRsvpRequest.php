@@ -148,7 +148,7 @@ class StoreRsvpRequest extends FormRequest
     }
 
     /**
-     * Cross-field rule: you can only list up to (guests_count - 1) companion names.
+     * Cross-field rule: when attending with N guests, exactly (N - 1) companion names are required.
      * When attending alone or declining, companion_names must be empty.
      */
     public function withValidator(Validator $validator): void
@@ -156,25 +156,49 @@ class StoreRsvpRequest extends FormRequest
         $validator->after(function (Validator $v): void {
             $companions = $this->input('companion_names');
             if (! is_array($companions)) {
-                return;
+                $companions = [];
             }
             $count = count($companions);
-            if ($count === 0) {
-                return;
-            }
 
             if ($this->input('rsvp_status') !== 'yes') {
-                $v->errors()->add('companion_names', __('Companion names are only used when attending.'));
+                if ($count > 0) {
+                    $v->errors()->add('companion_names', __('Companion names are only used when attending.'));
+                }
 
                 return;
             }
 
             $guestsCount = (int) $this->input('guests_count');
-            $maxCompanions = max(0, $guestsCount - 1);
-            if ($count > $maxCompanions) {
+            if ($guestsCount < 1) {
+                return;
+            }
+
+            $requiredCompanions = max(0, $guestsCount - 1);
+
+            if ($requiredCompanions === 0) {
+                if ($count > 0) {
+                    $v->errors()->add('companion_names', __(
+                        'You can list at most :max companion name(s) for :count attendees.',
+                        ['max' => 0, 'count' => $guestsCount],
+                    ));
+                }
+
+                return;
+            }
+
+            if ($count < $requiredCompanions) {
+                $v->errors()->add('companion_names', __(
+                    'Please enter all :count name(s) of the other guests (one per line).',
+                    ['count' => $requiredCompanions],
+                ));
+
+                return;
+            }
+
+            if ($count > $requiredCompanions) {
                 $v->errors()->add('companion_names', __(
                     'You can list at most :max companion name(s) for :count attendees.',
-                    ['max' => $maxCompanions, 'count' => $guestsCount],
+                    ['max' => $requiredCompanions, 'count' => $guestsCount],
                 ));
             }
         });

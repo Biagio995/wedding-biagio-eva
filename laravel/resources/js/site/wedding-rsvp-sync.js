@@ -20,6 +20,23 @@
             return isFinite(n) ? n : 0;
         }
 
+        function requiredCompanionCount() {
+            if (!isAttendingYes()) return 0;
+            return Math.max(0, currentCount() - 1);
+        }
+
+        function syncCompanionsHelp() {
+            var help = form.querySelector('[data-rsvp-companions-help]');
+            if (!help) return;
+            var needed = requiredCompanionCount();
+            var template = help.dataset.template || '';
+            if (needed >= 1 && template) {
+                help.textContent = template.replace(':count', String(needed));
+            } else {
+                help.textContent = '';
+            }
+        }
+
         function syncCompanionsVisibility() {
             if (!companions) return;
             var show = isAttendingYes() && currentCount() >= 2;
@@ -27,6 +44,7 @@
             if (!show && companionsField) {
                 companionsField.value = '';
             }
+            syncCompanionsHelp();
         }
 
         function syncRsvpGuestsField() {

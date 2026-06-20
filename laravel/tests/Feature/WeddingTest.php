@@ -96,6 +96,7 @@ class WeddingTest extends TestCase
             ->post('/w/rsvp', [
                 'rsvp_status' => 'yes',
                 'guests_count' => 2,
+                'companion_names' => ['Plus One'],
                 'notes' => 'Veggie meal',
             ])
             ->assertRedirect(route('wedding.attend'))
@@ -184,6 +185,7 @@ class WeddingTest extends TestCase
             ->post('/w/rsvp', [
                 'rsvp_status' => 'yes',
                 'guests_count' => 2,
+                'companion_names' => ['First Plus One'],
             ])
             ->assertSessionHas('wedding_success', __('Thank you — your response has been saved.'));
 
@@ -194,6 +196,7 @@ class WeddingTest extends TestCase
             ->post('/w/rsvp', [
                 'rsvp_status' => 'yes',
                 'guests_count' => 4,
+                'companion_names' => ['First Plus One', 'Guest Three', 'Guest Four'],
                 'notes' => 'Two more guests confirmed later.',
             ])
             ->assertSessionHas('wedding_success', __('Your RSVP has been updated.'));
@@ -368,6 +371,7 @@ class WeddingTest extends TestCase
             'email' => 'walkin@example.test',
             'rsvp_status' => 'yes',
             'guests_count' => 2,
+            'companion_names' => ['Walk-in Plus One'],
             'notes' => 'Table near exit',
         ])
             ->assertRedirect(route('wedding.attend'))

@@ -244,6 +244,8 @@
     "Names of people coming with you": "Ονόματα των ατόμων που έρχονται μαζί σας",
     "One name per line": "Ένα όνομα ανά γραμμή",
     "Optional — helps us prepare place cards and seating.": "Προαιρετικό — μας βοηθά να προετοιμάσουμε τις καρτέλες θέσεων και τη διάταξη.",
+    "Enter :count name(s) for the other guests — one per line.": "Εισαγάγετε :count ονόματα των άλλων καλεσμένων — ένα ανά γραμμή.",
+    "Please enter all :count name(s) of the other guests (one per line).": "Εισαγάγετε όλα τα :count ονόματα των άλλων καλεσμένων (ένα ανά γραμμή).",
     "Each companion name cannot exceed :max characters.": "Κάθε όνομα συνοδού δεν μπορεί να υπερβαίνει τους :max χαρακτήρες.",
     "Companion names are only used when attending.": "Τα ονόματα συνοδών χρησιμοποιούνται μόνο αν θα παρευρεθείτε.",
     "You can list at most :max companion name(s) for :count attendees.": "Μπορείτε να δηλώσετε το πολύ :max ονόματα συνοδών για :count άτομα.",

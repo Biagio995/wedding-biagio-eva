@@ -23,8 +23,16 @@
         placeholder="{{ __('One name per line') }}"
         aria-describedby="companion_names-help"
     >{{ $companionsDefault }}</textarea>
-    <p id="companion_names-help" class="hint" style="margin-top:-0.5rem;">
-        {{ __('Optional — helps us prepare place cards and seating.') }}
+    <p
+        id="companion_names-help"
+        class="hint"
+        style="margin-top:-0.5rem;"
+        data-rsvp-companions-help
+        data-template="{{ __('Enter :count name(s) for the other guests — one per line.') }}"
+    >
+        @if ((int) $countDefault >= 2)
+            {{ __('Enter :count name(s) for the other guests — one per line.', ['count' => (int) $countDefault - 1]) }}
+        @endif
     </p>
     @error('companion_names')<p class="error">{{ $message }}</p>@enderror
     @error('companion_names.*')<p class="error">{{ $message }}</p>@enderror

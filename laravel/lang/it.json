@@ -244,6 +244,8 @@
     "Names of people coming with you": "Nomi delle persone che vengono con te",
     "One name per line": "Un nome per riga",
     "Optional — helps us prepare place cards and seating.": "Opzionale — ci aiuta a preparare i segnaposto e la disposizione dei tavoli.",
+    "Enter :count name(s) for the other guests — one per line.": "Inserisci :count nomi degli altri ospiti — uno per riga.",
+    "Please enter all :count name(s) of the other guests (one per line).": "Inserisci tutti i :count nomi degli altri ospiti (uno per riga).",
     "Each companion name cannot exceed :max characters.": "Ogni nome di accompagnatore non può superare :max caratteri.",
     "Companion names are only used when attending.": "I nomi degli accompagnatori servono solo se parteciperai.",
     "You can list at most :max companion name(s) for :count attendees.": "Puoi indicare al massimo :max nomi di accompagnatori per :count partecipanti.",
