@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Services\GalleryExternalGallery;
 use App\Services\WeddingInviteQrGenerator;
 use Illuminate\View\View;
 
@@ -18,9 +17,7 @@ class GalleryQrController extends Controller
 {
     public function card(WeddingInviteQrGenerator $generator): View
     {
-        $galleryUrl = GalleryExternalGallery::usesGooglePhotos()
-            ? GalleryExternalGallery::publicUrl()
-            : route('gallery.album', [], absolute: true);
+        $galleryUrl = route('gallery.album', [], absolute: true);
 
         return view('admin.gallery.qr', [
             'galleryUrl' => $galleryUrl,

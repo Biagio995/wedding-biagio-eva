@@ -18,27 +18,17 @@
         ·
         <a href="{{ route('admin.songs.index') }}">{{ __('DJ song suggestions') }}</a>
         ·
+        @if (\App\Services\GalleryExternalGallery::hasSharedAlbumLink())
+            <a href="{{ \App\Services\GalleryExternalGallery::sharedAlbumUrl() }}" target="_blank" rel="noopener">{{ __('Open shared album on Google Photos') }}</a>
+            ·
+        @endif
         <form method="post" action="{{ route('admin.logout') }}" style="display:inline;">
             @csrf
             <button type="submit" class="link">{{ __('Sign out') }}</button>
         </form>
     </p>
     <h1>{{ __('Photo moderation') }}</h1>
-
-    @if (\App\Services\GalleryExternalGallery::usesGooglePhotos())
-        <p class="ok" role="status">
-            {{ __('Photos are managed on Google Photos (:email). Built-in upload and moderation are disabled.', ['email' => \App\Services\GalleryExternalGallery::googlePhotosEmail()]) }}
-            @if (\App\Services\GalleryExternalGallery::hasSharedAlbumLink())
-                <a href="{{ \App\Services\GalleryExternalGallery::sharedAlbumUrl() }}" target="_blank" rel="noopener">{{ __('Open shared album') }}</a>
-            @else
-                <a href="https://photos.google.com/" target="_blank" rel="noopener">{{ __('Open Google Photos') }}</a>
-            @endif
-        </p>
-    @else
-    <p class="sub">{{ __('Approve or delete uploads. Deleted files are removed from the server.') }}</p>
-    @endif
-
-    @if (! \App\Services\GalleryExternalGallery::usesGooglePhotos())
+    <p class="sub">{{ __('Approve or delete uploads before they appear in the public album.') }}</p>
 
     @if (session('status'))
         <p class="ok" role="status">{{ session('status') }}</p>
@@ -105,6 +95,5 @@
         @if ($photos->hasPages())
             <div class="pagination">{{ $photos->links() }}</div>
         @endif
-    @endif
     @endif
 </x-layouts.admin>

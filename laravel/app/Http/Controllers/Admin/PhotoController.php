@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Photo;
 use App\Services\AuditLogger;
+use App\Services\GalleryExternalGallery;
 use App\Services\GalleryPhotoDelivery;
 use App\Services\GalleryPhotoUrls;
+use App\Services\GooglePhotosAlbumSync;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -57,14 +59,24 @@ class PhotoController extends Controller
         return $this->photoDelivery->inline($photo);
     }
 
-    public function approve(Photo $photo): RedirectResponse
+    public function approve(Photo $photo, GooglePhotosAlbumSync $googlePhotosSync): RedirectResponse
     {
         $photo->update(['approved' => true]);
         $this->audit->log('photo.approved', $photo);
 
+        $status = __('Photo approved.');
+
+        if (
+            GalleryExternalGallery::usesGooglePhotos()
+            && GalleryExternalGallery::hasSharedAlbumLink()
+            && $googlePhotosSync->pushApprovedPhoto($photo->fresh())
+        ) {
+            $status = __('Photo approved and added to the shared Google Photos album.');
+        }
+
         return redirect()
             ->back()
-            ->with('status', __('Photo approved.'));
+            ->with('status', $status);
     }
 
     /** US-22: remove a photo from storage and the database. */

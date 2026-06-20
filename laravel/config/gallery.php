@@ -64,6 +64,10 @@ return [
         'provider' => env('GALLERY_EXTERNAL_PROVIDER', ''),
         'url' => env('GALLERY_EXTERNAL_URL', ''),
         'google_photos_email' => env('GALLERY_GOOGLE_PHOTOS_EMAIL', 'biagioevasposi@gmail.com'),
+        'google_photos_client_id' => env('GOOGLE_PHOTOS_CLIENT_ID'),
+        'google_photos_client_secret' => env('GOOGLE_PHOTOS_CLIENT_SECRET'),
+        'google_photos_refresh_token' => env('GOOGLE_PHOTOS_REFRESH_TOKEN'),
+        'google_photos_album_id' => env('GOOGLE_PHOTOS_ALBUM_ID'),
     ],
 
 ];

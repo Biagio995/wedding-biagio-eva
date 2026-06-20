@@ -13,12 +13,15 @@ class Photo extends Model
         'file_path',
         'original_filename',
         'approved',
+        'google_photos_media_id',
+        'synced_to_google_photos_at',
     ];
 
     protected function casts(): array
     {
         return [
             'approved' => 'boolean',
+            'synced_to_google_photos_at' => 'datetime',
         ];
     }
 
