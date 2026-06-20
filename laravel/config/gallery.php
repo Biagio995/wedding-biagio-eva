@@ -56,4 +56,14 @@ return [
         'download_max_age' => max(0, (int) env('GALLERY_DOWNLOAD_HTTP_MAX_AGE', 86400)),
     ],
 
+    /*
+    | External gallery (e.g. Google Photos shared album). When enabled, built-in upload
+    | and the local album grid are hidden; guests use the shared album link instead.
+    */
+    'external' => [
+        'provider' => env('GALLERY_EXTERNAL_PROVIDER', ''),
+        'url' => env('GALLERY_EXTERNAL_URL', ''),
+        'google_photos_email' => env('GALLERY_GOOGLE_PHOTOS_EMAIL', 'biagioevasposi@gmail.com'),
+    ],
+
 ];

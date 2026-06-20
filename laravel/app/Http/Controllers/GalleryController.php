@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreGalleryPhotosRequest;
 use App\Models\Guest;
 use App\Models\Photo;
+use App\Services\GalleryExternalGallery;
 use App\Services\GalleryImageCompressor;
 use App\Services\GalleryPhotoDelivery;
 use App\Services\GalleryPhotoUrls;
@@ -43,6 +44,13 @@ class GalleryController extends Controller
     {
         $guest = $this->resolveGalleryGuest($request);
 
+        if (GalleryExternalGallery::usesGooglePhotos()) {
+            return view('gallery-album', [
+                'guest' => $guest,
+                'photos' => collect(),
+            ]);
+        }
+
         $perPage = (int) config('gallery.public_feed.per_page');
 
         $photos = $this->publicPhotoQuery(null)
@@ -62,6 +70,13 @@ class GalleryController extends Controller
     /** US-13 / US-14: JSON page for infinite scroll. */
     public function feed(Request $request): JsonResponse
     {
+        if (GalleryExternalGallery::usesGooglePhotos()) {
+            return response()->json([
+                'data' => [],
+                'next_page_url' => null,
+            ]);
+        }
+
         $filterDate = $this->resolveGalleryDateFilter($request);
         $perPage = (int) config('gallery.public_feed.per_page');
 
@@ -162,6 +177,18 @@ class GalleryController extends Controller
 
     public function store(StoreGalleryPhotosRequest $request, GalleryImageCompressor $compressor): RedirectResponse|JsonResponse
     {
+        if (GalleryExternalGallery::usesGooglePhotos()) {
+            $message = __('Gallery uploads use Google Photos. Open the album link on this page.');
+
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json(['message' => $message], 403);
+            }
+
+            return redirect()
+                ->route('gallery.album')
+                ->with('error', $message);
+        }
+
         try {
             $guestId = $this->resolveGalleryGuestIdForUpload($request);
 

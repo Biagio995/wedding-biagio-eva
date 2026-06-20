@@ -61,6 +61,8 @@
         "DB_CONNECTION": "pgsql",
         "GALLERY_UPLOAD_MAX_KB": "4096",
         "GALLERY_IMAGE_COMPRESSION": "false",
+        "GALLERY_EXTERNAL_PROVIDER": "google_photos",
+        "GALLERY_GOOGLE_PHOTOS_EMAIL": "biagioevasposi@gmail.com",
         "APP_URL": "https://wedding-biagio-eva.vercel.app"
     }
 }

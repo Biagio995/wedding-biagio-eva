@@ -30,6 +30,31 @@ class GalleryTest extends TestCase
         $response->assertSee('id="photos-input"', false);
     }
 
+    public function test_google_photos_gallery_replaces_upload_form(): void
+    {
+        Config::set('gallery.external.provider', 'google_photos');
+        Config::set('gallery.external.google_photos_email', 'biagioevasposi@gmail.com');
+
+        $response = $this->get(route('gallery.album'));
+
+        $response->assertOk();
+        $response->assertDontSee('id="gallery-form"', false);
+        $response->assertSee(__('Our wedding photos on Google Photos'), false);
+        $response->assertSee('biagioevasposi@gmail.com', false);
+    }
+
+    public function test_upload_blocked_when_google_photos_enabled(): void
+    {
+        Storage::fake('public');
+        Config::set('gallery.external.provider', 'google_photos');
+
+        $this->post('/gallery', [
+            'photos' => [UploadedFile::fake()->image('x.jpg', 200, 200)],
+        ])->assertRedirect(route('gallery.album'));
+
+        $this->assertDatabaseCount('photos', 0);
+    }
+
     public function test_token_recognizes_guest_and_persists_in_session(): void
     {
         $guest = Guest::query()->create([
