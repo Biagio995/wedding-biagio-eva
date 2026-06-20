@@ -1,6 +1,5 @@
 @php
     $albumUrl = \App\Services\GalleryExternalGallery::publicUrl();
-    $email = \App\Services\GalleryExternalGallery::googlePhotosEmail();
     $hasLink = \App\Services\GalleryExternalGallery::hasSharedAlbumLink();
 @endphp
 
@@ -21,12 +20,6 @@
             {{ $hasLink ? __('Open shared album') : __('Open Google Photos') }}
         </a>
     </p>
-
-    @if($email !== '')
-        <p class="google-photos-card__hint">
-            {{ __('Album managed by :email.', ['email' => $email]) }}
-        </p>
-    @endif
 
     @unless($hasLink)
         <p class="google-photos-card__setup" role="note">

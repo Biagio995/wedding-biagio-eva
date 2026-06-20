@@ -40,7 +40,6 @@ class GalleryTest extends TestCase
         $response->assertOk();
         $response->assertDontSee('id="gallery-form"', false);
         $response->assertSee(__('Our wedding photos on Google Photos'), false);
-        $response->assertSee('biagioevasposi@gmail.com', false);
     }
 
     public function test_upload_blocked_when_google_photos_enabled(): void
