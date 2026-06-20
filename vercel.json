@@ -17,6 +17,18 @@
             "dest": "/laravel/public/build/assets/$1"
         },
         {
+            "src": "/images/(.*)",
+            "dest": "/laravel/public/images/$1"
+        },
+        {
+            "src": "/audio/(.*)",
+            "dest": "/laravel/public/audio/$1"
+        },
+        {
+            "src": "/storage/(.*)",
+            "dest": "/laravel/public/storage/$1"
+        },
+        {
             "src": "/favicon.ico",
             "dest": "/laravel/public/favicon.ico"
         },
