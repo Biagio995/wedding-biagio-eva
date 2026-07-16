@@ -8,6 +8,14 @@
     margin-bottom: 0.85rem;
 }
 
+.locale-switcher__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 0.65rem;
+    align-items: center;
+    justify-content: flex-end;
+}
+
 .locale-switcher span {
     color: var(--muted);
 }
@@ -32,4 +40,30 @@
 .locale-switcher a:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
+}
+
+.locale-switcher__select {
+    display: none;
+    min-height: 44px;
+    border-radius: 10px;
+    border: 1px solid rgba(58, 50, 42, 0.2);
+    background: #fff;
+    color: var(--text);
+    font-size: 0.82rem;
+    padding: 0.4rem 2rem 0.4rem 0.7rem;
+}
+
+@media (max-width: 768px) {
+    .locale-switcher {
+        justify-content: flex-end;
+    }
+
+    .locale-switcher__links {
+        display: none;
+    }
+
+    .locale-switcher__select {
+        display: inline-block;
+        max-width: min(12rem, 70vw);
+    }
 }
