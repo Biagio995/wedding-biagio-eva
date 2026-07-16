@@ -1,3 +1,5 @@
+@import './lang-picker.css';
+
 .site-header {
     position: sticky;
     top: 0;
@@ -117,17 +119,6 @@
     outline-offset: 2px;
 }
 
-.site-header__lang-select {
-    display: none;
-    min-height: 44px;
-    border-radius: 10px;
-    border: 1px solid rgba(58, 50, 42, 0.2);
-    background: #fff;
-    color: var(--text);
-    font-size: 0.82rem;
-    padding: 0.45rem 2rem 0.45rem 0.7rem;
-}
-
 @media (max-width: 768px) {
     .site-header__langs {
         width: 100%;
@@ -136,11 +127,6 @@
 
     .site-header__langs-links {
         display: none;
-    }
-
-    .site-header__lang-select {
-        display: inline-block;
-        max-width: min(12rem, 45vw);
     }
 }
 

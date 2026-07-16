@@ -40,6 +40,18 @@ body.wedding-envelope-active {
     justify-content: center;
 }
 
+.wedding-envelope__lang-bar .lang-picker__menu {
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.wedding-envelope__lang-bar .lang-picker__menu::before {
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+}
+
 .wedding-envelope.is-leaving {
     pointer-events: none;
     opacity: 0;

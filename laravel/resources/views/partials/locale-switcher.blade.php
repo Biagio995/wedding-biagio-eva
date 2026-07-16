@@ -15,17 +15,5 @@
         @endforeach
     </div>
 
-    <label class="sr-only" for="mobile-admin-language">{{ __('Language') }}</label>
-    <select
-        id="mobile-admin-language"
-        class="locale-switcher__select"
-        onchange="if (this.value) window.location.href = this.value;"
-    >
-        @foreach (config('wedding.locales', []) as $code => $label)
-            <option
-                value="{{ route('locale.switch', ['locale' => $code]) }}"
-                @selected($currentLocale === $code)
-            >{{ $label }}</option>
-        @endforeach
-    </select>
+    @include('partials.language-picker-mobile', ['currentLocale' => $currentLocale])
 </nav>
