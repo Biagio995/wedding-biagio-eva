@@ -19,9 +19,19 @@ class LocaleDetectionTest extends TestCase
         $this->assertSame('de', session('locale'));
     }
 
-    public function test_falls_back_to_first_configured_locale_when_browser_unsupported(): void
+    public function test_browser_english_is_used_on_first_visit(): void
     {
         $this->withHeader('Accept-Language', 'en-US,en;q=0.9')
+            ->get('/')
+            ->assertOk()
+            ->assertSee('Days', false);
+
+        $this->assertSame('en', session('locale'));
+    }
+
+    public function test_falls_back_to_first_configured_locale_when_browser_unsupported(): void
+    {
+        $this->withHeader('Accept-Language', 'fr-FR,fr;q=0.9')
             ->get('/')
             ->assertOk()
             ->assertSee('Giorni', false);

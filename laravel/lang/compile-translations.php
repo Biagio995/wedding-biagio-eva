@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Generates lang/it.json, lang/el.json, and lang/de.json from English source keys used in __('…').
+ * Generates lang/it.json, lang/el.json, lang/de.json, and lang/en.json from English source keys used in __('…').
  * Run: php lang/compile-translations.php
  */
 $rows = [
@@ -373,9 +373,37 @@ $rows[] = ['Subject', 'Oggetto', 'Αντικείμενο', 'Objekt'];
 $rows[] = ['IP', 'IP', 'IP', 'IP'];
 $rows[] = ['Details', 'Dettagli', 'Λεπτομέρειες', 'Details'];
 
+// Countdown label (missing from main table)
+$rows[] = ['Days', 'Giorni', 'Ημέρες', 'Tage'];
+
+// Gallery upload UI + Google Photos / Drive (keep in sync with views)
+$rows[] = ['1 photo selected — tap Upload photos when ready.', '1 foto selezionata — tocca Carica foto quando sei pronto.', '1 φωτογραφία επιλέχθηκε — πατήστε Μεταφόρτωση φωτογραφιών όταν είστε έτοιμοι.', '1 Foto ausgewählt — tippen Sie auf Fotos hochladen, wenn Sie bereit sind.'];
+$rows[] = [':count photos selected — tap Upload photos when ready.', ':count foto selezionate — tocca Carica foto quando sei pronto.', ':count φωτογραφίες επιλέχθηκαν — πατήστε Μεταφόρτωση φωτογραφιών όταν είστε έτοιμοι.', ':count Fotos ausgewählt — tippen Sie auf Fotos hochladen, wenn Sie bereit sind.'];
+$rows[] = ['Photo removed from the site, but Google Drive delete failed. Remove it manually from Drive.', 'Foto rimossa dal sito, ma l\'eliminazione su Google Drive non è riuscita. Rimuovila manualmente da Drive.', 'Η φωτογραφία αφαιρέθηκε από τον ιστότοπο, αλλά η διαγραφή στο Google Drive απέτυχε.', 'Foto von der Website entfernt, aber die Löschung in Google Drive ist fehlgeschlagen.'];
+$rows[] = ['Photos uploaded. They will appear in the album after approval.', 'Foto inviate. Saranno visibili nell\'album dopo l\'approvazione.', 'Οι φωτογραφίες στάλθηκαν. Θα εμφανιστούν στο άλμπουμ μετά την έγκριση.', 'Fotos gesendet. Sie erscheinen nach Freigabe im Album.'];
+$rows[] = ['Approve or delete uploads before they appear in the public album.', 'Approva o elimina le foto prima che compaiano nell\'album pubblico.', 'Εγκρίνετε ή διαγράψτε τις φωτογραφίες πριν εμφανιστούν στο δημόσιο άλμπουμ.', 'Fotos freigeben oder löschen, bevor sie im öffentlichen Album erscheinen.'];
+$rows[] = ['Approved photos are also collected in our Google Photos album.', 'Le foto approvate sono raccolte anche nel nostro album Google Photos.', 'Οι εγκεκριμένες φωτογραφίες συγκεντρώνονται και στο άλμπουμ Google Photos.', 'Freigegebene Fotos werden auch in unserem Google-Photos-Album gesammelt.'];
+$rows[] = ['Open shared album on Google Photos', 'Apri album condiviso su Google Photos', 'Άνοιγμα κοινόχρηστου άλμπουμ στο Google Photos', 'Geteiltes Album in Google Photos öffnen'];
+$rows[] = ['Photo approved and uploaded to Google Drive.', 'Foto approvata e caricata su Google Drive.', 'Η φωτογραφία εγκρίθηκε και μεταφορτώθηκε στο Google Drive.', 'Foto freigegeben und in Google Drive hochgeladen.'];
+$rows[] = ['Photo approved, but Google Drive upload failed. Try approving again or upload manually.', 'Foto approvata, ma il caricamento su Google Drive non è riuscito. Riprova o carica manualmente.', 'Η φωτογραφία εγκρίθηκε, αλλά η μεταφόρτωση στο Google Drive απέτυχε.', 'Foto freigegeben, aber der Upload nach Google Drive ist fehlgeschlagen.'];
+$rows[] = ['Approved photos are uploaded automatically to Google Drive.', 'Le foto approvate vengono caricate automaticamente su Google Drive.', 'Οι εγκεκριμένες φωτογραφίες ανεβαίνουν αυτόματα στο Google Drive.', 'Freigegebene Fotos werden automatisch in Google Drive hochgeladen.'];
+$rows[] = ['Open Google Drive folder', 'Apri cartella Google Drive', 'Άνοιγμα φακέλου Google Drive', 'Google-Drive-Ordner öffnen'];
+$rows[] = ['The photo is too large for the server (max :mb MB). Try a smaller image or take a new photo.', 'La foto è troppo grande per il server (max :mb MB). Prova un\'immagine più piccola o scattane una nuova.', 'Η φωτογραφία είναι πολύ μεγάλη για τον διακομιστή (μέγ. :mb MB). Δοκιμάστε μικρότερη εικόνα ή τραβήξτε νέα.', 'Das Foto ist für den Server zu groß (max. :mb MB). Versuchen Sie ein kleineres Bild oder machen Sie ein neues Foto.'];
+$rows[] = ['Upload now', 'Carica ora', 'Μεταφόρτωση τώρα', 'Jetzt hochladen'];
+$rows[] = ['Our wedding photos on Google Photos', 'Le foto del nostro matrimonio su Google Photos', 'Οι φωτογραφίες του γάμου μας στο Google Photos', 'Unsere Hochzeitsfotos auf Google Photos'];
+$rows[] = ['View and add your photos on Google Photos — free, with no storage limits on our site.', 'Guarda e aggiungi le tue foto su Google Photos — gratis e senza limiti sul nostro sito.', 'Δείτε και προσθέστε τις φωτογραφίες σας στο Google Photos — δωρεάν, χωρίς όρια στον ιστότοπό μας.', 'Fotos auf Google Photos ansehen und hinzufügen — kostenlos, ohne Speicherlimits auf unserer Website.'];
+$rows[] = ['Open shared album', 'Apri album condiviso', 'Άνοιγμα κοινόχρηστου άλμπουμ', 'Geteiltes Album öffnen'];
+$rows[] = ['Open Google Photos', 'Apri Google Photos', 'Άνοιγμα Google Photos', 'Google Photos öffnen'];
+$rows[] = ['Album managed by :email.', 'Album gestito da :email.', 'Άλμπουμ διαχειριζόμενο από :email.', 'Album verwaltet von :email.'];
+$rows[] = ['The shared album link will appear here once the hosts publish it on Google Photos.', 'Il link dell\'album condiviso apparirà qui non appena gli sposi lo pubblicheranno su Google Photos.', 'Ο σύνδεσμος του άλμπουμ θα εμφανιστεί εδώ μόλις δημοσιευτεί στο Google Photos.', 'Der Link zum geteilten Album erscheint hier, sobald die Gastgeber es auf Google Photos veröffentlichen.'];
+$rows[] = ['Gallery uploads use Google Photos. Open the album link on this page.', 'Le foto si caricano su Google Photos. Apri il link dell\'album in questa pagina.', 'Οι φωτογραφίες ανεβαίνουν στο Google Photos. Ανοίξτε τον σύνδεσμο σε αυτή τη σελίδα.', 'Fotos werden über Google Photos hochgeladen. Öffnen Sie den Album-Link auf dieser Seite.'];
+$rows[] = ['Photos are managed on Google Photos (:email). Built-in upload and moderation are disabled.', 'Le foto sono su Google Photos (:email). Caricamento e moderazione integrati disattivati.', 'Οι φωτογραφίες διαχειρίζονται στο Google Photos (:email). Η ενσωματωμένη μεταφόρτωση είναι απενεργοποιημένη.', 'Fotos werden auf Google Photos verwaltet (:email). Integrierter Upload und Moderation sind deaktiviert.'];
+$rows[] = ['Remove from selection', 'Rimuovi dalla selezione', 'Αφαίρεση από την επιλογή', 'Aus Auswahl entfernen'];
+
 $it = [];
 $el = [];
 $de = [];
+$enOut = [];
 foreach ($rows as $r) {
     if (count($r) !== 4) {
         throw new InvalidArgumentException('Each row must have [en, it, el, de]');
@@ -387,11 +415,27 @@ foreach ($rows as $r) {
     $it[$en] = $itVal;
     $el[$en] = $elVal;
     $de[$en] = $deVal;
+    $enOut[$en] = $en;
+}
+
+// English values that differ from the translation key (semantic keys, date formats, etc.)
+$enOverrides = [
+    'Wedding event datetime' => ':weekday :day :month :year at :time',
+    'Wedding church venue line' => 'Church of Saint Anna in Katerini.',
+    'Reception venue' => 'Reception hall',
+    'Wedding reception venue line' => 'After the ceremony, the reception will be held in the "Aria" reception hall.',
+];
+foreach ($enOverrides as $key => $value) {
+    if (! array_key_exists($key, $enOut)) {
+        throw new InvalidArgumentException('Unknown en override key: '.$key);
+    }
+    $enOut[$key] = $value;
 }
 
 $dir = __DIR__;
 file_put_contents($dir.'/it.json', json_encode($it, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)."\n");
 file_put_contents($dir.'/el.json', json_encode($el, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)."\n");
 file_put_contents($dir.'/de.json', json_encode($de, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)."\n");
+file_put_contents($dir.'/en.json', json_encode($enOut, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)."\n");
 
-echo 'Wrote '.count($it).' keys to it.json, el.json, and de.json'."\n";
+echo 'Wrote '.count($it).' keys to it.json, el.json, de.json, and en.json'."\n";
