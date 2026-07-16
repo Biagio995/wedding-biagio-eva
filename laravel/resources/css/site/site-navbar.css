@@ -120,9 +120,21 @@
 }
 
 @media (max-width: 768px) {
+    .site-header__bar {
+        gap: 0.5rem;
+    }
+
+    .site-header__brand {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .site-header__title {
+        max-width: none;
+    }
+
     .site-header__langs {
-        width: 100%;
-        justify-content: flex-end;
+        flex-shrink: 0;
     }
 
     .site-header__langs-links {
